@@ -300,6 +300,34 @@ INSERT INTO `song_list` VALUES (1,'The Good, the Bad and the Ugly','/img/songLis
 UNLOCK TABLES;
 
 --
+-- Table structure for table `song_list_consumer`
+--
+
+DROP TABLE IF EXISTS `song_list_consumer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `song_list_consumer` (
+                             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                             `title` varchar(255) NOT NULL,
+                             `pic` varchar(255) DEFAULT NULL,
+                             `introduction` text,
+                             `style` varchar(10) DEFAULT '无',
+                             `user_id` int(10) unsigned NOT NULL,
+                             PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `song_list_consumer`
+--
+
+LOCK TABLES `song_list_consumer` WRITE;
+/*!40000 ALTER TABLE `song_list_consumer` DISABLE KEYS */;
+# INSERT INTO `song_list_consumer` VALUES ();
+/*!40000 ALTER TABLE `song_list_consumer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_support`
 --
 
