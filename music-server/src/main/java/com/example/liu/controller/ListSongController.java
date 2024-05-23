@@ -36,8 +36,8 @@ public class ListSongController {
 
     // 删除歌单里的歌曲
     @GetMapping("/listSong/delete")
-    public R deleteListSong(@RequestParam int songId) {
-        return listSongService.deleteListSong(songId);
+    public R deleteListSong(@RequestParam int songId, @RequestParam int songListId) {
+        return listSongService.deleteListSong(songId, songListId);
     }
 
     // 返回歌单里指定歌单 ID 的歌曲
@@ -51,7 +51,7 @@ public class ListSongController {
     public R updateListSongMsg(@RequestBody ListSongRequest updateListSongRequest) {
         return listSongService.updateListSongMsg(updateListSongRequest);
     }
-    //导出歌单
+    // 导出歌单
     @GetMapping("/excle")
     public ResponseEntity<Resource> getExcle(HttpServletRequest request) throws IOException {
         String fileName = "SongList" + System.currentTimeMillis() + ".xlsx";

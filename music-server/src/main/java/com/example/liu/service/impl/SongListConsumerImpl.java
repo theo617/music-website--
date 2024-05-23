@@ -73,9 +73,9 @@ public class SongListConsumerImpl extends ServiceImpl<SongListConsumerMapper, So
     }
 
     @Override
-    public R likeUserId(Integer user_id) {
+    public R eqUserId(Integer user_id) {
         QueryWrapper<SongListConsumer> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("user_id",user_id);
+        queryWrapper.eq("user_id",user_id);
         return R.success(null, songListConsumerMapper.selectList(queryWrapper));
     }
 

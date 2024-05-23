@@ -39,7 +39,7 @@ public class SongListConsumerController {
 
     @GetMapping("/songListConsumer/likeUserId/detail")
     public R songListConsumerOfUserId(@RequestParam Integer user_id) {
-        return songListConsumerService.likeUserId('%' + user_id + '%');
+        return songListConsumerService.eqUserId(user_id);
     }
 
     @PostMapping("/songListConsumer/update")

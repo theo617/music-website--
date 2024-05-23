@@ -36,9 +36,9 @@ public class ListSongServiceImpl extends ServiceImpl<ListSongMapper, ListSong> i
     }
 
     @Override
-    public R deleteListSong(Integer songId) {
+    public R deleteListSong(Integer songId, Integer songListId) {
         QueryWrapper<ListSong> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("song_id",songId);
+        queryWrapper.eq("song_id", songId).eq("song_list_id", songListId);
         if (listSongMapper.delete(queryWrapper) > 0) {
             return R.success("删除成功");
         } else {

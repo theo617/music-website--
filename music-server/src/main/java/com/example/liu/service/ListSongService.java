@@ -13,7 +13,7 @@ public interface ListSongService extends IService<ListSong> {
 
     R updateListSongMsg(ListSongRequest updateListSongRequest);
 
-    R deleteListSong(Integer songId);
+    R deleteListSong(Integer songId, Integer songListId);
 
     //看看这啥
     List<ListSong> allListSong();
