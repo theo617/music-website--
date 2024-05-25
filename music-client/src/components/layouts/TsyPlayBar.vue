@@ -1,7 +1,7 @@
 <template>
   <div class="play-bar" :class="{ show: !toggle }">
     <div class="fold" :class="{ turn: toggle }">
-      <yin-icon :icon="iconList.ZHEDIE" @click="toggle = !toggle"></yin-icon>
+      <Tsy-icon :icon="iconList.ZHEDIE" @click="toggle = !toggle"></Tsy-icon>
     </div>
     <!--播放进度-->
     <el-slider class="progress" v-model="nowTime" @change="changeTime" size="small"></el-slider>
@@ -9,7 +9,7 @@
       <div class="info-box">
         <!--歌曲图片-->
       <div @click="goPlayerPage">
-         <el-image class="song-bar-img" fit="contain"/>
+         <el-image class="song-bar-img" fit="contain" :src="attachImageUrl(songPic)"/>
       </div>
         <!--播放开始结束时间-->
         <div v-if="songId">
@@ -18,20 +18,20 @@
         </div>
       </div>
       <div class="song-ctr">
-        <yin-icon class="yin-play-show" :icon="playStateList[playStateIndex]" @click="changePlayState"></yin-icon>
+        <Tsy-icon class="Tsy-play-show" :icon="playStateList[playStateIndex]" @click="changePlayState"></Tsy-icon>
         <!--上一首-->
-        <yin-icon class="yin-play-show" :icon="iconList.SHANGYISHOU" @click="prev"></yin-icon>
+        <Tsy-icon class="Tsy-play-show" :icon="iconList.SHANGYISHOU" @click="prev" style="color: white !important;"></Tsy-icon>
         <!--播放-->
-        <yin-icon :icon="playBtnIcon" @click="togglePlay"></yin-icon>
+        <Tsy-icon :icon="playBtnIcon" @click="togglePlay" ></Tsy-icon>
         <!--下一首-->
-        <yin-icon class="yin-play-show" :icon="iconList.XIAYISHOU" @click="next"></yin-icon>
+        <Tsy-icon class="Tsy-play-show" :icon="iconList.XIAYISHOU" @click="next"></Tsy-icon>
         <!--音量-->
-        <el-dropdown class="yin-play-show" trigger="click">
-          <yin-icon v-if="volume !== 0" :icon="iconList.YINLIANG"></yin-icon>
-          <yin-icon v-else :icon="iconList.JINGYIN"></yin-icon>
+        <el-dropdown class="Tsy-play-show" trigger="click">
+          <Tsy-icon v-if="volume !== 0" :icon="iconList.TsyLIANG" ></Tsy-icon>
+          <Tsy-icon v-else :icon="iconList.JINGTsy" style="color: white;"></Tsy-icon>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-slider class="yin-slider" style="height: 150px; margin: 10px 0" v-model="volume"
+              <el-slider class="Tsy-slider" style="height: 150px; margin: 10px 0" v-model="volume"
                          :vertical="true"></el-slider>
             </el-dropdown-menu>
           </template>
@@ -39,15 +39,15 @@
       </div>
       <div class="song-ctr song-edit">
         <!--收藏-->
-        <yin-icon
-            class="yin-play-show"
+        <Tsy-icon
+            class="Tsy-play-show"
             :class="{ active: isCollection }"
             :icon="isCollection ? iconList.like : iconList.dislike"
             @click="changeCollection"
-        ></yin-icon>
+        ></Tsy-icon>
         <!--下载-->
-        <yin-icon
-            class="yin-play-show"
+        <Tsy-icon
+            class="Tsy-play-show"
             :icon="iconList.download"
             @click="
             downloadMusic({
@@ -55,9 +55,9 @@
               songName: singerName + '-' + songTitle,
             })
           "
-        ></yin-icon>
+        ></Tsy-icon>
         <!--歌曲列表-->
-        <yin-icon :icon="iconList.LIEBIAO" @click="changeAside"></yin-icon>
+        <Tsy-icon :icon="iconList.LIEBIAO" @click="changeAside"></Tsy-icon>
       </div>
     </div>
   </div>
@@ -67,14 +67,14 @@
 import {computed, defineComponent, getCurrentInstance, onMounted, ref, watch} from "vue";
 import {mapGetters, useStore} from "vuex";
 import mixin from "@/mixins/mixin";
-import YinIcon from "./YinIcon.vue";
+import TsyIcon from "./TsyIcon.vue";
 import {HttpManager} from "@/api";
 import {formatSeconds} from "@/utils";
 import {Icon, RouterName} from "@/enums";
 
 export default defineComponent({
   components: {
-    YinIcon,
+    TsyIcon,
   },
   setup() {
     const {proxy} = getCurrentInstance();
@@ -150,8 +150,8 @@ export default defineComponent({
         ZHEDIE: Icon.ZHEDIE,
         SHANGYISHOU: Icon.SHANGYISHOU,
         XIAYISHOU: Icon.XIAYISHOU,
-        YINLIANG: Icon.YINLIANG1,
-        JINGYIN: Icon.JINGYIN,
+        TsyLIANG: Icon.TsyLIANG1,
+        JINGTsy: Icon.JINGTsy,
         LIEBIAO: Icon.LIEBIAO,
         dislike: Icon.Dislike,
         like: Icon.Like,
@@ -171,10 +171,14 @@ export default defineComponent({
       "curTime", // 当前音乐的播放位置
       "duration", // 音乐时长
       "currentPlayList",
-      "currentPlayIndex", // 当前歌曲在歌曲列表的位置
+      "currentPlaTsydex", // 当前歌曲在歌曲列表的位置
       "showAside", // 是否显示侧边栏
       "autoNext", // 用于触发自动播放下一首
     ]),
+  },
+  created() {
+  this.$store.commit("setPlayBtnIcon", Icon.BOFANG); // 初始化播放状态图标为播放图标
+  //this.$store.commit("setIsPlay", false);// 其他的初始化逻辑
   },
   watch: {
     // 切换播放状态的图标
@@ -203,6 +207,7 @@ export default defineComponent({
     // 控制音乐播放 / 暂停
     togglePlay() {
       this.$store.commit("setIsPlay", this.isPlay ? false : true);
+      
     },
     changeTime() {
       this.$store.commit("setChangeTime", this.duration * (this.nowTime * 0.01));
@@ -214,50 +219,54 @@ export default defineComponent({
     // 上一首
     prev() {
       if (this.playState === Icon.LUANXU) {
-        let playIndex = Math.floor(Math.random() * this.currentPlayList.length);
-        playIndex = playIndex === this.currentPlayIndex ? playIndex + 1 : playIndex;
-        this.$store.commit("setCurrentPlayIndex", playIndex);
-        this.toPlay(this.currentPlayList[playIndex].url);
-      } else if (this.currentPlayIndex !== -1 && this.currentPlayList.length > 1) {
-        if (this.currentPlayIndex > 0) {
-          this.$store.commit("setCurrentPlayIndex", this.currentPlayIndex - 1);
-          this.toPlay(this.currentPlayList[this.currentPlayIndex].url);
+        let plaTsydex = Math.floor(Math.random() * this.currentPlayList.length);
+        plaTsydex = plaTsydex === this.currentPlaTsydex ? plaTsydex + 1 : plaTsydex;
+        this.$store.commit("setCurrentPlaTsydex", plaTsydex);
+        this.toPlay(this.currentPlayList[plaTsydex].url);
+      } else if (this.currentPlaTsydex !== -1 && this.currentPlayList.length > 1) {
+        if (this.currentPlaTsydex > 0) {
+          this.$store.commit("setCurrentPlaTsydex", this.currentPlaTsydex - 1);
+          this.toPlay(this.currentPlayList[this.currentPlaTsydex].url);
         } else {
-          this.$store.commit("setCurrentPlayIndex", this.currentPlayList.length - 1);
-          this.toPlay(this.currentPlayList[this.currentPlayIndex].url);
+          this.$store.commit("setCurrentPlaTsydex", this.currentPlayList.length - 1);
+          this.toPlay(this.currentPlayList[this.currentPlaTsydex].url);
         }
       }
     },
     // 下一首
     next() {
       if (this.playState === Icon.LUANXU) {
-        let playIndex = Math.floor(Math.random() * this.currentPlayList.length);
-        playIndex = playIndex === this.currentPlayIndex ? playIndex + 1 : playIndex;
-        this.$store.commit("setCurrentPlayIndex", playIndex);
-        this.toPlay(this.currentPlayList[playIndex].url);
-      } else if (this.currentPlayIndex !== -1 && this.currentPlayList.length > 1) {
-        if (this.currentPlayIndex < this.currentPlayList.length - 1) {
-          this.$store.commit("setCurrentPlayIndex", this.currentPlayIndex + 1);
-          this.toPlay(this.currentPlayList[this.currentPlayIndex].url);
+        let plaTsydex = Math.floor(Math.random() * this.currentPlayList.length);
+        plaTsydex = plaTsydex === this.currentPlaTsydex ? plaTsydex + 1 : plaTsydex;
+        this.$store.commit("setCurrentPlaTsydex", plaTsydex);
+        this.toPlay(this.currentPlayList[plaTsydex].url);
+      } else if (this.currentPlaTsydex !== -1 && this.currentPlayList.length > 1) {
+        if (this.currentPlaTsydex < this.currentPlayList.length - 1) {
+          this.$store.commit("setCurrentPlaTsydex", this.currentPlaTsydex + 1);
+          this.toPlay(this.currentPlayList[this.currentPlaTsydex].url);
         } else {
-          this.$store.commit("setCurrentPlayIndex", 0);
+          this.$store.commit("setCurrentPlaTsydex", 0);
           this.toPlay(this.currentPlayList[0].url);
         }
       }
     },
     // 选中播放
-    toPlay(url) {
+    async toPlay(url: any) {
       if (url && url !== this.songUrl) {
-        const song = this.currentPlayList[this.currentPlayIndex];
-        this.playMusic({
+        const song = this.currentPlayList[this.currentPlaTsydex];
+        await this.playMusic({
           id: song.id,
-          url,
+          url: url,
           pic: song.pic,
-          index: this.currentPlayIndex,
+          index: this.currentPlaTsydex,
           name: song.name,
           lyric: song.lyric,
           currentSongList: this.currentPlayList,
-        });
+        }
+      );
+      if(this.isPlay==true){
+        this.togglePlay();
+      }
       }
     },
     goPlayerPage() {
@@ -268,5 +277,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/yin-play-bar.scss";
+@import "@/assets/css/Tsy-play-bar.scss";
+
 </style>

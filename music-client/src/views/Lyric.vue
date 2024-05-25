@@ -1,38 +1,40 @@
 <template>
-  <div class="song-container">
-    <el-image class="song-pic" fit="contain" :src="attachImageUrl(songPic)" />
-    <ul class="song-info">
-      <li>歌手：{{ singerName }}</li>
-      <li>歌曲：{{ songTitle }}</li>
-    </ul>
-  </div>
-  <div class="container">
-    <div class="lyric-container">
-      <div class="song-lyric">
-        <transition-group name="lyric-fade">
-          <!--有歌词-->
-          <ul :style="{ top: lrcTop }" class="has-lyric" v-if="lyricArr.length" key="has-lyric">
-            <li v-for="(item, index) in lyricArr" :key="index">
-              {{ item[1] }}
-            </li>
-          </ul>
-          <!--没歌词-->
-          <div v-else class="no-lyric" key="no-lyric">
-            <span>暂无歌词</span>
-          </div>
-        </transition-group>
-      </div>
-      <comment :playId="songId" :type="0"></comment>
+  <div class="lyric-page" :class="backgroundClass">
+    <div class="song-info">
+      <h2>{{ songTitle }}</h2>
+      <p>{{ singerName }}</p>
     </div>
+    <div class="lyric-content">
+      <div class="left">
+        <div class="record-container">
+          <div :class="['record', { spinning: isPlay }]" :style="{ transform: recordRotation }">
+            <div class="record-center">
+              <img class="record-img" :src="attachImageUrl(songPic)" />
+            </div>
+          </div>
+          <div :class="['needle', { plaTsyg: isPlay }]"></div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="lyrics" ref="lyricsContainer">
+          <div class="lyric-line" v-for="(line, index) in lyricArr" :key="index" :class="{ active: isActive(index) }">
+            {{ line[1] }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <comment :playId="songId" :type="0"></comment>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import { computed, defineComponent, ref, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import Comment from "@/components/Comment.vue";
 import { parseLyric } from "@/utils";
 import { HttpManager } from "@/api";
+
+const backgroundClasses = ['style1', 'style2', 'style3', 'style4'];
 
 export default defineComponent({
   components: {
@@ -41,139 +43,227 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const lrcTop = ref("80px"); // 歌词滑动
     const lyricArr = ref([]); // 当前歌曲的歌词
     const songId = computed(() => store.getters.songId); // 歌曲ID
     const lyric = computed(() => store.getters.lyric); // 歌词
     const currentPlayList = computed(() => store.getters.currentPlayList); // 存放的音乐
-    const currentPlayIndex = computed(() => store.getters.currentPlayIndex); // 当前歌曲在歌曲列表的位置
+    const currentPlaTsydex = computed(() => store.getters.currentPlaTsydex); // 当前歌曲在歌曲列表的位置
     const curTime = computed(() => store.getters.curTime);
     const songTitle = computed(() => store.getters.songTitle); // 歌名
     const singerName = computed(() => store.getters.singerName); // 歌手名
     const songPic = computed(() => store.getters.songPic); // 歌曲图片
-    watch(songId, () => {
-      lyricArr.value = parseLyric(currentPlayList.value[currentPlayIndex.value].lyric);
-    });
-    // 处理歌词位置及颜色
-    watch(curTime, () => {
-      if (lyricArr.value.length !== 0) {
+    const isPlay = computed(() => store.getters.isPlay); // 播放状态
+    const backgroundClass = ref(backgroundClasses[Math.floor(Math.random() * backgroundClasses.length)]);
+
+    const lyricsContainer = ref<HTMLElement | null>(null);
+    const rotation = ref(0);
+
+    const updateLyrics = () => {
+      if (lyricsContainer.value && lyricArr.value.length) {
+        let activeIndex = 0;
         for (let i = 0; i < lyricArr.value.length; i++) {
           if (curTime.value >= lyricArr.value[i][0]) {
-            for (let j = 0; j < lyricArr.value.length; j++) {
-              (document.querySelectorAll(".has-lyric li") as NodeListOf<HTMLElement>)[j].style.color = "#000";
-              (document.querySelectorAll(".has-lyric li") as NodeListOf<HTMLElement>)[j].style.fontSize = "14px";
-            }
-            if (i >= 0) {
-              lrcTop.value = -i * 30 + 50 + "px";
-              (document.querySelectorAll(".has-lyric li") as NodeListOf<HTMLElement>)[i].style.color = "#95d2f6";
-              (document.querySelectorAll(".has-lyric li") as NodeListOf<HTMLElement>)[i].style.fontSize = "18px";
-            }
+            activeIndex = i;
           }
         }
+        const offset = Math.max(0, activeIndex - 4);
+        lyricsContainer.value.scrollTop = offset * 40;
       }
+    };
+
+    const rotateRecord = () => {
+      if (isPlay.value) {
+        rotation.value += 0.1; // 调整旋转速度
+      }
+      requestAnimationFrame(rotateRecord);
+    };
+
+    watch(songId, () => {
+      lyricArr.value = parseLyric(currentPlayList.value[currentPlaTsydex.value].lyric);
+      updateLyrics();
     });
 
-    lyricArr.value = lyric.value ? parseLyric(lyric.value) : [];
+    watch(curTime, updateLyrics);
+
+    onMounted(() => {
+      lyricArr.value = lyric.value ? parseLyric(lyric.value) : [];
+      requestAnimationFrame(rotateRecord);
+    });
+
+    const isActive = (index: number) => {
+      if (!lyricArr.value.length) return false;
+      const currentTime = curTime.value;
+      return (
+        (index === lyricArr.value.length - 1 && currentTime >= lyricArr.value[index][0]) ||
+        (index < lyricArr.value.length - 1 && currentTime >= lyricArr.value[index][0] && currentTime < lyricArr.value[index + 1][0])
+      );
+    };
+
+    const recordRotation = computed(() => `rotate(${rotation.value}deg)`);
 
     return {
       songPic,
       singerName,
       songTitle,
-      lrcTop,
       lyricArr,
       songId,
+      isPlay,
       attachImageUrl: HttpManager.attachImageUrl,
+      lyricsContainer,
+      isActive,
+      backgroundClass,
+      recordRotation,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/var.scss";
+$background-styles: (
+  "style1": radial-gradient(circle, rgba(68, 68, 68, 1) 0%, rgba(34, 34, 34, 1) 100%),
+  "style2": linear-gradient(135deg, rgba(255, 105, 180, 1) 0%, rgba(255, 182, 193, 1) 100%),
+  "style3": radial-gradient(circle, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%),
+  "style4": linear-gradient(120deg, rgba(252, 70, 107, 1) 0%, rgba(63, 94, 251, 1) 100%),
+);
 
-.song-container {
-  position: fixed;
-  top: 120px;
-  left: 50px;
-  display: flex;
-  flex-direction: column;
+.lyric-page {
+  color: #fff;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
 
-  .song-pic {
-    height: 300px;
-    width: 300px;
-    border: 4px solid white;
-    border-radius: 12px;
+  @each $style-name, $style-value in $background-styles {
+    &.#{$style-name} {
+      background: $style-value;
+    }
   }
 
   .song-info {
-    width: 300px;
-    li {
-      width: 100%;
-      line-height: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+    h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
       font-size: 18px;
-      padding-left: 10%;
     }
   }
-}
 
-.lyric-container {
-  font-family: $font-family;
-  .song-lyric {
-    position: relative;
-    min-height: 300px;
-    padding: 30px 0;
-    overflow: auto;
-    border-radius: 12px;
-    background-color: $color-light-grey;
-    .has-lyric {
-      position: absolute;
-      transition: all 1s;
-      li {
-        width: 100%;
-        height: 40px;
-        text-align: center;
-        font-size: 14px;
-        line-height: 40px;
+  .lyric-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .left {
+      position: relative;
+      .record-container {
+        position: relative;
+        width: 450px; /* 调整唱片尺寸 */
+        height: 450px;
+        margin-right: 20px;
+
+        .record {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background: radial-gradient(circle, #222 20%, #000 100%);
+          box-shadow: inset 0 0 10px #000, 0 0 20px rgba(0, 0, 0, 0.5); /* 增加阴影 */
+          position: relative;
+          z-index: 1;
+          background-image: radial-gradient(circle, #000 1px, transparent 1px),
+                            radial-gradient(circle, #000 1px, transparent 1px);
+          background-size: 20px 20px;
+          background-position: 0 0, 10px 10px;
+        }
+
+        .record-center {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 60%;
+          height: 60%;
+          border-radius: 50%;
+          background: #fff;
+        }
+
+        .record-img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+
+        .needle {
+          width: 150px;
+          height: 20px;
+          background: transparent;
+          position: absolute;
+          top: -20px;
+          right: -20px;
+          transform: rotate(35deg);
+          transform-origin: top right;
+          transition: transform 0.3s ease;
+          &.plaTsyg {
+            transform: rotate(5deg);
+          }
+          &::before {
+            content: '';
+            width: 10px;
+            height: 50px;
+            border-radius: 20%;
+            background: #fff;
+            position: absolute;
+            top: -1px;
+            left: -5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+          }
+          &::after {
+            content: '';
+            width: 140px;
+            height: 10px;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 5px;
+          }
+        }
       }
     }
-    .no-lyric {
-      position: absolute;
-      margin: 100px 0;
 
-      span {
-        font-size: 18px;
-        text-align: center;
+    .right {
+      flex: 1;
+      .lyrics {
+        max-height: 500px;
+        overflow-y: auto;
+        .lyric-line {
+          font-size: 16px;
+          line-height: 40px;
+          text-align: center;
+          transition: all 0.3s;
+          opacity: 0.5;
+        }
+        .lyric-line.active {
+          font-size: 20px;
+          color: #fff;
+          opacity: 1;
+        }
       }
     }
   }
-}
 
-.lyric-fade-enter,
-.lyric-fade-leave-to {
-  transform: translateX(30px);
-  opacity: 0;
-}
-
-.lyric-fade-enter-active,
-.lyric-fade-leave-active {
-  transition: all 0.3s ease;
-}
-
-@media screen and (min-width: $sm) {
-  .container {
-    padding-top: 30px;
-  }
-  .lyric-container {
-    margin: 0 150px 0px 400px;
+  .comment {
+    margin-top: 20px;
   }
 }
 
-@media screen and (max-width: $sm) {
-  .container {
-    padding: 20px;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-  .song-container {
-    display: none;
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>

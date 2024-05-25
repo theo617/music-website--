@@ -1,17 +1,17 @@
 <template>
   <div class="login-logo">
-    <yin-icon :icon="icon"></yin-icon>
+    <Tsy-icon :icon="icon"></Tsy-icon>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import YinIcon from "./YinIcon.vue";
+import TsyIcon from "./TsyIcon.vue";
 import { Icon } from "@/enums";
 
 export default defineComponent({
   components: {
-    YinIcon,
+    TsyIcon,
   },
   data() {
     return {

@@ -6,7 +6,7 @@ export default {
     songId: "", // 音乐 ID
     songTitle: "", // 歌名
     songUrl: "", // 音乐 URL
-    songPic: `/img/songPic/tubiao.jpg`, // 歌曲图片
+    songPic: `../assets/images/tubiao.jpg`, // 歌曲图片
     singerName: "", //  歌手名
     lyric: [], // 处理后的歌词数据
 
@@ -22,7 +22,7 @@ export default {
     /** 音乐列表信息 */
     currentPlayList: [], // 当前播放列表
     songDetails: null, // 单个歌单信息
-    currentPlayIndex: -1, // 当前歌曲在歌曲列表的位置
+    currentPlaTsydex: -1, // 当前歌曲在歌曲列表的位置
   },
   getters: {
     songId: (state) => state.songId,
@@ -42,7 +42,7 @@ export default {
 
     currentPlayList: (state) => state.currentPlayList,
     songDetails: (state) => state.songDetails,
-    currentPlayIndex: (state) => state.currentPlayIndex,
+    currentPlaTsydex: (state) => state.currentPlaTsydex,
   },
   mutations: {
     setSongId: (state, songId) => {
@@ -92,8 +92,8 @@ export default {
     setSongDetails: (state, songDetails) => {
       state.songDetails = songDetails;
     },
-    setCurrentPlayIndex: (state, currentPlayIndex) => {
-      state.currentPlayIndex = currentPlayIndex;
+    setCurrentPlaTsydex: (state, currentPlaTsydex) => {
+      state.currentPlaTsydex = currentPlaTsydex;
     },
   },
   actions: {
@@ -101,7 +101,7 @@ export default {
       commit("setSongId", id);
       commit("setSongUrl", url);
       commit("setSongPic", pic);
-      commit("setCurrentPlayIndex", index);
+      commit("setCurrentPlaTsydex", index);
       commit("setSongTitle", songTitle);
       commit("setSingerName", singerName);
       commit("setLyric", lyric);

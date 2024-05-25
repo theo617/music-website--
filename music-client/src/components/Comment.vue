@@ -4,35 +4,34 @@
       <span>评论</span>
       <span class="comment-desc">共 {{ commentList.length }} 条评论</span>
     </h2>
-    <el-input class="comment-input" type="textarea" placeholder="期待您的精彩评论..." :rows="2" v-model="textarea" />
-    <el-button class="sub-btn" type="primary" @click="submitComment()">发表评论</el-button>
+    <ul class="popular">
+      <li v-for="(item, index) in commentList" :key="index">
+        <el-image class="popular-img" fit="contain" :src="attachImageUrl(item.avator)" />
+        <div class="popular-msg">
+          <ul>
+            <li class="name">{{ item.username }}</li>
+            <li class="time">{{ formatDate(item.createTime) }}</li>
+            <li class="content">{{ item.content }}</li>
+          </ul>
+        </div>
+        <div ref="up" class="comment-ctr" @click="setSupport(item.id, item.up, userId)">
+          <div><Tsy-icon :icon="iconList.Support"></Tsy-icon> {{ item.up }}</div>
+          <el-icon v-if="item.userId === userId" @click="deleteComment(item.id, index)"><delete /></el-icon>
+        </div>
+      </li>
+    </ul>
+    <div class="comment-input-container">
+      <el-input class="comment-input" type="textarea" placeholder="期待您的精彩评论..." :rows="2" v-model="textarea" />
+      <el-button class="sub-btn" type="primary" @click="submitComment">发表评论</el-button>
+    </div>
   </div>
-  <ul class="popular">
-    <li v-for="(item, index) in commentList" :key="index">
-      <el-image class="popular-img" fit="contain" :src="attachImageUrl(item.avator)" />
-      <div class="popular-msg">
-        <ul>
-          <li class="name">{{ item.username }}</li>
-          <li class="time">{{ formatDate(item.createTime) }}</li>
-          <li class="content">{{ item.content }}</li>
-        </ul>
-      </div>
-      <!--这特么是直接拿到了评论的id-->
-      <div ref="up" class="comment-ctr" @click="setSupport(item.id, item.up, userId)">
-        <div><yin-icon :icon="iconList.Support"></yin-icon> {{ item.up }}</div>
-        <el-icon v-if="item.userId === userId" @click="deleteComment(item.id, index)"><delete /></el-icon>
-      </div>
-    </li>
-  </ul>
 </template>
 
 <script lang="ts" setup>
-
 import { defineProps, getCurrentInstance, ref, toRefs, computed, watch, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Delete } from "@element-plus/icons-vue";
-
-import YinIcon from "@/components/layouts/YinIcon.vue";
+import TsyIcon from "@/components/layouts/TsyIcon.vue";
 import mixin from "@/mixins/mixin";
 import { HttpManager } from "@/api";
 import { Icon } from "@/enums";
@@ -42,10 +41,8 @@ const { proxy } = getCurrentInstance();
 const store = useStore();
 const { checkStatus } = mixin();
 
-
-
 const props = defineProps({
-  playId: Number || String, // 歌曲ID 或 歌单ID
+  playId: [String, Number], // 歌曲ID 或 歌单ID
   type: Number, // 歌单 1 / 歌曲 0
 });
 
@@ -148,12 +145,12 @@ async function setSupport(id, up, userId) {
     result = (await HttpManager.setSupport({ id, up })) as ResponseBody;
   }
   if (result.success && operatorR.success) {
-    // proxy.$refs.up[index].children[0].style.color = "#2796dd";
     await getComment(playId.value);
   }
 }
 
 const attachImageUrl = HttpManager.attachImageUrl;
+
 </script>
 
 <style lang="scss" scoped>
@@ -177,14 +174,29 @@ const attachImageUrl = HttpManager.attachImageUrl;
     }
   }
 
-  .comment-input {
+  .comment-input-container {
     display: flex;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    margin-bottom: 40px;
+  }
+
+  .comment-input {
+    flex: 1;
+    margin-right: 10px;
   }
 
   .sub-btn {
-    position: absolute;
-    right: 0;
+    flex-shrink: 0;
   }
 }
 

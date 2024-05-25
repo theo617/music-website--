@@ -1,19 +1,19 @@
 <template>
   <div class="search">
-    <yin-nav :styleList="searchNavList" :activeName="activeName" @click="handleChangeView"></yin-nav>
+    <Tsy-nav :styleList="searchNavList" :activeName="activeName" @click="handleChangeView"></Tsy-nav>
     <component class="search-list" :is="currentView"></component>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import YinNav from "@/components/layouts/YinNav.vue";
+import TsyNav from "@/components/layouts/TsyNav.vue";
 import SearchSong from "./SearchSong.vue";
 import SearchSongList from "./SearchSongList.vue";
 
 export default defineComponent({
   components: {
-    YinNav,
+    TsyNav,
     SearchSong,
     SearchSongList,
   },

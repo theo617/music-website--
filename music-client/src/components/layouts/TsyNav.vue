@@ -1,5 +1,5 @@
 <template>
-  <ul class="yin-nav">
+  <ul class="Tsy-nav">
     <li v-for="(item, index) in styleList" :key="index" :class="{ active: item.name == activeName }" @click="handleChangeView(item)">
       {{ item.name }}
     </li>
@@ -31,7 +31,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/assets/css/var.scss";
 
-.yin-nav {
+.Tsy-nav {
   width: 100%;
   li {
     line-height: 2rem;
@@ -47,7 +47,7 @@ export default defineComponent({
 }
 
 @media screen and (min-width: $sm) {
-  .yin-nav {
+  .Tsy-nav {
     li {
       margin: 0.5rem 1rem;
     }
@@ -55,7 +55,7 @@ export default defineComponent({
 }
 
 @media screen and (max-width: $sm) {
-  .yin-nav {
+  .Tsy-nav {
     li {
       margin: 0.3rem 0.4rem;
     }

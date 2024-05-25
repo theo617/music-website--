@@ -1,29 +1,29 @@
 <template>
   <el-container>
     <el-header>
-      <yin-header></yin-header>
+      <Tsy-header></Tsy-header>
     </el-header>
     <el-main>
       <router-view />
-      <yin-current-play></yin-current-play>
-      <yin-play-bar></yin-play-bar>
-      <yin-scroll-top></yin-scroll-top>
-      <yin-audio></yin-audio>
+      <Tsy-current-play></Tsy-current-play>
+      <Tsy-play-bar></Tsy-play-bar>
+      <Tsy-scroll-top></Tsy-scroll-top>
+      <Tsy-audio></Tsy-audio>
     </el-main>
     <el-footer>
-      <yin-footer></yin-footer>
+      <Tsy-footer></Tsy-footer>
     </el-footer>
   </el-container>
 </template>
 
 <script lang="ts" setup>
 import { getCurrentInstance } from "vue";
-import YinHeader from "@/components/layouts/YinHeader.vue";
-import YinCurrentPlay from "@/components/layouts/YinCurrentPlay.vue";
-import YinPlayBar from "@/components/layouts/YinPlayBar.vue";
-import YinScrollTop from "@/components/layouts/YinScrollTop.vue";
-import YinFooter from "@/components/layouts/YinFooter.vue";
-import YinAudio from "@/components/layouts/YinAudio.vue";
+import TsyHeader from "@/components/layouts/TsyHeader.vue";
+import TsyCurrentPlay from "@/components/layouts/TsyCurrentPlay.vue";
+import TsyPlayBar from "@/components/layouts/TsyPlayBar.vue";
+import TsyScrollTop from "@/components/layouts/TsyScrollTop.vue";
+import TsyFooter from "@/components/layouts/TsyFooter.vue";
+import TsyAudio from "@/components/layouts/TsyAudio.vue";
 
 const { proxy } = getCurrentInstance();
 

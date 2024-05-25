@@ -129,18 +129,35 @@ export default defineComponent({
   background-color: $color-white;
   border-radius: $border-radius-songlist;
   padding: 10px;
-}
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-.content:deep(.el-table__row.current-row) {
-  color: $color-black;
-  font-weight: bold;
-}
+  .el-table__row.current-row {
+    color: $color-black;
+    font-weight: bold;
+    background-color: #f5f5f5 !important;
+  }
 
-.content:deep(.el-table__row) {
-  cursor: pointer;
-}
+  .el-table__row {
+    cursor: pointer;
+    &:hover {
+      background-color: #f5f5f5 !important;
+    }
+  }
 
-.icon {
-  @include icon(1.2em, $color-black);
+  .el-table-column--align-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .el-icon {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+  }
 }
 </style>

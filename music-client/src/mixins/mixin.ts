@@ -118,31 +118,29 @@ export default function () {
   function changeIndex(value) {
     proxy.$store.commit("setActiveNavName", value);
   }
-  // 路由管理
-  function routerManager(routerName: string | number, options: routerOptions) {
-    switch (routerName) {
-      case RouterName.Search:
-        proxy.$router.push({ path: options.path, query: options.query });
-        break;
-      case RouterName.Home:
-      case RouterName.SongSheet:
-      case RouterName.SongSheetDetail:
-      case RouterName.Singer:
-      case RouterName.SingerDetail:
-      case RouterName.Personal:
-      case RouterName.PersonalData:
-      case RouterName.Setting:
-      case RouterName.SignIn:
-      case RouterName.SignUp:
-      case RouterName.SignOut:
-      case RouterName.Lyric:
-      case RouterName.Error:
-      default:
-        proxy.$router.push({ path: options.path });
-        break;
+  function routerManager(routerName: string | number, options: { path: string; query?: any }) {
+    try {
+      console.log("routerManager called with:", routerName, options);
+      if (typeof options.path !== 'string') {
+        throw new Error(`Invalid path: ${options.path}`);
+      }
+      
+      switch (routerName) {
+        case RouterName.Search:
+          proxy.$router.push({ path: options.path, query: options.query });
+          break;
+        default:
+          proxy.$router.push({ path: options.path });
+          break;
+      }
+    } catch (error) {
+      console.error("Error in routerManager:", error);
     }
   }
-
+  
+  
+  
+  
   function goBack(step = -1) {
     proxy.$router.go(step);
   }

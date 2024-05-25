@@ -2,7 +2,7 @@ export default {
   state: {
     userId: "", // ID
     username: "", // 名字
-    userPic: "", // 图片
+    userPic: `../assets/images/user.jpg`, // 图片
   },
   getters: {
     userId: (state) => state.userId,

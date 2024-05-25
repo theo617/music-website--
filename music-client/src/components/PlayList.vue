@@ -6,7 +6,7 @@
         <div class="card" @click="goAblum(item)">
           <el-image class="card-img" fit="contain" :src="attachImageUrl(item.pic)" />
           <div class="mask" @click="goAblum(item)">
-            <yin-icon class="mask-icon" :icon="BOFANG"></yin-icon>
+            <Tsy-icon class="mask-icon" :icon="BOFANG"></Tsy-icon>
           </div>
         </div>
         <p class="card-name">{{ item.name || item.title }}</p>
@@ -18,14 +18,14 @@
 <script lang="ts">
 import { defineComponent, getCurrentInstance, toRefs } from "vue";
 
-import YinIcon from "@/components/layouts/YinIcon.vue";
+import TsyIcon from "@/components/layouts/TsyIcon.vue";
 import mixin from "@/mixins/mixin";
 import { Icon } from "@/enums";
 import { HttpManager } from "@/api";
 
 export default defineComponent({
   components: {
-    YinIcon,
+    TsyIcon,
   },
   props: {
     title: String,

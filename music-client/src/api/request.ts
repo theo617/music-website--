@@ -32,6 +32,7 @@ axios.interceptors.response.use(
               // redirect: router.currentRoute.fullPath
             },
           });
+          return Promise.reject(error); // 在这里返回 Promise.reject()
           break;
         case 403:
           // console.log('管理员权限已修改请重新登录')
@@ -44,17 +45,18 @@ axios.interceptors.response.use(
               },
             });
           }, 1000);
+          return Promise.reject(error); // 在这里返回 Promise.reject()
           break;
-
         // 404请求不存在
         case 404:
-          // console.log('请求页面飞到火星去了')
+          console.log('请求页面飞到火星去了');
+          return Promise.reject(error); // 在这里返回 Promise.reject()
           break;
       }
-      return Promise.reject(error.response);
     }
   }
 );
+
 
 export function getBaseURL() {
   return BASE_URL;

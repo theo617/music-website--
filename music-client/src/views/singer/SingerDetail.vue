@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container class="singer-detail">
     <el-aside class="album-slide">
       <el-image class="singer-img" fit="contain" :src="attachImageUrl(songDetails.pic)" />
       <div class="album-info">
@@ -61,51 +61,63 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/assets/css/var.scss";
 
+.singer-detail {
+  display: flex;
+  min-height: 150vh;
+  background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
 .album-slide {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   .singer-img {
-    height: 250px;
-    width: 250px;
-    border-radius: 10%;
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 
   .album-info {
-    width: 60%;
+    width: 80%;
     padding-top: 2rem;
-    li {
-      width: 100%;
-      height: 30px;
-      line-height: 30px;
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        font-size: 1.1rem;
+      }
     }
   }
 }
 
 .album-main {
+  flex: 1;
+  margin-left: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
   p {
-    color: rgba(0, 0, 0, 0.5);
-    margin: 10px 0 20px 0px;
-  }
-}
-
-@media screen and (min-width: $sm) {
-  .album-slide {
-    position: fixed;
-    width: 400px;
-  }
-  .album-main {
-    min-width: 600px;
-    padding-right: 10vw;
-    margin-left: 400px;
-  }
-}
-
-@media screen and (max-width: $sm) {
-  .album-slide {
-    display: none;
+    color: rgba(0, 0, 0, 0.7);
+    margin-bottom: 20px;
   }
 }
 </style>

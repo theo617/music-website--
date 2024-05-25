@@ -10,7 +10,7 @@
 }
 
 // 图标
-@mixin icon($size: 1.5em, $color: $color-black) {
+@mixin icon($size: 1.5em, $color: $color-white) {
   width: $size;
   height: $size;
   font-size: $size;
