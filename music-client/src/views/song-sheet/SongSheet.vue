@@ -1,101 +1,85 @@
 <template>
-  <div class="song-sheet">
-    <div class="header">
-      <h1>歌单</h1>
-    </div>
-    <div class="content">
-      <el-row :gutter="20">
-        <el-col v-for="(sheet, index) in songSheets" :key="index" :span="6">
-          <div class="sheet-card">
-            <el-image :src="attachImageUrl(sheet.pic)" class="sheet-image" />
-            <div class="sheet-info">
-              <h2>{{ sheet.title }}</h2>
-              <p>{{ sheet.description }}</p>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
+  <div class="play-list-container">
+    <Tsy-nav :styleList="songStyle" :activeName="activeName" @click="handleChangeView"></Tsy-nav>
+    <play-list :playList="data" path="song-sheet-detail"></play-list>
+    <el-pagination
+      class="pagination"
+      background
+      layout="total, prev, pager, next"
+      :current-page="currentPage"
+      :page-size="pageSize"
+      :total="allPlayList.length"
+      @current-change="handleCurrentChange"
+    >
+    </el-pagination>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useStore } from "vuex";
+import { defineComponent, ref, computed } from "vue";
+import TsyNav from "@/components/layouts/TsyNav.vue";
+import PlayList from "@/components/PlayList.vue";
+import { SONGSTYLE } from "@/enums";
 import { HttpManager } from "@/api";
 
 export default defineComponent({
+  components: {
+    TsyNav,
+    PlayList,
+  },
   setup() {
-    const store = useStore();
-    const songSheets = computed(() => store.getters.songSheets);
+    const activeName = ref("全部歌单");
+    const pageSize = ref(15); // 页数
+    const currentPage = ref(1); // 当前页
+    const songStyle = ref(SONGSTYLE); // 歌单导航栏类别
+    const allPlayList = ref([]); // 歌单
+    const data = computed(() => allPlayList.value.slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value));
 
-    const attachImageUrl = (url: string) => {
-      return HttpManager.attachImageUrl(url);
-    };
+    // 获取全部歌单
+    async function getSongList() {
+      allPlayList.value = ((await HttpManager.getSongList()) as ResponseBody).data;
+      currentPage.value = 1;
+    }
+    // 通过类别获取歌单
+    async function getSongListOfStyle(style) {
+      allPlayList.value = ((await HttpManager.getSongListOfStyle(style)) as ResponseBody).data;
+      currentPage.value = 1;
+    }
 
+    try {
+      getSongList();
+    } catch (error) {
+      console.error(error);
+    }
+
+    // 获取歌单
+    async function handleChangeView(item) {
+      activeName.value = item.name;
+      allPlayList.value = [];
+      try {
+        if (item.name === "全部歌单") {
+          await getSongList();
+        } else {
+          await getSongListOfStyle(item.name);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    // 获取当前页
+    function handleCurrentChange(val) {
+      currentPage.value = val;
+    }
     return {
-      songSheets,
-      attachImageUrl,
+      activeName,
+      songStyle,
+      pageSize,
+      currentPage,
+      allPlayList,
+      data,
+      handleChangeView,
+      handleCurrentChange,
     };
   },
 });
 </script>
-
-<style scoped>
-.song-sheet {
-  padding: 20px;
-  background-color: #f5f5f5;
-  min-height: 100vh;
-
-  .header {
-    text-align: center;
-    margin-bottom: 30px;
-
-    h1 {
-      font-size: 36px;
-      font-weight: bold;
-      color: #333;
-    }
-  }
-
-  .content {
-    display: flex;
-    justify-content: center;
-
-    .sheet-card {
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s;
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-
-      .sheet-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-      }
-
-      .sheet-info {
-        padding: 15px;
-
-        h2 {
-          font-size: 20px;
-          font-weight: bold;
-          margin: 0 0 10px;
-        }
-
-        p {
-          font-size: 14px;
-          color: #666;
-          margin: 0;
-        }
-      }
-    }
-  }
-}
-</style>
