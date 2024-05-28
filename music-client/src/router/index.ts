@@ -34,7 +34,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           requireAuth: true,
         },
-        component: () => import("@/views/personal/Personal.vue"),
+        component: () => import("@/views/personal/personal.vue"),
+      },
+      {
+        path: "/personalSongList",
+        name: "personalSongList",
+        meta: {
+          requireAuth: true,
+        },
+        component: () => import("@/views/personal/personalSongList.vue"),
       },
       {
         path: "/song-sheet",
@@ -45,6 +53,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/song-sheet-detail/:id",
         name: "song-sheet-detail",
         component: () => import("@/views/song-sheet/SongSheetDetail.vue"),
+      },
+      {
+        path: "/personal-song-sheet-detail/:id",
+        name: "personal-song-sheet-detail",
+        component: () => import("@/views/personal/personalSongSheetDetail.vue"),
       },
       {
         path: "/singer",

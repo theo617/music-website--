@@ -6,7 +6,9 @@
     </el-carousel-item>
   </el-carousel>
   <!--热门歌单-->
-  <play-list class="play-list-container" title="歌单" path="song-sheet-detail" :playList="songList"></play-list>
+  <play-list class="play-list-container" title="经典歌单" path="song-sheet-detail" :playList="songList"></play-list>
+  <!--用户歌单-->
+  <play-list class="play-list-container" title="用户歌单" path="personal-song-sheet-detail" :playList="personalSongList"></play-list>
   <!--热门歌手-->
   <play-list class="play-list-container" title="歌手" path="singer-detail" :playList="singerList"></play-list>
 </template>
@@ -20,10 +22,25 @@ import { HttpManager } from "@/api";
 import mixin from "@/mixins/mixin";
 
 const songList = ref([]); // 歌单列表
+const personalSongList =ref([]); // 用户歌单列表
 const singerList = ref([]); // 歌手列表
 const swiperList = ref([]);// 轮播图 每次都在进行查询
 const { changeIndex } = mixin();
+//随机推荐函数
+function getRandomArrayElements(arr, count) {
+  let shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+  while (i-- > min) {
+    index = Math.floor((i + 1) * Math.random());
+    temp = shuffled[index];
+    shuffled[index] = shuffled[i];
+    shuffled[i] = temp;
+  }
+  return shuffled.slice(min);
+}
+
 try {
+
+ 
 
   HttpManager.getBannerList().then((res) => {
     swiperList.value = (res as ResponseBody).data.sort();
@@ -36,6 +53,11 @@ try {
   HttpManager.getAllSinger().then((res) => {
     singerList.value = (res as ResponseBody).data.sort().slice(0, 10);
   });
+
+  HttpManager.allSongListConsumer().then((res) => {
+    personalSongList.value = getRandomArrayElements((res as ResponseBody).data, 5);
+  });
+
 
   onMounted(() => {
     changeIndex(NavName.Home);

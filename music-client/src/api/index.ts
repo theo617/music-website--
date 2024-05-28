@@ -19,6 +19,8 @@ const HttpManager = {
   // 更新用户头像
   uploadUrl: (userId) => `${getBaseURL()}/user/avatar/update?id=${userId}`,
 
+
+
   // =======================> 歌单 API 完成
   // 获取全部歌单
   getSongList: () => get("songList"),
@@ -45,6 +47,30 @@ const HttpManager = {
 
   isCollection: ({userId, type, songId}) => post(`collection/status`, {userId, type, songId}),
 
+  //返回所有用户的歌单
+  allSongListConsumer: () => get("songListConsumer"),
+  // 返回指定用户ID的收藏歌单列表
+  songListConsumerOfUserId: (user_id) => get(`songListConsumer/likeUserId/detail?user_id=${user_id}`),
+// 创建新的歌单
+  addSongListConsumer: ({title, user_id, style, introduction  }) => post(`songListConsumer/add`, { title, user_id, style, introduction }),
+//标题搜索歌单
+  songListConsumerOfLikeTitle: (title) => get(`songListConsumer/likeTitle/detail?title=${title}`),
+//删除用户歌单
+  deleteSongListConsumer: (id) => get(`songListConsumer/delete?id=${id}`),
+  //更新歌单信息
+  updateSongListConsumerMsg: ({title, user_id, style, introduction, id  }) => post(`songListConsumer/update`,{ title, user_id, style, introduction, id }),
+  //更新歌单图片
+  updateSongListConsumerPic: ({avatorFile,id}) => post(`songListConsumer/img/update`,{avatorFile,id}),
+
+  isSongSheetCollection: ({ userId, type, songSheetId }) => post(`collection/songSheetStatus`, { userId, type, songSheetId }),
+  //删除歌单里的歌曲
+  deleteListSongConsumer: (songId,songListConsumerId) => get(`listSongConsumer/delete?songId=${songId}&&songListConsumerId=${songListConsumerId}`),
+  // 返回歌单里指定歌单 ID 的歌曲
+  listSongConsumerOfSongId: (songListConsumerId) => get(`listSongConsumer/detail?songListConsumerId=${songListConsumerId}`),
+  //往歌单里面添加歌曲
+  addListSongConsumer: ({songId,songListConsumerId}) => post(`listSongConsumer/add`,{songId,songListConsumerId}),
+  //填入url和歌单id以更新歌单图片
+  updateSongPicbyUrl: ({id,pic}) => post(`songListConsumer/update`,{id,pic}),
   // =======================> 评分 API 完成
   // 提交评分
   setRank: ({songListId,consumerId,score}) => post(`rankList/add`, {songListId,consumerId,score}),
@@ -52,6 +78,8 @@ const HttpManager = {
   getRankOfSongListId: (songListId) => get(`rankList?songListId=${songListId}`),
   // 获取指定用户的歌单评分
   getUserRank: (consumerId, songListId) => get(`/rankList/user?consumerId=${consumerId}&songListId=${songListId}`),
+  //根据歌单id找用户id
+  searchUserBySongList: (SongListId) => get(`songListConsumer/byId/detail?id=${SongListId}`),
 
   // =======================> 评论 API 完成
   // 添加评论

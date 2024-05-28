@@ -1,55 +1,62 @@
 <template>
   <div class="personal">
-    <div class="personal-info">
+    <div class="personal-header">
       <div class="personal-img" @click="dialogTableVisible = true">
-        <el-image fit="contain" :src="attachImageUrl(userPic)"/>
+        <el-image class="image" fit="contain" :src="attachImageUrl(userPic)"/>
       </div>
-      <div class="personal-msg">
+      <div class="personal-info">
         <div class="username">{{ personalInfo.username }}</div>
         <div class="introduction">{{ personalInfo.introduction }}</div>
+        <div class="personal-stats">
+          <span>关注 {{ personalInfo.follow }}</span>
+          <span>粉丝 {{ personalInfo.fans }}</span>
+          <span>动态 {{ personalInfo.activity }}</span>
+        </div>
       </div>
-      <el-button class="edit-info" round :icon="Edit" @click="goPage()">修改个人信息</el-button>
+      <el-button class="edit-info" round icon="el-icon-edit" @click="goPage()">修改个人信息</el-button>
     </div>
-    <div class="personal-body">
-      <song-list :songList="collectSongList" :show="true" @changeData="changeData"></song-list>
+    <div class="personal-nav">
+      <el-button @click="goToPage('personalSongList')">歌单</el-button>
+      <el-button @click="goToPage('personalSong')">原创歌曲</el-button>
+      <el-button @click="goToPage('personalMessage')">消息</el-button>
     </div>
     <el-dialog v-model="dialogTableVisible" title="修改头像">
       <upload></upload>
     </el-dialog>
+    <router-view></router-view>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref, computed, watch, reactive } from "vue";
+import { defineComponent, ref, computed, watch, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
-import { Edit } from "@element-plus/icons-vue";
-import SongList from "@/components/SongList.vue";
-import Upload from "../setting/Upload.vue";
-import mixin from "@/mixins/mixin";
 import { HttpManager } from "@/api";
+import mixin from "@/mixins/mixin";
+import Upload from "../setting/Upload.vue";
 import { RouterName } from "@/enums";
 
 export default defineComponent({
   components: {
-    SongList,
     Upload,
   },
   setup() {
     const store = useStore();
-
     const { routerManager } = mixin();
-
     const dialogTableVisible = ref(false);
-    const collectSongList = ref([]); // 收藏的歌曲
+    const currentTab = ref('PersonalSongList');
     const personalInfo = reactive({
       username: "",
       userSex: "",
       birth: "",
       location: "",
       introduction: "",
+      follow: 0,
+      fans: 0,
+      activity: 0,
     });
-    const userId = computed(() => store.getters.userId);
     const userPic = computed(() => store.getters.userPic);
+    const userId = computed(() => store.getters.userId);
+
     watch(userPic, () => {
       dialogTableVisible.value = false;
     });
@@ -57,6 +64,11 @@ export default defineComponent({
     function goPage() {
       routerManager(RouterName.Setting, { path: RouterName.Setting });
     }
+
+    const goToPage = (page) => {
+      routerManager(page, { path: `/${page}` });
+    };
+
     async function getUserInfo(id) {
       const result = (await HttpManager.getUserOfId(id)) as ResponseBody;
       personalInfo.username = result.data[0].username;
@@ -64,42 +76,24 @@ export default defineComponent({
       personalInfo.birth = result.data[0].birth;
       personalInfo.introduction = result.data[0].introduction;
       personalInfo.location = result.data[0].location;
+      // Populate follow, fans, and activity counts as well
     }
-    // 获取收藏的歌曲
-    async function getCollection(userId) {
-      collectSongList.value = []
-      const result = (await HttpManager.getCollectionOfUser(userId)) as ResponseBody;
-      const collectIDList = result.data || []; // 存放收藏的歌曲ID
-      // 通过歌曲ID获取歌曲信息
-      for (const item of collectIDList) {
-        if (!item.songId) {
-          console.error(`歌曲${item}异常`);
-          continue;
-        }
+    
+    
 
-        const result = (await HttpManager.getSongOfId(item.songId)) as ResponseBody;
-        collectSongList.value.push(result.data[0]);
-      }
-    }
-
-    function changeData() {
-      getCollection(userId.value);
-    }
-
-    nextTick(() => {
+    onMounted(() => {
       getUserInfo(userId.value);
-      getCollection(userId.value);
     });
 
+
     return {
-      Edit,
+      currentTab,
+      personalInfo,
       userPic,
       dialogTableVisible,
-      collectSongList,
-      personalInfo,
       attachImageUrl: HttpManager.attachImageUrl,
       goPage,
-      changeData,
+      goToPage,
     };
   },
 });
@@ -110,6 +104,7 @@ export default defineComponent({
 
 .personal {
   padding-top: $header-height + 150px;
+  text-align: center;
 
   &::before {
     content: "";
@@ -119,52 +114,61 @@ export default defineComponent({
     width: 100%;
     height: $header-height + 150px;
   }
-}
 
-.personal-info {
-  position: relative;
-  margin-bottom: 60px;
-  .personal-img {
-    height: 200px;
-    width: 200px;
-    border-radius: 50%;
-    border: 5px solid $color-white;
-    position: absolute;
-    top: -180px;
-    left: 50px;
-    cursor: pointer;
-  }
-  .personal-msg {
-    margin-left: 300px;
-    position: absolute;
-    top: -120px;
+  .personal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 60px;
 
-    .username {
-      font-size: 50px;
-      font-weight: 600;
+    .personal-img{
+      height: 200px;
+      width: 200px;
+      border-radius: 50%;
+      border: 5px solid $color-white;
+      margin-bottom: 50px;
+      cursor: pointer;
+
+      .image {
+        border-radius: 50%;
+      }
     }
 
-    .introduction {
-      font-size: 20px;
-      font-weight: 500;
+    .personal-info {
+      .username {
+        font-size: 30px;
+        font-weight: 600;
+      }
+
+      .introduction {
+        font-size: 20px;
+        margin: 10px 0;
+      }
+
+      .personal-stats {
+        display: flex;
+        justify-content: space-around;
+        width: 300px;
+        margin-top: 10px;
+
+        span {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .edit-info {
+      margin-top: 20px;
     }
   }
-  .edit-info {
-    position: absolute;
-    right: 10vw;
-    margin-top: -120px;
-  }
-}
 
-@media screen and (min-width: $sm) {
-  .personal-body {
-    padding: 0px 100px;
+  .personal-nav {
+    margin-bottom: 20px;
   }
-}
 
-@media screen and (max-width: $sm) {
-  .edit-info {
-    display: none;
+  .personal-content {
+    padding: 0 10%;
   }
 }
 </style>

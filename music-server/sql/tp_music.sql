@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.21, for macos10.13 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
 -- Host: localhost    Database: tp_music
 -- ------------------------------------------------------
--- Server version	5.7.21
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,14 +21,14 @@
 
 DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,12 +47,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `banner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `banner` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `pic` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,16 +71,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `collect`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `collect` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `type` tinyint(4) NOT NULL,
-  `song_id` int(10) unsigned DEFAULT NULL,
-  `song_list_id` int(10) unsigned DEFAULT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `type` tinyint NOT NULL,
+  `song_id` int unsigned DEFAULT NULL,
+  `song_list_id` int unsigned DEFAULT NULL,
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,18 +99,19 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `comment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comment` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `song_id` int(10) unsigned DEFAULT NULL,
-  `song_list_id` int(10) unsigned DEFAULT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `song_id` int unsigned DEFAULT NULL,
+  `song_list_id` int unsigned DEFAULT NULL,
   `content` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
-  `type` tinyint(4) NOT NULL,
-  `up` int(10) unsigned NOT NULL DEFAULT '0',
+  `type` tinyint NOT NULL,
+  `up` int unsigned NOT NULL DEFAULT '0',
+  `song_list_consumer_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +120,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (3,1,0,1,'里面乱乱糟糟\n我们别再闹了\n这个冬天已然很冷了\n我们靠在一起。好吗','2019-01-06 16:12:13',1,8),(5,1,21,NULL,'允儿牵动我的心!!!','2019-01-06 18:12:53',0,0),(9,1,22,NULL,'林允儿这个人，饭她真的很骄傲。韩国人说汉语总会带着地域性极强的泡菜味，可是林允儿真的很用心在把准每一个汉字，从咬字到发音，再加上轻柔干净的嗓音加持，将柔美与舒缓表达到极致，将歌里想诉说的那种感情娓娓道来。','2019-01-06 19:36:01',0,0),(10,1,21,NULL,'像我们之间一段长久未诉的告白，被你这样娓娓道来，你问我爱你有多深，我爱你有几分，我的情不移我的爱不变，月亮代表我的心。','2019-01-06 19:44:37',0,4),(11,1,21,NULL,'当听这首歌曲的时候，看看天上的月亮。美爆了！','2019-01-06 19:45:51',0,2),(12,1,23,NULL,'太尼马好听了！堂堂正正的林歌手！！','2019-01-06 19:48:25',0,0),(13,1,23,NULL,'林允儿啊，真的唱的很标准，很动人，我的同学都没想到是林允儿唱的，呜呜呜，爱死你了林允儿','2019-01-06 19:54:01',0,0),(14,1,22,NULL,'真的好棒，我只听她这个版本的','2019-01-06 19:55:43',0,0),(16,1,5,NULL,'好听啊','2019-01-06 19:56:52',0,0),(17,1,22,NULL,'我的允宝啊，努力演戏想让我们看到一样的你，努力学中文唱给我们听越来越爱你了','2019-01-06 19:58:53',0,0),(18,1,22,NULL,'好听啊','2019-01-06 20:01:46',0,0),(19,1,23,NULL,'好听啊','2019-01-06 20:03:59',0,0),(20,1,21,NULL,'好听啊','2019-01-06 20:04:22',0,0),(23,1,NULL,5,'赞！！','2019-01-08 01:05:27',1,2),(24,5,NULL,1,'超喜欢！','2019-01-08 21:46:29',1,3),(25,5,NULL,5,'大爱我林！','2019-01-08 21:47:45',1,1),(26,5,NULL,2,'nice','2019-01-08 22:11:23',1,1),(27,1,NULL,0,'很有感觉','2019-01-08 22:32:51',1,2),(28,5,26,NULL,'好听','2019-01-08 22:42:07',0,0),(29,5,21,NULL,'nice!','2019-01-08 22:57:08',0,0),(30,5,15,NULL,'好听！','2019-01-08 23:03:43',0,0),(31,1,13,NULL,'rrrr','2019-01-15 16:28:03',0,0),(32,1,19,NULL,'赞','2019-03-07 16:34:12',0,0),(33,1,6,NULL,'赞','2019-03-12 09:06:21',0,0),(34,1,NULL,1,'hao','2019-03-16 21:07:01',1,3),(35,1,NULL,38,'hao','2019-03-24 01:39:06',1,0),(36,1,NULL,0,'妙！','2019-03-24 01:48:56',1,1),(37,1,NULL,80,'好听','2019-03-24 01:51:02',1,0),(38,1,NULL,80,'好听！！！','2019-03-24 01:52:20',1,0),(39,1,NULL,80,'好听','2019-03-24 01:53:06',1,0),(40,1,NULL,80,'good','2019-03-24 01:53:45',1,0),(41,1,NULL,80,'nice','2019-03-24 01:55:04',1,0),(42,1,NULL,80,'nice','2019-03-24 01:57:02',1,0),(43,1,NULL,82,'success','2019-03-24 01:57:40',1,0),(45,1,NULL,1,'啦啦啦(*≧∀≦)ﾉ','2019-04-25 21:24:43',1,0),(47,1,NULL,1,'222','2019-04-26 01:01:27',1,0),(48,5,NULL,10,'我喜欢你','2019-04-26 01:03:12',1,0),(49,1,NULL,0,'','2019-05-23 21:35:47',1,0),(50,1,NULL,51,'好听','2019-05-23 21:38:04',1,0),(51,1,NULL,5,'好听','2019-05-23 21:39:55',1,0),(52,1,NULL,5,'好听','2019-05-23 21:40:25',1,0),(53,1,107,NULL,'I love you！！！','2019-06-03 02:16:23',0,0),(54,1,95,NULL,'好听','2020-03-14 16:14:53',0,0),(55,1,28,NULL,'?','2020-03-14 16:19:11',0,0),(56,26,69,NULL,'good!','2020-03-22 02:19:03',0,0),(57,26,10,NULL,'good','2020-03-22 03:40:10',0,5),(58,1,NULL,3,'1111111','2022-02-28 01:14:56',1,0),(59,1,28,NULL,'11111','2022-03-05 16:54:31',0,0),(60,1,NULL,15,'111','2022-04-17 13:28:08',1,0),(61,1,NULL,15,'222','2022-04-17 13:28:17',1,0),(62,1,NULL,15,'33','2022-04-17 13:30:19',1,0),(63,1,NULL,15,'里面乱乱糟糟 我们别再闹了 这个冬天已然很冷了 我们靠在一起。好吗.里面乱乱糟糟 我们别再闹了 这个冬天已然很冷了 我们靠在一起。好吗.里面乱乱糟糟 我们别再闹了 这个冬天已然很冷了 我们靠在一起。好吗.里面乱乱糟糟 我们别再闹了 这个冬天已然很冷了 我们靠在一起。好吗','2022-04-17 22:57:06',1,0),(64,1,NULL,1,'456','2022-04-21 21:41:43',1,0),(68,59,NULL,1,'345','2022-04-22 00:57:07',1,0),(69,61,NULL,1,'yin','2022-10-26 22:01:49',1,0),(70,61,9,NULL,'123','2023-01-16 00:36:21',0,0),(71,61,9,NULL,'1111','2023-01-16 00:36:49',0,0),(72,61,NULL,1,'11111','2023-02-27 22:03:01',1,0);
+INSERT INTO `comment` VALUES (3,1,0,1,'里面乱乱糟糟\n我们别再闹了\n这个冬天已然很冷了\n我们靠在一起。好吗','2019-01-06 16:12:13',1,8,NULL),(5,1,21,NULL,'允儿牵动我的心!!!','2019-01-06 18:12:53',0,0,NULL),(9,1,22,NULL,'林允儿这个人，饭她真的很骄傲。韩国人说汉语总会带着地域性极强的泡菜味，可是林允儿真的很用心在把准每一个汉字，从咬字到发音，再加上轻柔干净的嗓音加持，将柔美与舒缓表达到极致，将歌里想诉说的那种感情娓娓道来。','2019-01-06 19:36:01',0,0,NULL),(10,1,21,NULL,'像我们之间一段长久未诉的告白，被你这样娓娓道来，你问我爱你有多深，我爱你有几分，我的情不移我的爱不变，月亮代表我的心。','2019-01-06 19:44:37',0,4,NULL),(11,1,21,NULL,'当听这首歌曲的时候，看看天上的月亮。美爆了！','2019-01-06 19:45:51',0,2,NULL),(12,1,23,NULL,'太尼马好听了！堂堂正正的林歌手！！','2019-01-06 19:48:25',0,0,NULL),(13,1,23,NULL,'林允儿啊，真的唱的很标准，很动人，我的同学都没想到是林允儿唱的，呜呜呜，爱死你了林允儿','2019-01-06 19:54:01',0,0,NULL),(14,1,22,NULL,'真的好棒，我只听她这个版本的','2019-01-06 19:55:43',0,0,NULL),(16,1,5,NULL,'好听啊','2019-01-06 19:56:52',0,0,NULL),(17,1,22,NULL,'我的允宝啊，努力演戏想让我们看到一样的你，努力学中文唱给我们听越来越爱你了','2019-01-06 19:58:53',0,0,NULL),(18,1,22,NULL,'好听啊','2019-01-06 20:01:46',0,0,NULL),(19,1,23,NULL,'好听啊','2019-01-06 20:03:59',0,0,NULL),(20,1,21,NULL,'好听啊','2019-01-06 20:04:22',0,0,NULL),(23,1,NULL,5,'赞！！','2019-01-08 01:05:27',1,2,NULL),(24,5,NULL,1,'超喜欢！','2019-01-08 21:46:29',1,3,NULL),(25,5,NULL,5,'大爱我林！','2019-01-08 21:47:45',1,1,NULL),(26,5,NULL,2,'nice','2019-01-08 22:11:23',1,1,NULL),(27,1,NULL,0,'很有感觉','2019-01-08 22:32:51',1,2,NULL),(28,5,26,NULL,'好听','2019-01-08 22:42:07',0,0,NULL),(29,5,21,NULL,'nice!','2019-01-08 22:57:08',0,0,NULL),(30,5,15,NULL,'好听！','2019-01-08 23:03:43',0,0,NULL),(31,1,13,NULL,'rrrr','2019-01-15 16:28:03',0,0,NULL),(32,1,19,NULL,'赞','2019-03-07 16:34:12',0,0,NULL),(33,1,6,NULL,'赞','2019-03-12 09:06:21',0,0,NULL),(34,1,NULL,1,'hao','2019-03-16 21:07:01',1,3,NULL),(35,1,NULL,38,'hao','2019-03-24 01:39:06',1,0,NULL),(36,1,NULL,0,'妙！','2019-03-24 01:48:56',1,1,NULL),(37,1,NULL,80,'好听','2019-03-24 01:51:02',1,0,NULL),(38,1,NULL,80,'好听！！！','2019-03-24 01:52:20',1,0,NULL),(39,1,NULL,80,'好听','2019-03-24 01:53:06',1,0,NULL),(40,1,NULL,80,'good','2019-03-24 01:53:45',1,0,NULL),(41,1,NULL,80,'nice','2019-03-24 01:55:04',1,0,NULL),(42,1,NULL,80,'nice','2019-03-24 01:57:02',1,0,NULL),(43,1,NULL,82,'success','2019-03-24 01:57:40',1,0,NULL),(45,1,NULL,1,'啦啦啦(*≧∀≦)ﾉ','2019-04-25 21:24:43',1,0,NULL),(47,1,NULL,1,'222','2019-04-26 01:01:27',1,0,NULL),(48,5,NULL,10,'我喜欢你','2019-04-26 01:03:12',1,0,NULL),(49,1,NULL,0,'','2019-05-23 21:35:47',1,0,NULL),(50,1,NULL,51,'好听','2019-05-23 21:38:04',1,0,NULL),(51,1,NULL,5,'好听','2019-05-23 21:39:55',1,0,NULL),(52,1,NULL,5,'好听','2019-05-23 21:40:25',1,0,NULL),(53,1,107,NULL,'I love you！！！','2019-06-03 02:16:23',0,0,NULL),(54,1,95,NULL,'好听','2020-03-14 16:14:53',0,0,NULL),(55,1,28,NULL,'?','2020-03-14 16:19:11',0,0,NULL),(56,26,69,NULL,'good!','2020-03-22 02:19:03',0,0,NULL),(57,26,10,NULL,'good','2020-03-22 03:40:10',0,5,NULL),(58,1,NULL,3,'1111111','2022-02-28 01:14:56',1,0,NULL),(59,1,28,NULL,'11111','2022-03-05 16:54:31',0,0,NULL),(60,1,NULL,15,'111','2022-04-17 13:28:08',1,0,NULL),(61,1,NULL,15,'222','2022-04-17 13:28:17',1,0,NULL),(62,1,NULL,15,'33','2022-04-17 13:30:19',1,0,NULL),(63,1,NULL,15,'里面乱乱糟糟 我们别再闹了 这个冬天已然很冷了 我们靠在一起。好吗.里面乱乱糟糟 我们别再闹了 这个冬天已然很冷了 我们靠在一起。好吗.里面乱乱糟糟 我们别再闹了 这个冬天已然很冷了 我们靠在一起。好吗.里面乱乱糟糟 我们别再闹了 这个冬天已然很冷了 我们靠在一起。好吗','2022-04-17 22:57:06',1,0,NULL),(64,1,NULL,1,'456','2022-04-21 21:41:43',1,0,NULL),(68,59,NULL,1,'345','2022-04-22 00:57:07',1,0,NULL),(69,61,NULL,1,'yin','2022-10-26 22:01:49',1,0,NULL),(70,61,9,NULL,'123','2023-01-16 00:36:21',0,0,NULL),(71,61,9,NULL,'1111','2023-01-16 00:36:49',0,0,NULL),(72,61,NULL,1,'11111','2023-02-27 22:03:01',1,0,NULL);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,12 +130,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `consumer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `consumer` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `sex` tinyint(4) DEFAULT NULL,
+  `sex` tinyint DEFAULT NULL,
   `phone_num` char(15) DEFAULT NULL,
   `email` char(30) DEFAULT NULL,
   `birth` datetime DEFAULT NULL,
@@ -147,7 +148,7 @@ CREATE TABLE `consumer` (
   UNIQUE KEY `username_UNIQUE` (`username`),
   UNIQUE KEY `phone_num_UNIQUE` (`phone_num`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +157,7 @@ CREATE TABLE `consumer` (
 
 LOCK TABLES `consumer` WRITE;
 /*!40000 ALTER TABLE `consumer` DISABLE KEYS */;
-INSERT INTO `consumer` VALUES (1,'Yin33','123',0,'13776412237','yoona@qq.com','2019-05-21 00:00:00','好好吃饭','山西','/img/avatorImages/1650216352562L1.jpg','2019-01-04 21:42:24','2022-04-18 01:19:12'),(2,'012','012',0,'13754803255','love@gmail.com','2019-04-24 00:00:00','我就喜欢吃','北京','/img/avatorImages/1649527868607author.jpg','2019-01-05 15:02:45','2020-03-23 01:24:59'),(5,'789','789',0,'13634377258','666@126.com','2019-01-08 00:00:00','今天很开心啊','山西','/img/avatorImages/1646506637695IMG_4801.jpg','2019-01-07 16:16:42','2022-04-10 01:59:13'),(8,'tawuhen','123',0,'','192673541@qq.com','2019-04-25 18:58:39','你好','北京','/img/avatorImages/user.jpg','2019-04-25 00:28:58','2019-04-25 18:58:39'),(12,'yoona','123',0,'13854173655','1236795@qq.com','2019-04-25 00:00:00','好好吃饭','北京','/img/avatorImages/1588094989449L1.jpg','2019-04-25 10:56:54','2020-04-29 01:28:37'),(16,'1234321','123',1,'13754803257','123@qq.com','2020-03-08 17:25:45','','','/img/avatorImages/user.jpg','2020-03-08 17:25:45','2020-03-08 17:25:45'),(24,'yoonaAA','123',1,NULL,NULL,'2020-03-04 00:00:00','','','/img/avatorImages/user.jpg','2020-03-21 22:20:27','2020-03-21 22:20:27'),(25,'yoonaAB','123',1,NULL,NULL,'2020-03-02 00:00:00','','','/img/avatorImages/user.jpg','2020-03-21 22:21:50','2020-03-21 22:21:50'),(26,'yoonaAC','123',1,'null','null','2020-03-11 00:00:00','','','/img/avatorImages/user.jpg','2020-03-21 22:23:43','2020-05-14 21:12:56'),(27,'yoonaAD','123',1,NULL,NULL,'2020-03-11 00:00:00','','','/img/avatorImages/user.jpg','2020-03-21 22:24:47','2020-03-21 22:24:47'),(28,'yoona90','123',0,NULL,NULL,'2020-04-28 00:00:00','','','/img/avatorImages/user.jpg','2020-04-02 22:10:34','2020-04-02 22:10:34'),(29,'test','123',0,'15666412237','1239679@qq.com','2020-04-16 11:29:43','','','/img/avatorImages/user.jpg','2020-04-16 11:29:43','2020-04-16 11:29:43'),(30,'Yoona001','123',0,NULL,NULL,'2020-07-27 00:00:00','','','/img/avatorImages/user.jpg','2020-07-01 19:54:44','2020-07-01 19:54:44'),(31,'yuner','123',0,NULL,NULL,'2015-02-10 00:00:00','','','/img/avatorImages/user.jpg','2021-07-17 18:18:40','2021-07-17 18:18:40'),(33,'qqq','111',1,NULL,NULL,'2022-03-14 00:00:00','','','/img/avatorImages/user.jpg','2022-03-14 10:29:23','2022-03-14 10:29:23'),(34,'qwe','123',0,NULL,NULL,'2022-04-05 00:00:00','','','/img/avatorImages/user.jpg','2022-04-05 22:56:00','2022-04-05 22:56:00'),(35,'1234','',1,NULL,NULL,'2022-04-12 00:00:00','','','/img/avatorImages/user.jpg','2022-04-12 23:05:52','2022-04-12 23:05:52'),(57,'1234d','123',1,NULL,NULL,'2022-04-14 00:00:00','','','/img/avatorImages/user.jpg','2022-04-14 00:57:21','2022-04-14 00:57:21'),(59,'zxc','123',1,NULL,NULL,'2022-04-21 00:00:00','','','/img/avatorImages/user.jpg','2022-04-21 22:54:19','2022-04-21 22:54:19'),(61,'Yin','24c14f112462b440c3de9523b05c4c59',0,NULL,NULL,'2019-12-01 00:00:00','早起早睡','山西','img/avatorImages/user.jpg','2022-09-23 22:41:52','2022-09-23 22:41:52'),(62,'Yin1','123',1,NULL,NULL,'2023-04-18 00:00:00','','','/img/avatorImages/user.jpg','2023-04-18 21:44:44','2023-04-18 21:44:44');
+INSERT INTO `consumer` VALUES (1,'Yin33','123',0,'13776412237','yoona@qq.com','2019-05-21 00:00:00','好好吃饭','山西','/img/avatorImages/1556201886030L1.jpg','2019-01-04 21:42:24','2022-04-18 01:19:12'),(2,'012','012',0,'13754803255','love@gmail.com','2019-04-24 00:00:00','我就喜欢吃','北京','/img/avatorImages/1649527868607author.jpg','2019-01-05 15:02:45','2020-03-23 01:24:59'),(5,'789','789',0,'13634377258','666@126.com','2019-01-08 00:00:00','今天很开心啊','山西','/img/avatorImages/1646506637695IMG_4801.jpg','2019-01-07 16:16:42','2022-04-10 01:59:13'),(8,'tawuhen','123',0,'','192673541@qq.com','2019-04-25 18:58:39','你好','北京','/img/avatorImages/user.jpg','2019-04-25 00:28:58','2019-04-25 18:58:39'),(12,'yoona','123',0,'13854173655','1236795@qq.com','2019-04-25 00:00:00','好好吃饭','北京','/img/avatorImages/1588094989449L1.jpg','2019-04-25 10:56:54','2020-04-29 01:28:37'),(16,'1234321','123',1,'13754803257','123@qq.com','2020-03-08 17:25:45','','','/img/avatorImages/user.jpg','2020-03-08 17:25:45','2020-03-08 17:25:45'),(24,'yoonaAA','123',1,NULL,NULL,'2020-03-04 00:00:00','','','/img/avatorImages/user.jpg','2020-03-21 22:20:27','2020-03-21 22:20:27'),(25,'yoonaAB','123',1,NULL,NULL,'2020-03-02 00:00:00','','','/img/avatorImages/user.jpg','2020-03-21 22:21:50','2020-03-21 22:21:50'),(26,'yoonaAC','123',1,'null','null','2020-03-11 00:00:00','','','/img/avatorImages/user.jpg','2020-03-21 22:23:43','2020-05-14 21:12:56'),(27,'yoonaAD','123',1,NULL,NULL,'2020-03-11 00:00:00','','','/img/avatorImages/user.jpg','2020-03-21 22:24:47','2020-03-21 22:24:47'),(28,'yoona90','123',0,NULL,NULL,'2020-04-28 00:00:00','','','/img/avatorImages/user.jpg','2020-04-02 22:10:34','2020-04-02 22:10:34'),(29,'test','123',0,'15666412237','1239679@qq.com','2020-04-16 11:29:43','','','/img/avatorImages/user.jpg','2020-04-16 11:29:43','2020-04-16 11:29:43'),(30,'Yoona001','123',0,NULL,NULL,'2020-07-27 00:00:00','','','/img/avatorImages/user.jpg','2020-07-01 19:54:44','2020-07-01 19:54:44'),(31,'yuner','123',0,NULL,NULL,'2015-02-10 00:00:00','','','/img/avatorImages/user.jpg','2021-07-17 18:18:40','2021-07-17 18:18:40'),(33,'qqq','111',1,NULL,NULL,'2022-03-14 00:00:00','','','/img/avatorImages/user.jpg','2022-03-14 10:29:23','2022-03-14 10:29:23'),(34,'qwe','123',0,NULL,NULL,'2022-04-05 00:00:00','','','/img/avatorImages/user.jpg','2022-04-05 22:56:00','2022-04-05 22:56:00'),(35,'1234','',1,NULL,NULL,'2022-04-12 00:00:00','','','/img/avatorImages/user.jpg','2022-04-12 23:05:52','2022-04-12 23:05:52'),(57,'1234d','123',1,NULL,NULL,'2022-04-14 00:00:00','','','/img/avatorImages/user.jpg','2022-04-14 00:57:21','2022-04-14 00:57:21'),(59,'zxc','123',1,NULL,NULL,'2022-04-21 00:00:00','','','/img/avatorImages/user.jpg','2022-04-21 22:54:19','2022-04-21 22:54:19'),(61,'Yin','24c14f112462b440c3de9523b05c4c59',0,NULL,NULL,'2019-12-01 00:00:00','早起早睡','山西','img/avatorImages/user.jpg','2022-09-23 22:41:52','2022-09-23 22:41:52'),(62,'Yin1','123',1,NULL,NULL,'2023-04-18 00:00:00','','','/img/avatorImages/user.jpg','2023-04-18 21:44:44','2023-04-18 21:44:44'),(63,'TSY','24c14f112462b440c3de9523b05c4c59',1,NULL,NULL,'2024-05-26 04:45:39','','','/img/avatorImages/1556201886030L1.jpg','2024-05-26 04:46:04','2024-05-26 05:52:32');
 /*!40000 ALTER TABLE `consumer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,13 +167,17 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `list_song`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `list_song` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `song_id` int(10) unsigned NOT NULL,
-  `song_list_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=210 DEFAULT CHARSET=utf8;
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `song_id` int unsigned NOT NULL,
+  `song_list_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_song_list_1` (`song_id`),
+  KEY `fk_song_list_2` (`song_list_id`),
+  CONSTRAINT `fk_song_list_1` FOREIGN KEY (`song_id`) REFERENCES `song` (`id`),
+  CONSTRAINT `fk_song_list_2` FOREIGN KEY (`song_list_id`) REFERENCES `song_list` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=210 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,20 +191,49 @@ INSERT INTO `list_song` VALUES (1,36,1),(4,7,2),(5,11,2),(6,38,6),(7,39,6),(8,44
 UNLOCK TABLES;
 
 --
+-- Table structure for table `list_song_consumer`
+--
+
+DROP TABLE IF EXISTS `list_song_consumer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `list_song_consumer` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `song_id` int unsigned NOT NULL,
+  `song_list_consumer_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_song_list_consumer_1` (`song_id`),
+  KEY `fk_song_list_consumer_2` (`song_list_consumer_id`),
+  CONSTRAINT `fk_song_list_consumer_1` FOREIGN KEY (`song_id`) REFERENCES `song` (`id`),
+  CONSTRAINT `fk_song_list_consumer_2` FOREIGN KEY (`song_list_consumer_id`) REFERENCES `song_list` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `list_song_consumer`
+--
+
+LOCK TABLES `list_song_consumer` WRITE;
+/*!40000 ALTER TABLE `list_song_consumer` DISABLE KEYS */;
+INSERT INTO `list_song_consumer` VALUES (2,36,3),(3,11,3),(4,1,20),(5,36,20),(6,11,20),(7,1,21),(8,36,21),(9,11,21),(10,1,22),(11,36,22),(12,11,22),(13,1,23),(14,36,23),(15,11,23),(17,36,24),(18,11,24),(19,1,25),(20,36,25),(21,11,25),(22,1,26),(23,36,26),(24,11,26);
+/*!40000 ALTER TABLE `list_song_consumer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `rank_list`
 --
 
 DROP TABLE IF EXISTS `rank_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rank_list` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `song_list_id` bigint(20) unsigned NOT NULL,
-  `consumer_id` bigint(20) unsigned NOT NULL,
-  `score` int(10) unsigned NOT NULL DEFAULT '0',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `song_list_id` bigint unsigned NOT NULL,
+  `consumer_id` bigint unsigned NOT NULL,
+  `score` int unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `consumerId` (`consumer_id`,`song_list_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,17 +252,17 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `singer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `singer` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `sex` tinyint(4) DEFAULT NULL,
+  `sex` tinyint DEFAULT NULL,
   `pic` varchar(255) DEFAULT NULL,
   `birth` datetime DEFAULT NULL,
   `location` varchar(45) DEFAULT NULL,
   `introduction` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,10 +281,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `song`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `song` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `singer_id` int(10) unsigned NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `singer_id` int unsigned NOT NULL,
   `name` varchar(45) NOT NULL,
   `introduction` varchar(255) DEFAULT NULL,
   `create_time` datetime NOT NULL COMMENT '发行时间',
@@ -259,7 +293,7 @@ CREATE TABLE `song` (
   `lyric` text,
   `url` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,15 +312,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `song_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `song_list` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `pic` varchar(255) DEFAULT NULL,
   `introduction` text,
   `style` varchar(10) DEFAULT '无',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,8 +329,36 @@ CREATE TABLE `song_list` (
 
 LOCK TABLES `song_list` WRITE;
 /*!40000 ALTER TABLE `song_list` DISABLE KEYS */;
-INSERT INTO `song_list` VALUES (1,'The Good, the Bad and the Ugly','/img/songListPic/a32415ca9a21f6f9a1d99b2731f224b5d319c424.jpg','he Good, the Bad and the Ugly: Original Motion Picture Soundtrack was released in 1966 alongside the Western film, The Good, the Bad and the Ugly, directed by Sergio Leone. The score is composed by frequent Leone collaborator Ennio Morricone, whose distinctive original compositions, containing gunfire, whistling, and yodeling permeate the film. The main theme, resembling the howling of a coyote, is a two-note melody that is a frequent motif, and is used for the three main characters, with a different instrument used for each one: flute for Blondie (Man With No Name), Arghilofono (Ocarina) for Angel Eyes, and human voices for Tuco.','欧美-轻音乐'),(2,'年轻之歌 有关爱与挑衅','/img/songListPic/wv2NdfZrUnLDSwk_kQoSZg==_109951163751040922.jpg','那些喜欢到会循环播放的歌','华语'),(3,'希望十八岁你爱的人是八十岁在你身边的人','/img/songListPic/q0ZyCw22PCiTG2LX_A2kew==_109951163594989759.jpg','让你怦然心动','华语'),(4,'你的青春里有没有属于你的一首歌？','/img/songListPic/109951163271025942.jpg','关于青春里的那首歌，唱的是你和谁的回忆呢？那年你们有什么故事？\n\n总是有许多的记忆，是关于青春的。\n\n青春时埋下的那份躁动，总会在多年后，装饰着笑容。\n\n总是有许多的遗憾，是关于青春的。\n\n青春时还没来得及表达的情感，总会在多年以后，偶尔的左右着悲欢。\n\n那些最美年华里的相遇，那些青春里的不知所措，都被勾勒成了一幅幅画。\n\n而这些画，只在心情最愉悦时，只在心情最低落时，悄悄的，在内心深处闪过。','华语'),(5,'那些喜欢到循环播放的歌','/img/songListPic/109951163609743240.jpg','那些喜欢到会循环播放的歌\n\n感谢收听','华语'),(6,'林俊杰的正确打开方式【路人请参考简介】','/img/songListPic/19080924789030458.jpg','这是一个一定要顺序播放并且不切歌才能发现其中奥妙的歌单。\n这是一个可以完美呈现林俊杰音乐态度的歌单。\n这是一个林俊杰的立体化打开方式。','华语'),(7,'高 级 感 vlog 纯音乐 BGM','/img/songListPic/vLSB9-NGsd4CLYf_4ShGww==_109951163609572271.jpg','歌单','轻音乐'),(8,'世界上很好听的纯音乐(经典不朽)','/img/songListPic/92NWlGo76ha-if-WMK3vCg==_1410673428769729.jpg','歌单','轻音乐'),(9,'『粤语』好听到爆的粤语歌单','/img/songListPic/QHD2Uy2y9ktndbK1UKgdgg==_18611433325258133.jpg','歌单','粤语'),(10,'韩剧OST｜祝你走过半生，仍有颗少女心','/img/songListPic/zhunizouguobansheng.jpg','歌单','日韩'),(11,'我喜欢你，喜欢没用，没用也喜欢','/img/songListPic/109951163919069037.jpg','情不知所起，一往而情深。\n伤不知所因，痛彻心扉\n\n从前你是我心上的一束光，倾世温暖。\n现在你是我心里的一根刺，刻骨铭心。\n以后你是我心底的一粒尘，无关痛痒。\n\n我喜欢你，喜欢没用，没用也喜欢','华语'),(12,'生活感到疲惫的话就听这些歌吧','/img/songListPic/109951163936991203.jpg','当你感到疲惫的时候\n睡一个沉稳的觉醒来\n和陌生人对视互笑\n买一杯刚好温度的奶茶\n吃到合口味的菜\n遇见喜欢人的时候自己是最美的状态\n下雨 清晨 初雪 深夜 亲吻 拥抱 牵手 大笑\n快乐总被说很难\n但我希望你顶...','华语'),(13,'熬夜和想你，我都该戒掉了','/img/songListPic/109951163216834301.jpg','命运似乎是一个轮回，在一次次的偶然下，平行线交叉，再平行，故事始终有\"然后\"，可后来的我们，都学会如何去爱了吗？\n\n如果当时你没走，后来的我们会不会不一样。或许，我们每个人都想回到故事最开始的地方。','华语'),(14,'怀旧向||时光流转从前，人生如寄','/img/songListPic/109951163443093546.jpg','岁月悠扬，娓娓动听\n在流失了的记忆之中\n听到属于我们这一代人的歌\n想起属于我们这一代人的路\n愿\n星辰大海\n春暖花开','华语'),(15,'不曾刻骨铭心，为何念念不忘？','/img/songListPic/109951163887710551.jpg','“所爱隔山海 山海皆可平”\n你拒绝的 不珍惜的 不代表别人也不喜欢\n人生都是向前走的 我们都一样\n\n谁先认真谁先输，我只能说我输了\n再忙碌还是会想你 真的不明白\n都说未曾刻骨铭心，又为何总是念念不忘','华语'),(16,'社会语录！土嗨','/img/songListPic/109951163858422257.jpg','社会！','华语'),(17,'听青春ost，心悸的时光里有你','/img/songListPic/109951163826485303.jpg','我们青春就像是被大雨淋湿的自己，即使是感冒了，也愿意再淋一次。只有爱过了，伤过了，痛过了，这才叫青春。','华语'),(18,'【经典】聼一首老歌，想念一段时光','/img/songListPic/109951163311246502.jpg','寂静的黄昏，总让人怀念，总是深深沦陷...\n那些个细数光阴在手中沉淀的日子，一去不复返...\n偶尔，我一个人站在黄昏的角落，代替你主持夕阳的葬礼...\n想着想着，痛凝重了时间，曳落了容颜...\n青春的羽翼...','华语'),(19,'华语百首｜好听的才是耳朵最想要的','/img/songListPic/109951163597665130.jpg','好听的音乐才是耳朵最想要的','华语'),(20,'【华语抒情-林俊杰】—孤独，是我的享受','/img/songListPic/109951163826685601.jpg','我喜欢孤独，不与任何人说话，在一份静谧中安然地做自己喜欢的事。任身心徜徉，暂时忘却“柴米油盐酱醋茶”的烦琐，去体验“琴棋书画诗酒花”的高雅；暂时抛开追名逐利的忙碌奔波，去感受心无杂念的宁静淡泊；暂时摆脱困扰你的喜怒哀乐，去体味生活中的充实祥和。','华语'),(21,'睡觉必备心灵鸡汤','/img/songListPic/109951163879964479.jpg','缓缓的声音，流进心里的枯井','轻音乐'),(22,'愿山野浓雾都有路灯 风雨漂泊都有归舟','/img/songListPic/109951163594594622.jpg','你慢慢走\n回忆暗涌\n悲喜翻滚','华语'),(23,'「女声控」音色沁人心 旋律美如画','/img/songListPic/109951163098238240.jpg','女声控福利来啦-=≡Σ((( つ•̀ω•́)つ','欧美'),(24,'Moombahton 丨电流律动的异域风','/img/songListPic/109951163500933771.jpg','Moombahton融合了Dutch House和Reggaeton，常常带有Trap的元素，特别是在Bulid Up部分，厚实的Bass与密集的打击鼓点，节拍丰富，加上旋律和音色比较异域，一般都有人声部分，其BPM多数基于110，更突出在Drop高潮，让人不禁联想抖动的节奏。','欧美'),(25,'【励志电音】愿你身披星芒 执笔为剑','/img/songListPic/109951163321304060.jpg','为了父母期待的目光\n为了那深藏于你心底的梦想\n为了你朝思暮想的那个可望而不可及...','欧美'),(26,'史诗 • 神级BGM丨灵魂的震颤&心灵的洗涤','/img/songListPic/109951163692248020.jpg','随着一声怒吼，千军万马进行着一场浩荡的战争，马的嘶吼声与兵器碰撞的金属声谱写着一部史前的震撼。\n欢迎来到此歌单，晚上睡觉别点开！\n别点开！\n别点开！','BGM'),(27,'全球超大气势磅礴背景音乐精选100首合集','/img/songListPic/109951163579465390.jpg','熟悉的感觉，你值得拥有','BGM'),(28,'史诗级震撼人心大气磅礴超燃BGM','/img/songListPic/109951163618525359.jpg','史诗级震撼人心超燃BGM,每首都是本人精心挑选和最喜欢的，歌单歌曲是按我个人喜欢排序，持续更新中……','BGM'),(29,'肾上腺素飙升（赛车必备）','/img/songListPic/109951163578540101.jpg','赛车运动，自吸为王，涡轮必胜.','BGM'),(30,'『欧美神曲』让你怦然心动','/img/songListPic/109951163621168769.jpg','让你怦然心动','欧美'),(31,'健身丨做自己平凡世界的超级英雄','/img/songListPic/109951163670223947.jpg','热爱健身的朋友们一起嗨！','BGM'),(32,'『空灵欧美』论◎怎样唱出星辰大海','/img/songListPic/109951163921593479.jpg','“我们在哪里？”\n\n“星空，是星空！美丽而触手可及！”\n\n“这里，是星辰大海，是你小时候的幻想……”','欧美'),(33,'Space Club 蹦迪','/img/songListPic/109951163738160487.jpg','Sapce Clup全球百大DJ丨Urumqi','BGM'),(34,'那些超带感的英文歌曲~『一秒沦陷』','/img/songListPic/109951163736178562.jpg','每天，都要去去做一些枯燥的事\n一些让人心烦的事\n可是又不得不去做\n一切都在重复\n都在复制、粘贴，复制、粘贴……\n何必不去做那些让人愉快的事呢\n比如说\n听歌\n它能让生活有趣起来\n有意义起来\n那么就去欣赏...','欧美'),(35,'【游戏原声】屏幕之后，更是另一个世界','/img/songListPic/109951163408189924.jpg','我们曾与白狼一起踏上寻找女儿的征途\n走遍大陆与史凯利杰群岛，寻遍北方诸国与尼弗迦德 甘当布尔维坎的屠夫\n只为那因意外率而与自己命运相连的辛特拉幼狮\n只为那曾在布洛克莱昂森林惊慌失措的小女孩\n重回自...','BGM'),(36,'极致旋律&空灵飘纱','/img/songListPic/109951163672593019.jpg','心在寂静之中冒着烟 寻找安寄所','欧美'),(37,'我们的心如此自由 思绪辽远无边','/img/songListPic/109951163932838310.jpg','我想每个人的心底，都潜藏着一个向往远方的梦，此处已无再多风景，熟悉的地方也不再有惊喜。人心思动，都渴望去流浪天涯，无论以哪种方式。','欧美'),(38,'欧美精选 | 嗨 伙计 要来首10w+吗？','/img/songListPic/109951163414509421.jpg','个别曲目未收录很可能是由于我没买人家的专辑 emmmm.... \n没买就是没买。没兴趣，不想买，买不起，这答案您满意吗？','欧美'),(39,'「高质量英文歌」让你单曲循环的英文歌','/img/songListPic/18814842976746273.jpg','I love the endless sea, I love the rain softly, I love flying snow, I love bringing a bright full moon, but I love the starry night sky.','欧美'),(40,'稀 | 奇 | 古 | 怪 | 音 | 效 | 工 | 厂','/img/songListPic/109951163462173993.jpg','不好意思 在我耳朵化掉之前是能数清的\n\n麻烦大家帮黑哥数数\n\n这些里面藏了多少个稀奇古怪的音效\n\n听归听 收藏某首歌之后我也不知道明天你的日推怎么作妖哈','欧美'),(41,'〖欧美女声〗 倾城一刻，我似乎更懂你','/img/songListPic/18591642116274551.jpg','个性，风格，颜值，行为，年龄段……差不多的人，听歌的兴趣差不多哦','欧美'),(42,'『电影配乐』当优雅华尔兹遇上激情探戈','/img/songListPic/109951163904955394.jpg','华尔兹有着与生俱来的华贵与优雅。简约却不简单的舞步透出的是舞者相互心灵的体会与传达……','欧美'),(43,'妄想去流浪，独自陶醉在自己的世界里。','/img/songListPic/109951163543366840.jpg','生活乏味 ，学习一直倒退，工作失意。\n害怕失去，想像和现实的差距将我打败。\n我想要远离这里。','轻音乐'),(44,'晚安曲丨我温柔而通透的小宇宙','/img/songListPic/109951163646671507.jpg','晚安～今夜好梦啊！','轻音乐'),(45,'晚安曲丨我温柔而通透的小宇宙','/img/songListPic/109951163808060526.jpg','你别怕，总有人熬夜陪你，下雨接你，说我爱你，好的总是压箱底\n当一个人能够影响你心情的时候，说明你在乎了；\n当一个人能赚到你眼泪的时候，说明你投入了；\n当一个人能驾驭你情绪的时候，说明你沦陷...','轻音乐'),(46,'性欲与孤独，容易让人误解爱情','/img/songListPic/109951163924312766.jpg','平常拍片子时，我喜欢在拍摄现场放一些有画面感的音乐让模特找感觉，抽空整理了一下近期的播放列表，做了这套新歌单，或许适合姑娘们在以下一些场景聆听','轻音乐'),(47,'人生就要嗨','/img/songListPic/109951163938242029.jpg','我命由我不由天','日韩-BGM'),(48,'吃鸡必备BGM','/img/songListPic/109951163776201870.jpg','大吉大利 今晚吃鸡\n此歌单适合在素质广场，飞机上，杀完人后，轰炸区天选之人的情况下播放，并不是让你全程听音乐玩游戏。','BGM'),(49,'伤感日语 · 芳华少女的孤独内心','/img/songListPic/109951163942747948.jpg','お母さん','日韩'),(50,'「予你情书」明年一起去看樱花吧','/img/songListPic/19079825277149145.jpg','想和你去看樱花\n看夏日的烟火大会\n看秋日京都岚山的枫叶\n和冬日落雪的小樽\n\n想和你一起去看一场樱花\n看漫天的飞舞的樱花在我们周围\n就这样安静地待着也好彼此交换心事\n\n想予你一封情书\n写尽关于我们的一切...','日韩'),(51,'那些年我们听过的韩国歌','/img/songListPic/18804947371714354.jpg','J.Fla，原名Kim Jung Hwa，韩国歌手,歌曲制作人。2013年正式出道并发行首张原创EP《바보 같은 Story》出道后不久就迅速在日本和韩国成为热门话题\n2016年，J.Fla的翻唱作品在国内转载而得到关注，因其甜美声线和惊艳侧颜得到许多人的喜爱。','日韩'),(52,'小众而惊艳 ·韩国独立音乐精选集','/img/songListPic/109951163833244126.jpg','在无数的灰色版权中找到了它们。\n宝藏一般的旋律，它们不应该被如此埋没。','日韩'),(53,'一秒就会中毒的韩语歌单~','/img/songListPic/109951163515798929.jpg','愿对这世界温柔以待的人 被温柔以待.','日韩'),(54,'［韩语］少女情怀总是诗~','/img/songListPic/109951162839104712.jpg','希望所有的少女心事都能梦想成真','日韩'),(55,'【燃向】 精选燃曲','/img/songListPic/19085322835476516.jpg','封面画师 bilibili Wlop','BGM'),(56,'日系燃向丨此刻光辉 将引领着我们','/img/songListPic/109951163097151464.jpg','天空燃尽如灰，\n繁星烧毁似尘，\n那些音乐所带来的力量，化作为光，将引领着我们前行！','日韩-BGM'),(57,'日系』有一种调皮叫小清新~','/img/songListPic/19152393044479439.jpg','阳光明媚的日子\n心情好到爆炸\n总想要找支歌来抒发一下感情，分享自己的喜悦。\n虽然我听不懂日语，但是并不影响我喜欢它的调皮与清新，舒服的日系小调，让人心情变好~\n\n阳光灿烂，微风拂面，大概就是这个歌单给人的感觉吧~','日韩'),(58,'【日系抒情】早晚终相会 忧思情愈深','/img/songListPic/109951163802235324.jpg','瀬を早み 岩にせかるる 滝川の\nわれても末に 逢はむとぞ思ふ','日韩-轻音乐'),(59,'日系沙哑女声| 愿这份歌声融化你的心','/img/songListPic/109951163862683663.jpg','相信大家都听过沙哑的歌吧，majiko，aimer大家都很熟悉了吧。\n\n这种嗓音真的超温柔呀，这个单选出了些沙哑声线歌手的歌，希望大家喜欢。\n\n愿这温柔的声音可以用听觉的方式带给你一场现实上和想象上的一种迷离感，同时陷入一种与女声错觉般的邂逅。\n\np站id:73189154 画师:gomzi','日韩'),(60,'『韩语』 感性伴秋风渐起 随秋意渐浓','/img/songListPic/109951163606909947.jpg','走过林荫道\n落叶从眼前划过\n才晓得秋天已经降临了一段时间\n我静静看着你的日子\n似乎还是昨天\n你回头看向别处的那个瞬间\n却已经成为今天\n\n若我们离别\n不要说Good bye\n说See you吧\n如同再次光临的秋天一样\n总...','日韩'),(61,'韩‖轻柔小调，治愈系旋律','/img/songListPic/19053436998325469.jpg','我爬上全世界的屋顶，\n带着全部的清醒和一只酒瓶。\n— — 张艾嘉《我站在全世界的屋顶》','日韩-轻音乐'),(62,'听首老歌 回味永不褪色的华语经典','/img/songListPic/109951163203287436.jpg','回味光辉岁月三十年\n\n岁月是一场充满告别的旅程\n\n怀旧\n不是因为那个时代多美好\n而是那时\n你正年轻\n\n百许流年忆往事\n千几往事暖流年','粤语'),(63,'【粤语】要有多坚强，才敢念念不忘','/img/songListPic/18878614648960788.jpg','你说\n你不愿意种花\n我不愿看见它\n一点点的凋落\n是的\n为了避免结束\n你避免了一切\n也避免了所有\n\n开始\n你说你喜欢雨滴\n但是你在下雨的时候打伞\n你说你喜欢太阳\n但是你在阳光明媚的时候\n躲在阴凉的地方 \n你说...','粤语'),(64,'初听不知曲中意 再听已是曲中人','/img/songListPic/19101815510024256.jpg','有时候听到一首歌，觉得旋律很好，歌词很好。但怎么也不能体会到，歌里唱的感情。后来有一天，你遇到了一个人，发生了一段故事。当你再听到那首歌时，就会觉得歌里唱的，都是你的故事。\n每一首你喜欢的歌曲，都附有非一般的意义，因为都唱出了你内心的声音和过往经历，其实你听到的都是你自己，那些年你累积在心里的所有欢乐悲伤，所有故事过往。','粤语'),(65,'粤语男声：我爱你依旧如初，不曾改变。','/img/songListPic/18612532836990988.jpg','记得曾经看过一段话：爱情不是抱一抱，亲一亲，改个情侣网名，换个情侣头像，就是情侣了...','粤语'),(66,'『粤语』虐到心痛的曲 听到泪落的词','/img/songListPic/3434874325869351.jpg','此歌单多为小众粤语，听过太多评论999+的人人传颂的经典歌曲，每次淘到一首鲜为人知人的歌曲，都会非常的惊喜，听歌嘛，最重要的就是自己听着觉得舒服就对啦，不一定非要高热度的啦。此歌单内歌曲不仅旋律打动人心，每首歌词都超虐心，痴情人的爱有时候那么卑微，低到尘埃里，爱到不死不休.....有时候看着歌词听着这些歌情不自禁泪奔，烦请听歌的人，千万不要对号入座，伤害指数超高! 绝对不容错过的小众粤语!','粤语'),(67,'富士山下钟无艳 吴哥窟内我本人','/img/songListPic/109951162869937004.jpg','男不听七友 女不听钟无艳','粤语'),(68,'流行男声||谦谦君子，情浓粤语','/img/songListPic/109951163193554791.jpg','慧极必伤，情深不寿，强极则辱，谦谦君子，温润如玉！细数那些唯美男声','粤语'),(69,'粤语live||赛赢录音棚流行live','/img/songListPic/109951163196627760.jpg','听腻了录影棚里的无杂音歌声？也许换成live会是心的开始','粤语'),(70,'从未跟你饮过冰 零度天气看风景','/img/songListPic/109951163933917463.jpg','这个世界烂透了 坏透了 我都接受\n\n所有人都习惯于流于表面的热情和爱意 我也接受\n\n但你不行 你得是那个例外才行','粤语'),(71,'「致青春」粤语带你回忆','/img/songListPic/109951163024198570.jpg','歌听多了 粤语也熟了 \n越听越有感觉','粤语'),(72,'Beyond的辉煌岁月是人生旅途的伴奏','/img/songListPic/109951163278666363.jpg','Beyond是那种有自己独特的风格，有自己的精神，能象征一个时代，也能映射一类人的组合。他们的歌带入感很强，总有共鸣产生，因为他们没有无病呻吟的悲情，也不爱写迎合大众的爱情故事，而是用自己的歌词和声音在诠释着生活，激励着人生','粤语'),(73,'听说，钢琴和民谣也很搭配','/img/songListPic/109951163503924397.jpg','我们始终会远行，也可能，在最遥远最陌生的地方感知另一个自己，最后发现丢失了好久的钥匙就藏在自己的口袋里','乐器-轻音乐'),(74,'新古典钢琴 散落的时光','/img/songListPic/109951163401615779.jpg','当时间走过 其风猎猎\n\n覆灭仅存的模糊记忆使昨日土崩瓦解\n\n其实没有什么好担忧的\n\n在生命的内里 不是还有许多\n\n继续延展着的细微线索\n\n以祖先的容颜 来将你形塑\n\n当时间走过 其声簌簌\n\n如狼群之迅疾穿越秋...','乐器-轻音乐'),(75,'流行歌曲钢琴演奏','/img/songListPic/18577348464819001.jpg','大都是一些华语流行歌曲的钢琴版，也含有少部分这些弹奏者自己创造的钢琴曲与一些他们翻奏的世界较为有名的钢琴曲，希望你们喜欢～\n前50首为精选，请不要错过哦～','乐器'),(76,'『钢琴』与流行歌曲的完美邂逅','/img/songListPic/5832909185359651.jpg','选集是华语流行音乐的钢琴版，或许你会更喜欢钢琴演奏的故事','乐器'),(77,'治愈钢琴｜伟大的时光和伟大的我们','/img/songListPic/109951162895796021.jpg','从钢琴的旋律和节奏中慢慢释怀、也许还有所领悟\n钢琴的世界里还有很多很多让人驻足停歇的地方\n如同我们在生活经历中面对的许许多多的小挫折之后\n也要找个角...','乐器'),(78,'写作业专用BGM（钢琴向）','/img/songListPic/1390882211100783.jpg','暂时停更啦 我来排排顺序','乐器-轻音乐'),(79,'钢琴的故事','/img/songListPic/18731280092485571.jpg','你一定和我一样有烦恼和故事吧','乐器'),(80,'各种乐器演绎流行曲','/img/songListPic/3416182643161526.jpg','乐器成精系列之用各种成精乐器重新演绎这些流行歌曲，让你耳目一新','乐器'),(81,'听, 吉他在唱歌','/img/songListPic/1650169691163L5.jpg','听吉他谱写那些熟悉的旋律，遇见不一样的感动，电吉他、尤克里里会客串哦','乐器'),(82,'还不快去练琴？','/img/songListPic/19169985230816413.jpg','都是自己很喜欢的吉他指弹','乐器'),(83,'国风传统器乐赏~~♪','/img/songListPic/18907201951803673.jpg','中国音乐是光辉灿烂的中国文化的一个重要组成部分。当古典音乐流泻而出的一刹那间，你可以清楚的看到，在空气中流动的是高山、是流水、是丝竹、是冬雪、是千古的生命，那份说不出、道不尽的感动，就是中国古典音乐之美。','乐器'),(84,'『钢琴纯音』八十八个黑白键勾勒出的美','/img/songListPic/109951162873752063.jpg','钢琴如生活，是一首永远弹不完的小曲','轻音乐-乐器'),(86,'11','/img/songListPic/123.jpg','','');
+INSERT INTO `song_list` VALUES (1,'The Good, the Bad and the Ugly','/user01/songlist/1559980194510haidao.jpg','he Good, the Bad and the Ugly: Original Motion Picture Soundtrack was released in 1966 alongside the Western film, The Good, the Bad and the Ugly, directed by Sergio Leone. The score is composed by frequent Leone collaborator Ennio Morricone, whose distinctive original compositions, containing gunfire, whistling, and yodeling permeate the film. The main theme, resembling the howling of a coyote, is a two-note melody that is a frequent motif, and is used for the three main characters, with a different instrument used for each one: flute for Blondie (Man With No Name), Arghilofono (Ocarina) for Angel Eyes, and human voices for Tuco.','欧美-轻音乐'),(2,'年轻之歌 有关爱与挑衅','/img/songListPic/wv2NdfZrUnLDSwk_kQoSZg==_109951163751040922.jpg','那些喜欢到会循环播放的歌','华语'),(3,'希望十八岁你爱的人是八十岁在你身边的人','/img/songListPic/q0ZyCw22PCiTG2LX_A2kew==_109951163594989759.jpg','让你怦然心动','华语'),(4,'你的青春里有没有属于你的一首歌？','/img/songListPic/109951163271025942.jpg','关于青春里的那首歌，唱的是你和谁的回忆呢？那年你们有什么故事？\n\n总是有许多的记忆，是关于青春的。\n\n青春时埋下的那份躁动，总会在多年后，装饰着笑容。\n\n总是有许多的遗憾，是关于青春的。\n\n青春时还没来得及表达的情感，总会在多年以后，偶尔的左右着悲欢。\n\n那些最美年华里的相遇，那些青春里的不知所措，都被勾勒成了一幅幅画。\n\n而这些画，只在心情最愉悦时，只在心情最低落时，悄悄的，在内心深处闪过。','华语'),(5,'那些喜欢到循环播放的歌','/img/songListPic/109951163609743240.jpg','那些喜欢到会循环播放的歌\n\n感谢收听','华语'),(6,'林俊杰的正确打开方式【路人请参考简介】','/img/songListPic/19080924789030458.jpg','这是一个一定要顺序播放并且不切歌才能发现其中奥妙的歌单。\n这是一个可以完美呈现林俊杰音乐态度的歌单。\n这是一个林俊杰的立体化打开方式。','华语'),(7,'高 级 感 vlog 纯音乐 BGM','/img/songListPic/vLSB9-NGsd4CLYf_4ShGww==_109951163609572271.jpg','歌单','轻音乐'),(8,'世界上很好听的纯音乐(经典不朽)','/img/songListPic/92NWlGo76ha-if-WMK3vCg==_1410673428769729.jpg','歌单','轻音乐'),(9,'『粤语』好听到爆的粤语歌单','/img/songListPic/QHD2Uy2y9ktndbK1UKgdgg==_18611433325258133.jpg','歌单','粤语'),(10,'韩剧OST｜祝你走过半生，仍有颗少女心','/img/songListPic/zhunizouguobansheng.jpg','歌单','日韩'),(11,'我喜欢你，喜欢没用，没用也喜欢','/img/songListPic/109951163919069037.jpg','情不知所起，一往而情深。\n伤不知所因，痛彻心扉\n\n从前你是我心上的一束光，倾世温暖。\n现在你是我心里的一根刺，刻骨铭心。\n以后你是我心底的一粒尘，无关痛痒。\n\n我喜欢你，喜欢没用，没用也喜欢','华语'),(12,'生活感到疲惫的话就听这些歌吧','/img/songListPic/109951163936991203.jpg','当你感到疲惫的时候\n睡一个沉稳的觉醒来\n和陌生人对视互笑\n买一杯刚好温度的奶茶\n吃到合口味的菜\n遇见喜欢人的时候自己是最美的状态\n下雨 清晨 初雪 深夜 亲吻 拥抱 牵手 大笑\n快乐总被说很难\n但我希望你顶...','华语'),(13,'熬夜和想你，我都该戒掉了','/img/songListPic/109951163216834301.jpg','命运似乎是一个轮回，在一次次的偶然下，平行线交叉，再平行，故事始终有\"然后\"，可后来的我们，都学会如何去爱了吗？\n\n如果当时你没走，后来的我们会不会不一样。或许，我们每个人都想回到故事最开始的地方。','华语'),(14,'怀旧向||时光流转从前，人生如寄','/img/songListPic/109951163443093546.jpg','岁月悠扬，娓娓动听\n在流失了的记忆之中\n听到属于我们这一代人的歌\n想起属于我们这一代人的路\n愿\n星辰大海\n春暖花开','华语'),(15,'不曾刻骨铭心，为何念念不忘？','/img/songListPic/109951163887710551.jpg','“所爱隔山海 山海皆可平”\n你拒绝的 不珍惜的 不代表别人也不喜欢\n人生都是向前走的 我们都一样\n\n谁先认真谁先输，我只能说我输了\n再忙碌还是会想你 真的不明白\n都说未曾刻骨铭心，又为何总是念念不忘','华语'),(16,'社会语录！土嗨','/img/songListPic/109951163858422257.jpg','社会！','华语'),(17,'听青春ost，心悸的时光里有你','/img/songListPic/109951163826485303.jpg','我们青春就像是被大雨淋湿的自己，即使是感冒了，也愿意再淋一次。只有爱过了，伤过了，痛过了，这才叫青春。','华语'),(18,'【经典】聼一首老歌，想念一段时光','/img/songListPic/109951163311246502.jpg','寂静的黄昏，总让人怀念，总是深深沦陷...\n那些个细数光阴在手中沉淀的日子，一去不复返...\n偶尔，我一个人站在黄昏的角落，代替你主持夕阳的葬礼...\n想着想着，痛凝重了时间，曳落了容颜...\n青春的羽翼...','华语'),(19,'华语百首｜好听的才是耳朵最想要的','/img/songListPic/109951163597665130.jpg','好听的音乐才是耳朵最想要的','华语'),(20,'【华语抒情-林俊杰】—孤独，是我的享受','/img/songListPic/109951163826685601.jpg','我喜欢孤独，不与任何人说话，在一份静谧中安然地做自己喜欢的事。任身心徜徉，暂时忘却“柴米油盐酱醋茶”的烦琐，去体验“琴棋书画诗酒花”的高雅；暂时抛开追名逐利的忙碌奔波，去感受心无杂念的宁静淡泊；暂时摆脱困扰你的喜怒哀乐，去体味生活中的充实祥和。','华语'),(21,'睡觉必备心灵鸡汤','/img/songListPic/109951163879964479.jpg','缓缓的声音，流进心里的枯井','轻音乐'),(22,'愿山野浓雾都有路灯 风雨漂泊都有归舟','/img/songListPic/109951163594594622.jpg','你慢慢走\n回忆暗涌\n悲喜翻滚','华语'),(23,'「女声控」音色沁人心 旋律美如画','/img/songListPic/109951163098238240.jpg','女声控福利来啦-=≡Σ((( つ•̀ω•́)つ','欧美'),(24,'Moombahton 丨电流律动的异域风','/img/songListPic/109951163500933771.jpg','Moombahton融合了Dutch House和Reggaeton，常常带有Trap的元素，特别是在Bulid Up部分，厚实的Bass与密集的打击鼓点，节拍丰富，加上旋律和音色比较异域，一般都有人声部分，其BPM多数基于110，更突出在Drop高潮，让人不禁联想抖动的节奏。','欧美'),(25,'【励志电音】愿你身披星芒 执笔为剑','/img/songListPic/109951163321304060.jpg','为了父母期待的目光\n为了那深藏于你心底的梦想\n为了你朝思暮想的那个可望而不可及...','欧美'),(26,'史诗 • 神级BGM丨灵魂的震颤&心灵的洗涤','/img/songListPic/109951163692248020.jpg','随着一声怒吼，千军万马进行着一场浩荡的战争，马的嘶吼声与兵器碰撞的金属声谱写着一部史前的震撼。\n欢迎来到此歌单，晚上睡觉别点开！\n别点开！\n别点开！','BGM'),(27,'全球超大气势磅礴背景音乐精选100首合集','/img/songListPic/109951163579465390.jpg','熟悉的感觉，你值得拥有','BGM'),(28,'史诗级震撼人心大气磅礴超燃BGM','/img/songListPic/109951163618525359.jpg','史诗级震撼人心超燃BGM,每首都是本人精心挑选和最喜欢的，歌单歌曲是按我个人喜欢排序，持续更新中……','BGM'),(29,'肾上腺素飙升（赛车必备）','/img/songListPic/109951163578540101.jpg','赛车运动，自吸为王，涡轮必胜.','BGM'),(30,'『欧美神曲』让你怦然心动','/img/songListPic/109951163621168769.jpg','让你怦然心动','欧美'),(31,'健身丨做自己平凡世界的超级英雄','/img/songListPic/109951163670223947.jpg','热爱健身的朋友们一起嗨！','BGM'),(32,'『空灵欧美』论◎怎样唱出星辰大海','/img/songListPic/109951163921593479.jpg','“我们在哪里？”\n\n“星空，是星空！美丽而触手可及！”\n\n“这里，是星辰大海，是你小时候的幻想……”','欧美'),(33,'Space Club 蹦迪','/img/songListPic/109951163738160487.jpg','Sapce Clup全球百大DJ丨Urumqi','BGM'),(34,'那些超带感的英文歌曲~『一秒沦陷』','/img/songListPic/109951163736178562.jpg','每天，都要去去做一些枯燥的事\n一些让人心烦的事\n可是又不得不去做\n一切都在重复\n都在复制、粘贴，复制、粘贴……\n何必不去做那些让人愉快的事呢\n比如说\n听歌\n它能让生活有趣起来\n有意义起来\n那么就去欣赏...','欧美'),(35,'【游戏原声】屏幕之后，更是另一个世界','/img/songListPic/109951163408189924.jpg','我们曾与白狼一起踏上寻找女儿的征途\n走遍大陆与史凯利杰群岛，寻遍北方诸国与尼弗迦德 甘当布尔维坎的屠夫\n只为那因意外率而与自己命运相连的辛特拉幼狮\n只为那曾在布洛克莱昂森林惊慌失措的小女孩\n重回自...','BGM'),(36,'极致旋律&空灵飘纱','/img/songListPic/109951163672593019.jpg','心在寂静之中冒着烟 寻找安寄所','欧美'),(37,'我们的心如此自由 思绪辽远无边','/img/songListPic/109951163932838310.jpg','我想每个人的心底，都潜藏着一个向往远方的梦，此处已无再多风景，熟悉的地方也不再有惊喜。人心思动，都渴望去流浪天涯，无论以哪种方式。','欧美'),(38,'欧美精选 | 嗨 伙计 要来首10w+吗？','/img/songListPic/109951163414509421.jpg','个别曲目未收录很可能是由于我没买人家的专辑 emmmm.... \n没买就是没买。没兴趣，不想买，买不起，这答案您满意吗？','欧美'),(39,'「高质量英文歌」让你单曲循环的英文歌','/img/songListPic/18814842976746273.jpg','I love the endless sea, I love the rain softly, I love flying snow, I love bringing a bright full moon, but I love the starry night sky.','欧美'),(40,'稀 | 奇 | 古 | 怪 | 音 | 效 | 工 | 厂','/img/songListPic/109951163462173993.jpg','不好意思 在我耳朵化掉之前是能数清的\n\n麻烦大家帮黑哥数数\n\n这些里面藏了多少个稀奇古怪的音效\n\n听归听 收藏某首歌之后我也不知道明天你的日推怎么作妖哈','欧美'),(41,'〖欧美女声〗 倾城一刻，我似乎更懂你','/img/songListPic/18591642116274551.jpg','个性，风格，颜值，行为，年龄段……差不多的人，听歌的兴趣差不多哦','欧美'),(42,'『电影配乐』当优雅华尔兹遇上激情探戈','/img/songListPic/109951163904955394.jpg','华尔兹有着与生俱来的华贵与优雅。简约却不简单的舞步透出的是舞者相互心灵的体会与传达……','欧美'),(43,'妄想去流浪，独自陶醉在自己的世界里。','/img/songListPic/109951163543366840.jpg','生活乏味 ，学习一直倒退，工作失意。\n害怕失去，想像和现实的差距将我打败。\n我想要远离这里。','轻音乐'),(44,'晚安曲丨我温柔而通透的小宇宙','/img/songListPic/109951163646671507.jpg','晚安～今夜好梦啊！','轻音乐'),(45,'晚安曲丨我温柔而通透的小宇宙','/img/songListPic/109951163808060526.jpg','你别怕，总有人熬夜陪你，下雨接你，说我爱你，好的总是压箱底\n当一个人能够影响你心情的时候，说明你在乎了；\n当一个人能赚到你眼泪的时候，说明你投入了；\n当一个人能驾驭你情绪的时候，说明你沦陷...','轻音乐'),(46,'性欲与孤独，容易让人误解爱情','/img/songListPic/109951163924312766.jpg','平常拍片子时，我喜欢在拍摄现场放一些有画面感的音乐让模特找感觉，抽空整理了一下近期的播放列表，做了这套新歌单，或许适合姑娘们在以下一些场景聆听','轻音乐'),(47,'人生就要嗨','/img/songListPic/109951163938242029.jpg','我命由我不由天','日韩-BGM'),(48,'吃鸡必备BGM','/img/songListPic/109951163776201870.jpg','大吉大利 今晚吃鸡\n此歌单适合在素质广场，飞机上，杀完人后，轰炸区天选之人的情况下播放，并不是让你全程听音乐玩游戏。','BGM'),(49,'伤感日语 · 芳华少女的孤独内心','/img/songListPic/109951163942747948.jpg','お母さん','日韩'),(50,'「予你情书」明年一起去看樱花吧','/img/songListPic/19079825277149145.jpg','想和你去看樱花\n看夏日的烟火大会\n看秋日京都岚山的枫叶\n和冬日落雪的小樽\n\n想和你一起去看一场樱花\n看漫天的飞舞的樱花在我们周围\n就这样安静地待着也好彼此交换心事\n\n想予你一封情书\n写尽关于我们的一切...','日韩'),(51,'那些年我们听过的韩国歌','/img/songListPic/18804947371714354.jpg','J.Fla，原名Kim Jung Hwa，韩国歌手,歌曲制作人。2013年正式出道并发行首张原创EP《바보 같은 Story》出道后不久就迅速在日本和韩国成为热门话题\n2016年，J.Fla的翻唱作品在国内转载而得到关注，因其甜美声线和惊艳侧颜得到许多人的喜爱。','日韩'),(52,'小众而惊艳 ·韩国独立音乐精选集','/img/songListPic/109951163833244126.jpg','在无数的灰色版权中找到了它们。\n宝藏一般的旋律，它们不应该被如此埋没。','日韩'),(53,'一秒就会中毒的韩语歌单~','/img/songListPic/109951163515798929.jpg','愿对这世界温柔以待的人 被温柔以待.','日韩'),(54,'［韩语］少女情怀总是诗~','/img/songListPic/109951162839104712.jpg','希望所有的少女心事都能梦想成真','日韩'),(55,'【燃向】 精选燃曲','/img/songListPic/19085322835476516.jpg','封面画师 bilibili Wlop','BGM'),(56,'日系燃向丨此刻光辉 将引领着我们','/img/songListPic/109951163097151464.jpg','天空燃尽如灰，\n繁星烧毁似尘，\n那些音乐所带来的力量，化作为光，将引领着我们前行！','日韩-BGM'),(57,'日系』有一种调皮叫小清新~','/img/songListPic/19152393044479439.jpg','阳光明媚的日子\n心情好到爆炸\n总想要找支歌来抒发一下感情，分享自己的喜悦。\n虽然我听不懂日语，但是并不影响我喜欢它的调皮与清新，舒服的日系小调，让人心情变好~\n\n阳光灿烂，微风拂面，大概就是这个歌单给人的感觉吧~','日韩'),(58,'【日系抒情】早晚终相会 忧思情愈深','/img/songListPic/109951163802235324.jpg','瀬を早み 岩にせかるる 滝川の\nわれても末に 逢はむとぞ思ふ','日韩-轻音乐'),(59,'日系沙哑女声| 愿这份歌声融化你的心','/img/songListPic/109951163862683663.jpg','相信大家都听过沙哑的歌吧，majiko，aimer大家都很熟悉了吧。\n\n这种嗓音真的超温柔呀，这个单选出了些沙哑声线歌手的歌，希望大家喜欢。\n\n愿这温柔的声音可以用听觉的方式带给你一场现实上和想象上的一种迷离感，同时陷入一种与女声错觉般的邂逅。\n\np站id:73189154 画师:gomzi','日韩'),(60,'『韩语』 感性伴秋风渐起 随秋意渐浓','/img/songListPic/109951163606909947.jpg','走过林荫道\n落叶从眼前划过\n才晓得秋天已经降临了一段时间\n我静静看着你的日子\n似乎还是昨天\n你回头看向别处的那个瞬间\n却已经成为今天\n\n若我们离别\n不要说Good bye\n说See you吧\n如同再次光临的秋天一样\n总...','日韩'),(61,'韩‖轻柔小调，治愈系旋律','/img/songListPic/19053436998325469.jpg','我爬上全世界的屋顶，\n带着全部的清醒和一只酒瓶。\n— — 张艾嘉《我站在全世界的屋顶》','日韩-轻音乐'),(62,'听首老歌 回味永不褪色的华语经典','/img/songListPic/109951163203287436.jpg','回味光辉岁月三十年\n\n岁月是一场充满告别的旅程\n\n怀旧\n不是因为那个时代多美好\n而是那时\n你正年轻\n\n百许流年忆往事\n千几往事暖流年','粤语'),(63,'【粤语】要有多坚强，才敢念念不忘','/img/songListPic/18878614648960788.jpg','你说\n你不愿意种花\n我不愿看见它\n一点点的凋落\n是的\n为了避免结束\n你避免了一切\n也避免了所有\n\n开始\n你说你喜欢雨滴\n但是你在下雨的时候打伞\n你说你喜欢太阳\n但是你在阳光明媚的时候\n躲在阴凉的地方 \n你说...','粤语'),(64,'初听不知曲中意 再听已是曲中人','/img/songListPic/19101815510024256.jpg','有时候听到一首歌，觉得旋律很好，歌词很好。但怎么也不能体会到，歌里唱的感情。后来有一天，你遇到了一个人，发生了一段故事。当你再听到那首歌时，就会觉得歌里唱的，都是你的故事。\n每一首你喜欢的歌曲，都附有非一般的意义，因为都唱出了你内心的声音和过往经历，其实你听到的都是你自己，那些年你累积在心里的所有欢乐悲伤，所有故事过往。','粤语'),(65,'粤语男声：我爱你依旧如初，不曾改变。','/img/songListPic/18612532836990988.jpg','记得曾经看过一段话：爱情不是抱一抱，亲一亲，改个情侣网名，换个情侣头像，就是情侣了...','粤语'),(66,'『粤语』虐到心痛的曲 听到泪落的词','/img/songListPic/3434874325869351.jpg','此歌单多为小众粤语，听过太多评论999+的人人传颂的经典歌曲，每次淘到一首鲜为人知人的歌曲，都会非常的惊喜，听歌嘛，最重要的就是自己听着觉得舒服就对啦，不一定非要高热度的啦。此歌单内歌曲不仅旋律打动人心，每首歌词都超虐心，痴情人的爱有时候那么卑微，低到尘埃里，爱到不死不休.....有时候看着歌词听着这些歌情不自禁泪奔，烦请听歌的人，千万不要对号入座，伤害指数超高! 绝对不容错过的小众粤语!','粤语'),(67,'富士山下钟无艳 吴哥窟内我本人','/img/songListPic/109951162869937004.jpg','男不听七友 女不听钟无艳','粤语'),(68,'流行男声||谦谦君子，情浓粤语','/img/songListPic/109951163193554791.jpg','慧极必伤，情深不寿，强极则辱，谦谦君子，温润如玉！细数那些唯美男声','粤语'),(69,'粤语live||赛赢录音棚流行live','/img/songListPic/109951163196627760.jpg','听腻了录影棚里的无杂音歌声？也许换成live会是心的开始','粤语'),(70,'从未跟你饮过冰 零度天气看风景','/img/songListPic/109951163933917463.jpg','这个世界烂透了 坏透了 我都接受\n\n所有人都习惯于流于表面的热情和爱意 我也接受\n\n但你不行 你得是那个例外才行','粤语'),(71,'「致青春」粤语带你回忆','/img/songListPic/109951163024198570.jpg','歌听多了 粤语也熟了 \n越听越有感觉','粤语'),(72,'Beyond的辉煌岁月是人生旅途的伴奏','/img/songListPic/109951163278666363.jpg','Beyond是那种有自己独特的风格，有自己的精神，能象征一个时代，也能映射一类人的组合。他们的歌带入感很强，总有共鸣产生，因为他们没有无病呻吟的悲情，也不爱写迎合大众的爱情故事，而是用自己的歌词和声音在诠释着生活，激励着人生','粤语'),(73,'听说，钢琴和民谣也很搭配','/img/songListPic/109951163503924397.jpg','我们始终会远行，也可能，在最遥远最陌生的地方感知另一个自己，最后发现丢失了好久的钥匙就藏在自己的口袋里','乐器-轻音乐'),(74,'新古典钢琴 散落的时光','/img/songListPic/109951163401615779.jpg','当时间走过 其风猎猎\n\n覆灭仅存的模糊记忆使昨日土崩瓦解\n\n其实没有什么好担忧的\n\n在生命的内里 不是还有许多\n\n继续延展着的细微线索\n\n以祖先的容颜 来将你形塑\n\n当时间走过 其声簌簌\n\n如狼群之迅疾穿越秋...','乐器-轻音乐'),(75,'流行歌曲钢琴演奏','/img/songListPic/18577348464819001.jpg','大都是一些华语流行歌曲的钢琴版，也含有少部分这些弹奏者自己创造的钢琴曲与一些他们翻奏的世界较为有名的钢琴曲，希望你们喜欢～\n前50首为精选，请不要错过哦～','乐器'),(76,'『钢琴』与流行歌曲的完美邂逅','/img/songListPic/5832909185359651.jpg','选集是华语流行音乐的钢琴版，或许你会更喜欢钢琴演奏的故事','乐器'),(77,'治愈钢琴｜伟大的时光和伟大的我们','/img/songListPic/109951162895796021.jpg','从钢琴的旋律和节奏中慢慢释怀、也许还有所领悟\n钢琴的世界里还有很多很多让人驻足停歇的地方\n如同我们在生活经历中面对的许许多多的小挫折之后\n也要找个角...','乐器'),(78,'写作业专用BGM（钢琴向）','/img/songListPic/1390882211100783.jpg','暂时停更啦 我来排排顺序','乐器-轻音乐'),(79,'钢琴的故事','/img/songListPic/18731280092485571.jpg','你一定和我一样有烦恼和故事吧','乐器'),(80,'各种乐器演绎流行曲','/img/songListPic/3416182643161526.jpg','乐器成精系列之用各种成精乐器重新演绎这些流行歌曲，让你耳目一新','乐器'),(81,'听, 吉他在唱歌','/img/songListPic/1650169691163L5.jpg','听吉他谱写那些熟悉的旋律，遇见不一样的感动，电吉他、尤克里里会客串哦','乐器'),(82,'还不快去练琴？','/img/songListPic/19169985230816413.jpg','都是自己很喜欢的吉他指弹','乐器'),(83,'国风传统器乐赏~~♪','/img/songListPic/18907201951803673.jpg','中国音乐是光辉灿烂的中国文化的一个重要组成部分。当古典音乐流泻而出的一刹那间，你可以清楚的看到，在空气中流动的是高山、是流水、是丝竹、是冬雪、是千古的生命，那份说不出、道不尽的感动，就是中国古典音乐之美。','乐器'),(84,'『钢琴纯音』八十八个黑白键勾勒出的美','/img/songListPic/109951162873752063.jpg','钢琴如生活，是一首永远弹不完的小曲','轻音乐-乐器');
 /*!40000 ALTER TABLE `song_list` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `song_list_consumer`
+--
+
+DROP TABLE IF EXISTS `song_list_consumer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `song_list_consumer` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `pic` varchar(255) DEFAULT NULL,
+  `introduction` text,
+  `style` varchar(10) DEFAULT '无',
+  `user_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `song_list_consumer`
+--
+
+LOCK TABLES `song_list_consumer` WRITE;
+/*!40000 ALTER TABLE `song_list_consumer` DISABLE KEYS */;
+INSERT INTO `song_list_consumer` VALUES (1,'1','/user01/songlist/1560521573754L5.jpg','nothing','粤语',1),(2,'1','/img/songListPic/123.jpg','nothing','粤语',1),(3,'test','/user01/songlist/1559979427511IMG_3155.jpg','hhh','shabi',63),(23,'1','/img/songListPic/123.jpg','hhh','shabi',63),(24,'test','/user01/songlist/1560521573754L5.jpg','hhh','shabi',63),(25,'1','/img/songListPic/123.jpg','hhh','shabi',63),(26,'test','/user01/songlist/1559979427511IMG_3155.jpg','hhh','shabi',63);
+/*!40000 ALTER TABLE `song_list_consumer` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -305,13 +367,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user_support`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_support` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `comment_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `comment_id` int NOT NULL,
   `user_id` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,6 +384,10 @@ LOCK TABLES `user_support` WRITE;
 /*!40000 ALTER TABLE `user_support` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_support` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'tp_music'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -332,4 +398,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-25 22:12:48
+-- Dump completed on 2024-05-28 23:13:19

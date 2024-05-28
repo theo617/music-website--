@@ -18,20 +18,41 @@
                       songName: scope.row.name,
                     })
                   ">下载</el-dropdown-item>
-                <el-dropdown-item :icon="Delete" v-if="show" @click="deleteCollection({ id: scope.row.id })">删除</el-dropdown-item>
+                <el-dropdown-item :icon="Delete" v-if="showDelete" @click="deleteCollection(scope.row)">删除</el-dropdown-item>
+                <el-dropdown-item :icon="StarFilled" @click="showCollectDialog(scope.row)">收藏到歌单</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="收藏到歌单" v-model="collectDialogVisible">
+      <el-form label-width="70px">
+        <el-form-item label="歌单">
+          <el-select v-model="selectedSongListId" placeholder="选择歌单">
+            <el-option
+              v-for="item in userSongLists"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="collectDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="collectSong">确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, toRefs, computed, reactive } from "vue";
+import { defineComponent, getCurrentInstance, toRefs, computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
-import { MoreFilled, Delete, Download } from "@element-plus/icons-vue";
+import { MoreFilled, Delete, Download, StarFilled } from "@element-plus/icons-vue";
 
 import mixin from "@/mixins/mixin";
 import { HttpManager } from "@/api";
@@ -43,7 +64,12 @@ export default defineComponent({
   },
   props: {
     songList: Array,
-    show: {
+    songListConsumerId: {
+      type: Number,
+      required: true,
+    },
+    showDelete: {
+      type:Boolean,
       default: false
     }
   },
@@ -74,6 +100,32 @@ export default defineComponent({
       return list;
     });
 
+    const collectDialogVisible = ref(false);
+    const selectedSong = ref(null);
+    const userSongLists = ref([]);
+    const selectedSongListId = ref(null);
+
+
+    async function showCollectDialog(song) {
+      selectedSong.value = song;
+      collectDialogVisible.value = true;
+      const result = (await HttpManager.songListConsumerOfUserId(store.getters.userId)) as ResponseBody;
+      userSongLists.value = result.data;
+    }
+
+    //收藏到指定歌单
+    async function collectSong() {
+      const result = (await HttpManager.addListSongConsumer({
+        songId: selectedSong.value.id,
+        songListConsumerId: selectedSongListId.value,
+      })) as ResponseBody;
+      (proxy as any).$message({
+        message: result.message,
+        type: result.type,
+      });
+      collectDialogVisible.value = false;
+    }
+
     function handleClick(row) {
       playMusic({
         id: row.id,
@@ -92,22 +144,23 @@ export default defineComponent({
 
     const userId = computed(() => store.getters.userId);
 
-    async function deleteCollection({ id }) {
+    async function deleteCollection(row) {
       if (!checkStatus()) return;
 
-      const result = (await HttpManager.deleteCollection(userId.value, id)) as ResponseBody;
+      const result = (await HttpManager.deleteListSongConsumer(row.id, props.songListConsumerId)) as ResponseBody;
       (proxy as any).$message({
         message: result.message,
         type: result.type,
       });
 
-      if (result.data === false) proxy.$emit("changeData", result.data);
+      if (result.success) proxy.$emit("changeData", result.data);
     }
 
     return {
       dataList,
       iconList,
       Delete,
+      StarFilled,
       Download,
       songUrl,
       singerName,
@@ -116,6 +169,11 @@ export default defineComponent({
       handleEdit,
       downloadMusic,
       deleteCollection,
+      collectDialogVisible,
+      showCollectDialog,
+      collectSong,
+      userSongLists,
+      selectedSongListId,
     };
   },
 });

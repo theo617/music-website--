@@ -3,6 +3,7 @@
     <el-aside class="album-slide">
       <el-image class="album-img" fit="contain" :src="attachImageUrl(songDetails.pic)" />
       <h3 class="album-info">{{ songDetails.title }}</h3>
+      <el-button type="primary" @click="collectSongList">收藏</el-button>
     </el-aside>
     <el-main class="album-main">
       <div class="album-header">
@@ -30,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, getCurrentInstance } from "vue";
+import { defineComponent, ref, reactive,computed, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
 import mixin from "@/mixins/mixin";
 import SongList from "@/components/SongList.vue";
@@ -55,6 +56,7 @@ export default defineComponent({
     const assistText = ref("评价");
     const songDetails = computed(() => store.getters.songDetails); // 单个歌单信息
     const nowUserId = computed(() => store.getters.userId);
+    const userId = computed(() => store.getters.userId);
   
     nowSongListId.value = songDetails.value.id; // 给歌单ID赋值
   
@@ -102,6 +104,47 @@ export default defineComponent({
         console.error(error);
       }
     }
+    
+    //添加歌单逻辑
+    const newSongList = reactive({
+      title: songDetails.value.title,
+      introduction: songDetails.value.introduction,
+      user_id: userId.value,
+      style: songDetails.value.style,
+    });
+
+    async function collectSongList() {
+      // 收藏歌单的逻辑
+      let title=newSongList.title;
+      let introduction = newSongList.introduction;
+      let style = newSongList.style;
+      let user_id=userId.value;
+      const result = (await HttpManager.addSongListConsumer({title, user_id,style,introduction})) as ResponseBody;
+      (proxy as any).$message({
+        message: result.message,
+        type: result.type,
+      });
+    if (result.success) {
+    // 获取当前用户的所有歌单
+    const songListResult = (await HttpManager.songListConsumerOfUserId(user_id)) as ResponseBody;
+    const songLists = songListResult.data;
+    // 找到 ID 最大的歌单，假设它是新创建的歌单
+    const newSongList = songLists.reduce((max, songList) => (songList.id > max.id ? songList : max), songLists[0]);
+    const newSongListId = newSongList.id;
+    
+    // 复制原歌单的歌曲到新歌单
+    for (const song of currentSongList.value) {
+      const addResult = (await HttpManager.addListSongConsumer({
+        songId: song.id,
+        songListConsumerId: newSongListId,
+      })) as ResponseBody;
+
+    }
+    // 更新新歌单的图片
+    await HttpManager.updateSongPicbyUrl({id: newSongListId, pic: songDetails.value.pic});
+  }
+  
+    }
 
     getUserRank(nowUserId.value, nowSongListId.value);
     getRank(nowSongListId.value); // 获取评分
@@ -117,6 +160,7 @@ export default defineComponent({
       songListId: nowSongListId,
       attachImageUrl: HttpManager.attachImageUrl,
       pushValue,
+      collectSongList,
     };
   },
 });
