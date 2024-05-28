@@ -27,6 +27,8 @@ public class Comment {
 
     private Integer up;
 
+    private Integer songListConsumerId;
+
 
     @Override
     public String toString() {

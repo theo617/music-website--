@@ -25,4 +25,6 @@ public class CommentRequest {
     private Byte nowType;
 
     private Integer up;//点赞
+
+    private  Integer songListConsumerId;
 }

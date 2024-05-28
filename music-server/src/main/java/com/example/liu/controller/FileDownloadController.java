@@ -36,7 +36,7 @@ public class FileDownloadController {
 
         GetObjectArgs args = GetObjectArgs.builder()
                 .bucket(bucketName)
-                .object(fileName)
+                .object("/songs/"+fileName)
                 .build();
         InputStream inputStream = minioClient.getObject(args);
 

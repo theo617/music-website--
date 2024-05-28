@@ -36,6 +36,12 @@ public class CommentController {
         return commentService.commentOfSongListId(songListId);
     }
 
+    // 获得指定用户歌单 ID 的评论列表
+    @GetMapping("/comment/songListConsumer/detail")
+    public R commentOfSongListConsumerId(@RequestParam Integer songListConsumerId) {
+        return commentService.commentOfSongListConsumerId(songListConsumerId);
+    }
+
     // 点赞
     @PostMapping("/comment/like")
     public R commentOfLike(@RequestBody CommentRequest upCommentRequest) {

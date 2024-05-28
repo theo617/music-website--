@@ -62,4 +62,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         queryWrapper.eq("song_list_id",songListId);
         return R.success(null, commentMapper.selectList(queryWrapper));
     }
+
+    @Override
+    public R commentOfSongListConsumerId(Integer songListConsumerId) {
+        QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("song_list_consumer_id",songListConsumerId);
+        return R.success(null, commentMapper.selectList(queryWrapper));
+    }
 }

@@ -17,4 +17,6 @@ public interface CommentService extends IService<Comment> {
 
     R commentOfSongListId(Integer songListId);
 
+    R commentOfSongListConsumerId(Integer songListConsumerId);
+
 }

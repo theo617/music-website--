@@ -26,4 +26,6 @@ public interface SongListConsumerService extends IService<SongListConsumer> {
     R likeStyle(String style);
 
     R eqUserId(Integer user_id);
+
+    R byId(Integer id);
 }

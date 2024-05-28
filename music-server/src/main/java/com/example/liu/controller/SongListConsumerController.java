@@ -51,5 +51,10 @@ public class SongListConsumerController {
     public R updateSongListConsumerPic(@RequestParam("file") MultipartFile avatorFile, @RequestParam("id") int id) {
         return songListConsumerService.updateSongListConsumerImg(avatorFile, id);
     }
+    @GetMapping("/songListConsumer/byId/detail")
+    public R songListConsumerOfId(@RequestParam Integer id) {
+        return songListConsumerService.byId(id);
+    }
+
 
 }
