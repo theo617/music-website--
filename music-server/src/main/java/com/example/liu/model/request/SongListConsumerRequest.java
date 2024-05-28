@@ -10,6 +10,8 @@ import lombok.Data;
 public class SongListConsumerRequest {
     private Integer id;
 
+    private Integer useId;
+
     private String title;
 
     private String pic;
@@ -17,7 +19,5 @@ public class SongListConsumerRequest {
     private String style;
 
     private String introduction;
-
-    private Integer user_id;
 
 }

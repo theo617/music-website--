@@ -431,11 +431,11 @@ DROP TABLE IF EXISTS `song_list_consumer`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `song_list_consumer` (
                                       `id` int unsigned NOT NULL AUTO_INCREMENT,
+                                      `user_id` int unsigned NOT NULL,
                                       `title` varchar(255) NOT NULL,
                                       `pic` varchar(255) DEFAULT NULL,
                                       `introduction` text,
                                       `style` varchar(10) DEFAULT '无',
-                                      `user_id` int unsigned NOT NULL,
                                       PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -446,7 +446,7 @@ CREATE TABLE `song_list_consumer` (
 
 LOCK TABLES `song_list_consumer` WRITE;
 /*!40000 ALTER TABLE `song_list_consumer` DISABLE KEYS */;
-INSERT INTO `song_list_consumer` VALUES (1,'My Song List','/img/songListPic/123.jpg','This is a test song list for user.','Pop',1);
+INSERT INTO `song_list_consumer` VALUES (1,1,'My Song List','/img/songListPic/123.jpg','This is a test song list for user.','Pop');
 /*!40000 ALTER TABLE `song_list_consumer` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -75,8 +75,12 @@ public class SongListConsumerImpl extends ServiceImpl<SongListConsumerMapper, So
     @Override
     public R byId(Integer id) {
         QueryWrapper<SongListConsumer> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("id",id);
-        return R.success(null, songListConsumerMapper.selectList(queryWrapper));
+        queryWrapper.eq("id", id);
+        List<SongListConsumer> result = songListConsumerMapper.selectList(queryWrapper);
+        if (result == null || result.isEmpty()) {
+            return R.error("没有找到对象");
+        }
+        return R.success(null, result);
     }
 
     @Override

@@ -12,6 +12,8 @@ public class SongListConsumer {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
+    private Integer userId;
+
     private String title;
 
     private String pic;
@@ -20,10 +22,9 @@ public class SongListConsumer {
 
     private String introduction;
 
-    private Integer user_id;
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
+
 }
