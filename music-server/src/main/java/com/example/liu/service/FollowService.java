@@ -8,4 +8,9 @@ import com.example.liu.model.request.FollowRequest;
 public interface FollowService extends IService<Follow> {
     R addFollow(FollowRequest followRequest);
     R deleteFollow(FollowRequest followRequest);
+
+    R listFollowByFollowedId(Integer followedId);
+
+    R listFollowByFollowerId(Integer followedId);
+
 }
