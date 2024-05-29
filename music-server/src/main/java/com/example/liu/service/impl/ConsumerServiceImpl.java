@@ -6,6 +6,7 @@ import com.example.liu.common.R;
 import com.example.liu.controller.MinioUploadController;
 import com.example.liu.mapper.ConsumerMapper;
 import com.example.liu.model.domain.Consumer;
+import com.example.liu.model.domain.SongListConsumer;
 import com.example.liu.model.request.ConsumerRequest;
 import com.example.liu.service.ConsumerService;
 import org.apache.commons.lang3.StringUtils;
@@ -165,6 +166,14 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer>
         queryWrapper.eq("id",id);
         return R.success(null, consumerMapper.selectList(queryWrapper));
     }
+
+    @Override
+    public R likeUsername(String username) {
+        QueryWrapper<Consumer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("username",username);
+        return R.success(null, consumerMapper.selectList(queryWrapper));
+    }
+
 
     @Override
     public R loginStatus(ConsumerRequest loginRequest, HttpSession session) {
