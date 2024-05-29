@@ -5,16 +5,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.liu.common.R;
 import com.example.liu.mapper.FollowMapper;
 import com.example.liu.model.domain.Follow;
+import com.example.liu.model.domain.ListSongConsumer;
 import com.example.liu.model.request.FollowRequest;
 import com.example.liu.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> implements FollowService {
 
     @Autowired
     private FollowMapper followMapper;
+
 
     @Override
     public R addFollow(FollowRequest followRequest) {
@@ -48,4 +52,17 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
             return R.error("取消关注失败");
         }
     }
+    @Override
+    public R listFollowByFollowedId(Integer followedId){
+        QueryWrapper<Follow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("followed_id", followedId);
+        return R.success("查询成功", followMapper.selectList(queryWrapper));
+    }
+
+    public R listFollowByFollowerId(Integer followerId){
+        QueryWrapper<Follow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("follower_id", followerId);
+        return R.success("查询成功", followMapper.selectList(queryWrapper));
+    }
+
 }

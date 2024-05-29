@@ -24,4 +24,20 @@ public class FollowController {
     public R deleteFollow(@RequestBody FollowRequest followRequest) {
         return followService.deleteFollow(followRequest);
     }
+
+    //返回用户的被关注列表
+    @GetMapping("/followed")
+    public R listFollowByFollowedId(@RequestParam Integer followedId) {
+        return followService.listFollowByFollowedId(followedId);
+    }
+
+    //返回用户的关注列表
+    @GetMapping("/follower")
+    public R listFollowByFollowerId(@RequestParam Integer followerId) {
+        return followService.listFollowByFollowerId(followerId);
+    }
+
+
+
+
 }
