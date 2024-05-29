@@ -115,6 +115,12 @@ public class ConsumerController {
         return consumerService.userOfId(id);
     }
 
+    //返回like用户名的用户
+    @GetMapping("/user/likeUsername/detail")
+    public R userLikeUsername(@RequestParam String username) {
+        return consumerService.likeUsername('%' + username + '%');
+    }
+
     /**
      * TODO 管理界面的调用
      * 删除用户
