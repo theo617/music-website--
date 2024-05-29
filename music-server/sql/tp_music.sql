@@ -290,6 +290,8 @@ CREATE TABLE `play_history` (
                                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                                 `user_id` int unsigned NOT NULL,
                                 `song_id` int unsigned NOT NULL,
+                                `duration` int unsigned NOT NULL,
+                                `play_count` int unsigned NOT NULL,
                                 `play_time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                 PRIMARY KEY (`id`),
                                 KEY `fk_play_history_user` (`user_id`),

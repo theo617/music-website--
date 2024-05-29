@@ -24,10 +24,12 @@ public class PlayHistoryServiceImpl extends ServiceImpl<PlayHistoryMapper, PlayH
     @Override
     public R recodePlayHistory(PlayHistoryRequest playHistoryRequest) {
         PlayHistory playHistory = new PlayHistory();
-//        playHistory.setId(playHistoryRequest.getId());
+        playHistory.setId(playHistoryRequest.getId());
         playHistory.setUserId(playHistoryRequest.getUserId());
         playHistory.setSongId(playHistoryRequest.getSongId());
-        playHistory.setPlayTimestamp(playHistoryRequest.getPlayTimestamp());
+        playHistory.setDuration(playHistoryRequest.getDuration());
+        playHistory.setPlayCount(playHistoryRequest.getPlayCount());
+        playHistory.setPlayTimeStamp(playHistoryRequest.getPlayTimeStamp());
         if (playHistoryMapper.insert(playHistory) > 0) {
             return R.success("添加播放历史成功");
         } else {
@@ -36,7 +38,7 @@ public class PlayHistoryServiceImpl extends ServiceImpl<PlayHistoryMapper, PlayH
     }
 
     @Override
-    public R getPlayHistory(Integer userId) {
+    public R getPlayHistory(int userId) {
         QueryWrapper<PlayHistory> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         return R.success("查询成功", playHistoryMapper.selectList(queryWrapper));

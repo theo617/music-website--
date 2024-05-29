@@ -13,5 +13,5 @@ import com.example.liu.model.request.PlayHistoryRequest;
 public interface PlayHistoryService extends IService<PlayHistory> {
     R recodePlayHistory(PlayHistoryRequest playHistoryRequest);
 
-    R getPlayHistory(Integer userId);
+    R getPlayHistory(int userId);
 }

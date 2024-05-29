@@ -11,11 +11,15 @@ import java.sql.Timestamp;
  */
 @Data
 public class PlayHistoryRequest {
-    private Integer id;
+    private int id;
 
-    private Integer userId;
+    private int userId;
 
-    private Integer songId;
+    private int songId;
+
+    private int duration;
+
+    private int playCount;
 
     private Timestamp playTimeStamp;
 }
