@@ -332,12 +332,43 @@ CREATE TABLE `complaints` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `play_history`
+-- Dumping data for table `complaints`
 --
 
-LOCK TABLES `play_history` WRITE;
-/*!40000 ALTER TABLE `play_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `play_history` ENABLE KEYS */;
+LOCK TABLES `complaints` WRITE;
+/*!40000 ALTER TABLE `complaints` DISABLE KEYS */;
+/*!40000 ALTER TABLE `complaints` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `appeals`
+--
+DROP TABLE IF EXISTS `appeals`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `appeals` (
+                              `id` int unsigned NOT NULL AUTO_INCREMENT,
+                              `complaint_id` int unsigned NOT NULL,
+                              `user_id` int unsigned NOT NULL,
+                              `reason` text NOT NULL,
+                              `status` enum('PENDING', 'REVIEWED', 'DISMISSED') DEFAULT 'PENDING' NOT NULL,
+                              `create_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+                              `update_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                              PRIMARY KEY (`id`),
+                              KEY `fk_appeals_user` (`user_id`),
+                              KEY `fk_appeals_complaint` (`complaint_id`),
+                              CONSTRAINT `fk_appeals_user` FOREIGN KEY (`user_id`) REFERENCES `consumer` (`id`),
+                              CONSTRAINT `fk_appeals_complaint` FOREIGN KEY (`complaint_id`) REFERENCES `complaints` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `appeals`
+--
+
+LOCK TABLES `appeals` WRITE;
+/*!40000 ALTER TABLE `appeals` DISABLE KEYS */;
+/*!40000 ALTER TABLE `appeals` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

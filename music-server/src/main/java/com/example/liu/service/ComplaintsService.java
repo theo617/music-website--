@@ -21,5 +21,5 @@ public interface ComplaintsService extends IService<Complaints> {
     R viewAllComplaints();
 
     // 更新投诉状态
-    R updateComplaintStatus(ComplaintStatusUpdateRequest complaintStatusUpdateRequest);
+    R updateComplaintStatus(int id, ComplaintStatusUpdateRequest complaintStatusUpdateRequest);
 }

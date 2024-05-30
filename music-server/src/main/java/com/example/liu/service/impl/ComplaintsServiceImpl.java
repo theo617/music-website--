@@ -46,7 +46,7 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
     @Override
     public R viewAllComplaints() {
         List<Complaints> allComplaints = complaintsMapper.selectList(null);
-        if (allComplaints == null) {
+        if (allComplaints == null || allComplaints.size() == 0) {
             return R.error("当前没有投诉信息");
         } else {
             return R.success("查询成功", allComplaints);
@@ -54,8 +54,8 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
     }
 
     @Override
-    public R updateComplaintStatus(ComplaintStatusUpdateRequest complaintStatusUpdateRequest) {
-        Complaints complaints = complaintsMapper.selectById(complaintStatusUpdateRequest.getId());
+    public R updateComplaintStatus(int id, ComplaintStatusUpdateRequest complaintStatusUpdateRequest) {
+        Complaints complaints = complaintsMapper.selectById(id);
         if (complaints == null) {
             return R.error("投诉信息不存在");
         }

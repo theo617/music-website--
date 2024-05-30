@@ -1,6 +1,6 @@
 package com.example.liu.model.request;
 
-import com.example.liu.model.domain.Complaints;
+import com.example.liu.model.domain.Appeals;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -8,12 +8,12 @@ import java.sql.Timestamp;
 /**
  * @author 544
  * @Description:
- * @date 2024/5/30 9:04
+ * @date 2024/5/30 11:50
  */
 @Data
-public class ComplaintStatusUpdateRequest {
+public class AppealStatusUpdateRequest {
 
-    private Complaints.Status status;
+    private Appeals.Status status;
 
     private Timestamp updateAt;
 }
