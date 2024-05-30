@@ -5,35 +5,32 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
  * @author 544
  * @Description:
- * @date 2024/5/29 9:08
+ * @date 2024/5/30 17:06
  */
-
-@TableName(value = "play_history")
+@TableName(value = "weekly_report")
 @Data
-public class PlayHistory implements Serializable {
+public class WeeklyReport implements Serializable {
 
     @TableId(type = IdType.AUTO)
     private int id;
 
     private int userId;
 
-    private int songId;
-
-    private int singerId;
-
-    private int duration;
-
     private int playCount;
 
-    private Timestamp playTimeStamp;
+    private int playTotalTime;
+
+    private Date weekStartDate;
+
+    private Date weekEndDate;
 
     @Override
     public String toString() {

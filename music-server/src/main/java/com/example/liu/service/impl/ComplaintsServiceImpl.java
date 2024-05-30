@@ -3,7 +3,13 @@ package com.example.liu.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.liu.common.R;
 import com.example.liu.mapper.ComplaintsMapper;
+import com.example.liu.mapper.ConsumerMapper;
+import com.example.liu.mapper.SongListMapper;
+import com.example.liu.mapper.SongMapper;
 import com.example.liu.model.domain.Complaints;
+import com.example.liu.model.domain.Consumer;
+import com.example.liu.model.domain.Song;
+import com.example.liu.model.domain.SongList;
 import com.example.liu.model.request.ComplaintStatusUpdateRequest;
 import com.example.liu.model.request.ComplaintsRequest;
 import com.example.liu.service.ComplaintsService;
@@ -22,17 +28,52 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
 
     @Autowired
     private ComplaintsMapper complaintsMapper;
+    @Autowired
+    private ConsumerMapper consumerMapper;
+    @Autowired
+    private SongMapper songMapper;
+    @Autowired
+    private SongListMapper songListMapper;
 
     @Override
     public R submitComplaints(ComplaintsRequest complaintsRequest) {
         Complaints complaints = new Complaints();
 
-        complaints.setId(complaintsRequest.getId());
-        complaints.setUserId(complaintsRequest.getUserId());
-        complaints.setTargetType(complaintsRequest.getTargetType());
-        complaints.setTargetId(complaintsRequest.getTargetId());
+        int userId = complaintsRequest.getUserId();
+        Consumer consumer = consumerMapper.selectById(userId);
+        if (consumer == null) {
+            return R.error("不存在该用户");
+        }
+        complaints.setUserId(userId);
+
+        Complaints.TargetType targetType = complaintsRequest.getTargetType();
+        if (!(targetType.toString().equals("SONG") || targetType.toString().equals("PLAYLIST"))) {
+            return R.error("收藏目标对象的类型有误");
+        }
+        complaints.setTargetType(targetType);
+
+        int targetId = complaints.getTargetId();
+//        if (targetType.toString().equals("SONG")) {
+//            Song song = songMapper.selectById(targetId);
+//            if (song == null) {
+//                return R.error("不存在该歌曲");
+//            }
+//        } else {
+//            SongList songList = songListMapper.selectById(targetId);
+//            if (songList == null) {
+//                return R.error("不存在该歌单");
+//            }
+//        }
+        complaints.setTargetId(targetId);
+
         complaints.setReason(complaintsRequest.getReason());
-        complaints.setStatus(complaintsRequest.getStatus());
+
+        Complaints.Status status = complaintsRequest.getStatus();
+        if (!(status.toString().equals("PENDING") || status.toString().equals("DISMISSED") || status.toString().equals("VIEWED"))) {
+            return R.error("不存在该状态");
+        }
+        complaints.setStatus(status);
+
         complaints.setCreateAt(complaintsRequest.getCreateAt());
         complaints.setUpdateAt(complaintsRequest.getUpdateAt());
 

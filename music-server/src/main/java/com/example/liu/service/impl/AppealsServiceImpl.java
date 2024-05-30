@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.liu.common.R;
 import com.example.liu.mapper.AppealsMapper;
 import com.example.liu.mapper.ComplaintsMapper;
+import com.example.liu.mapper.ConsumerMapper;
 import com.example.liu.model.domain.Appeals;
 import com.example.liu.model.domain.Complaints;
+import com.example.liu.model.domain.Consumer;
 import com.example.liu.model.request.AppealStatusUpdateRequest;
 import com.example.liu.model.request.AppealsRequest;
 import com.example.liu.service.AppealsService;
@@ -29,12 +31,12 @@ public class AppealsServiceImpl extends ServiceImpl<AppealsMapper, Appeals> impl
     private AppealsMapper appealsMapper;
     @Autowired
     private ComplaintsMapper complaintsMapper;
+    @Autowired
+    private ConsumerMapper consumerMapper;
 
     @Override
     public R submitAppeals(AppealsRequest appealsRequest) {
         Appeals appeals = new Appeals();
-
-        appeals.setId(appealsRequest.getId());
 
         int complaintId = appealsRequest.getComplaintId();
         QueryWrapper<Complaints> queryWrapper = new QueryWrapper<>();
@@ -43,9 +45,15 @@ public class AppealsServiceImpl extends ServiceImpl<AppealsMapper, Appeals> impl
         if (result == null || result.isEmpty()) {
             return R.error("不存在该投诉信息");
         }
-
         appeals.setComplaintId(complaintId);
-        appeals.setUserId(appealsRequest.getUserId());
+
+        int userId = appealsRequest.getUserId();
+        Consumer consumer = consumerMapper.selectById(userId);
+        if (consumer == null) {
+            return R.error("不存在该用户");
+        }
+        appeals.setUserId(userId);
+
         appeals.setReason(appealsRequest.getReason());
         appeals.setStatus(appealsRequest.getStatus());
         appeals.setCreateAt(appealsRequest.getCreateAt());
