@@ -66,7 +66,8 @@ export default defineComponent({
     songList: Array,
     songListConsumerId: {
       type: Number,
-      required: true,
+      required: false, // 设置为非必须
+      default: 0, // 设置默认值
     },
     showDelete: {
       type:Boolean,

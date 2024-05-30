@@ -47,7 +47,7 @@
             <el-button>更新歌曲</el-button>
           </el-upload>
             <br />
-           <el-upload :action="updateSongLrc(scope.row.id)" :show-file-list="false" :on-success="handleSongSuccess" :before-upload="beforeSongUpload">
+           <el-upload :action="updateSongLrc(scope.row.id)" :show-file-list="false" :on-success="handleLyricsSuccess" :before-upload="beforeLrcUpload" >
             <el-button>更新歌词</el-button>
           </el-upload>
         </template>
@@ -125,7 +125,7 @@
   </el-dialog>
 
   <!-- 删除提示框 -->
-  <yin-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></yin-del-dialog>
+  <tsy-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></tsy-del-dialog>
 </template>
 
 <script lang="ts">
@@ -135,15 +135,15 @@ import mixin from "@/mixins/mixin";
 import { Icon, RouterName } from "@/enums";
 import { HttpManager } from "@/api";
 import { parseLyric } from "@/utils";
-import YinDelDialog from "@/components/dialog/YinDelDialog.vue";
+import tsyDelDialog from "@/components/dialog/tsyDelDialog.vue";
 
 export default defineComponent({
   components: {
-    YinDelDialog,
+    tsyDelDialog,
   },
   setup() {
     const { proxy } = getCurrentInstance();
-    const { routerManager, beforeImgUpload, beforeSongUpload } = mixin();
+    const { routerManager, beforeImgUpload, beforeSongUpload,beforeLrcUpload } = mixin();
     const store = useStore();
 
     const tableData = ref([]); // 记录歌曲，用于显示
@@ -405,6 +405,7 @@ export default defineComponent({
       handleCurrentChange,
       handleImgSuccess,
       beforeImgUpload,
+      beforeLrcUpload,
       parseLyric,
       saveEdit,
       updateSongImg,
@@ -419,6 +420,7 @@ export default defineComponent({
       setSongUrl,
       handleLyricsSuccess,
       goCommentPage,
+      beforeSongUpload,
     };
   },
 });

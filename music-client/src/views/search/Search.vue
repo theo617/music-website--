@@ -10,12 +10,14 @@ import { defineComponent } from "vue";
 import TsyNav from "@/components/layouts/TsyNav.vue";
 import SearchSong from "./SearchSong.vue";
 import SearchSongList from "./SearchSongList.vue";
+import SearchUser from "./SearchUser.vue";
 
 export default defineComponent({
   components: {
     TsyNav,
     SearchSong,
     SearchSongList,
+    SearchUser,
   },
   data() {
     return {
@@ -27,6 +29,10 @@ export default defineComponent({
         {
           name: "歌单",
           value: "SearchSongList",
+        },
+        {
+          name: "用户",
+          value: "SearchUser",
         },
       ],
       activeName: "歌曲",

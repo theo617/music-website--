@@ -1,17 +1,17 @@
 <template>
-  <yin-header></yin-header>
-  <yin-aside></yin-aside>
+  <tsy-header></tsy-header>
+  <tsy-aside></tsy-aside>
   <div class="content-box" :class="{ 'content-collapse': collapse }">
     <router-view></router-view>
   </div>
-  <yin-audio></yin-audio>
+  <tsy-audio></tsy-audio>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import YinHeader from "@/components/layouts/YinHeader.vue";
-import YinAudio from "@/components/layouts/YinAudio.vue";
-import YinAside from "@/components/layouts/YinAside.vue";
+import tsyHeader from "@/components/layouts/tsyHeader.vue";
+import tsyAudio from "@/components/layouts/tsyAudio.vue";
+import tsyAside from "@/components/layouts/tsyAside.vue";
 import emitter from "@/utils/emitter";
 
 const collapse = ref(false);

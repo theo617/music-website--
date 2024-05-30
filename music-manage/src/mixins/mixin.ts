@@ -34,7 +34,7 @@ export default function () {
       (proxy as any).$message.error(`图片只支持 ${uploadTypes.value.join("、")} 格式!`);
     }
     if (!isLt2M) {
-      (proxy as any).$message.error(`上传头像图片大小不能超过 ${ltCode}MB!`);
+      (proxy as any).$message.error(`上传图片大小不能超过 ${ltCode}MB!`);
     }
     
     return isExistFileType && isLt2M;
@@ -53,12 +53,29 @@ export default function () {
       });
     }
     if (!isLt10M) {
-      (proxy as any).$message.error(`上传头像图片大小不能超过 ${ltCode}MB!`);
+      (proxy as any).$message.error(`上传歌曲大小不能超过 ${ltCode}MB!`);
     }
 
     return extension && isLt10M;
   }
 
+  function beforeLrcUpload(file) {
+    const ltCode = 1; // 1MB
+    const isLt1M = file.size / 1024 / 1024 < ltCode;
+    const extension = file.name.split('.').pop().toLowerCase() === "lrc";
+  
+    if (!extension) {
+      (proxy as any).$message({
+        message: "上传文件只能是lrc格式！",
+        type: "error",
+      });
+    }
+    if (!isLt1M) {
+      (proxy as any).$message.error(`上传歌词文件大小不能超过 ${ltCode}MB!`);
+    }
+  
+    return extension && isLt1M;
+  }
   // 路由管理
   function routerManager(routerName: string | number, options: routerOptions) {
     switch (routerName) {
@@ -86,5 +103,5 @@ export default function () {
     proxy.$router.go(step);
   }
 
-  return { changeSex, routerManager, goBack, beforeImgUpload, beforeSongUpload };
+  return { changeSex, routerManager, goBack, beforeImgUpload, beforeSongUpload, beforeLrcUpload, };
 }

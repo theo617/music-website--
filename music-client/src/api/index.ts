@@ -34,31 +34,60 @@ const HttpManager = {
   // =======================> 歌手 API  完成
   // 返回所有歌手
   getAllSinger: () => get("singer"),
+  // 添加歌手
+  setSinger: ({name, sex, birth, location, introduction}) => post(`singer/add`, {
+    name,
+    sex,
+    birth,
+    location,
+    introduction
+}),
   // 通过性别对歌手分类
   getSingerOfSex: (sex) => get(`singer/sex/detail?sex=${sex}`),
-
+  // 根据用户名查找用户
+  getUserLikeUsername: (username) => get(`user/likeUsername/detail?username=${username}`),
+  // 关注歌手
+  addFollow: ({followerId,followedId}) => post(`users/{id}/follow`,{followerId,followedId}),
+  deleteFollow: (followerId,followedId) => get(`users/follow?followerId=${followerId}&&followedId=${followedId}`),
+  //返回我关注的人
+  myFollow: (followerId) => get(`users/follower?followerId=${followerId}`),
+  //返回关注我的人
+  followMe: (followedId) => get(`users/followed?followedId=${followedId}`),
   // =======================> 收藏 API 完成
   // 返回的指定用户ID的收藏列表
   getCollectionOfUser: (userId) => get(`collection/detail?userId=${userId}`),
-  // 添加收藏的歌曲 type: 0 代表歌曲， 1 代表歌单
+  // 添加收藏的歌曲 type: 0 代表歌曲， 1 代表歌单S
   setCollection: ({userId,type,songId}) => post(`collection/add`,{userId,type,songId}),
 
   deleteCollection: (userId, songId) => deletes(`collection/delete?userId=${userId}&&songId=${songId}`),
 
   isCollection: ({userId, type, songId}) => post(`collection/status`, {userId, type, songId}),
-
+  // =======================>歌曲 API 
+  // 更新歌曲信息
+  updateSongMsg: ({id, singerId, name, introduction, lyric}) => post(`song/update`, {
+    id,
+    singerId,
+    name,
+    introduction,
+    lyric
+}),
+  updateSongUrl: (id) => `${getBaseURL()}/song/url/update?id=${id}`,
+  updateSongImg: (id) => `${getBaseURL()}/song/img/update?id=${id}`,
+  updateSongLrc: (id) => `${getBaseURL()}/song/lrc/update?id=${id}`,
+    // 删除歌曲
+    deleteSong: (id) => deletes(`song/delete?id=${id}`),
   //返回所有用户的歌单
   allSongListConsumer: () => get("songListConsumer"),
   // 返回指定用户ID的收藏歌单列表
-  songListConsumerOfUserId: (user_id) => get(`songListConsumer/likeUserId/detail?user_id=${user_id}`),
+  songListConsumerOfUserId: (userId) => get(`songListConsumer/likeUserId/detail?userId=${userId}`),
 // 创建新的歌单
-  addSongListConsumer: ({title, user_id, style, introduction  }) => post(`songListConsumer/add`, { title, user_id, style, introduction }),
+  addSongListConsumer: ({title, userId, style, introduction  }) => post(`songListConsumer/add`, { title, userId, style, introduction }),
 //标题搜索歌单
   songListConsumerOfLikeTitle: (title) => get(`songListConsumer/likeTitle/detail?title=${title}`),
 //删除用户歌单
   deleteSongListConsumer: (id) => get(`songListConsumer/delete?id=${id}`),
   //更新歌单信息
-  updateSongListConsumerMsg: ({title, user_id, style, introduction, id  }) => post(`songListConsumer/update`,{ title, user_id, style, introduction, id }),
+  updateSongListConsumerMsg: ({title, userId, style, introduction, id  }) => post(`songListConsumer/update`,{ title, userId, style, introduction, id }),
   //更新歌单图片
   updateSongListConsumerPic: ({avatorFile,id}) => post(`songListConsumer/img/update`,{avatorFile,id}),
 
@@ -83,7 +112,7 @@ const HttpManager = {
 
   // =======================> 评论 API 完成
   // 添加评论
-  setComment: ({userId,content,songId,songListId,nowType}) => post(`comment/add`, {userId,content,songId,songListId,nowType}),
+  setComment: ({userId,content,songId,songListId,songListConsumerId,nowType}) => post(`comment/add`, {userId,content,songId,songListId,songListConsumerId,nowType}),
   // 删除评论
   deleteComment: (id) => get(`comment/delete?id=${id}`),
   // 点赞
@@ -95,6 +124,8 @@ const HttpManager = {
       url = `comment/songList/detail?songListId=${id}`;
     } else if (type === 0) {
       url = `comment/song/detail?songId=${id}`;
+    } else if (type === 2){
+      url = `comment/songListConsumer/detail?songListConsumerId=${id}`;
     }
     return get(url);
   },

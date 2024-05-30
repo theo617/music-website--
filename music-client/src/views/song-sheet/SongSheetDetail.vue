@@ -3,25 +3,12 @@
     <el-aside class="album-slide">
       <el-image class="album-img" fit="contain" :src="attachImageUrl(songDetails.pic)" />
       <h3 class="album-info">{{ songDetails.title }}</h3>
-      <el-button type="primary" @click="collectSongList">收藏</el-button>
+      <el-button v-if="collect" type="primary" @click="collectSongList">收藏</el-button>
     </el-aside>
     <el-main class="album-main">
       <div class="album-header">
         <h1>{{ songDetails.title }}</h1>
         <p>{{ songDetails.introduction }}</p>
-      </div>
-      <!--评分-->
-      <div class="album-score">
-        <div class="score-item">
-          <h3>歌单评分</h3>
-          <el-rate v-model="rank" allow-half disabled></el-rate>
-          <span>{{ rank * 2 }}</span>
-        </div>
-        <div class="score-item">
-          <h3>{{ assistText }}</h3>
-          <el-rate allow-half v-model="score" :disabled="disabledRank" @change="pushValue"></el-rate>
-          <span>{{ score * 2 }}</span>
-        </div>
       </div>
       <!--歌曲-->
       <song-list class="album-body" :songList="currentSongList"></song-list>
@@ -31,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive,computed, getCurrentInstance } from "vue";
+import { defineComponent, ref, reactive,computed, getCurrentInstance,watch } from "vue";
 import { useStore } from "vuex";
 import mixin from "@/mixins/mixin";
 import SongList from "@/components/SongList.vue";
@@ -57,11 +44,15 @@ export default defineComponent({
     const songDetails = computed(() => store.getters.songDetails); // 单个歌单信息
     const nowUserId = computed(() => store.getters.userId);
     const userId = computed(() => store.getters.userId);
+    const collect=ref(false);
   
     nowSongListId.value = songDetails.value.id; // 给歌单ID赋值
   
     // 收集歌单里面的歌曲
     async function getSongId(id) {
+      if(checkStatus){
+        collect.value=true;
+      }
       const result = (await HttpManager.getListSongOfSongId(id)) as ResponseBody;
       // 获取歌单里的歌曲信息
       for (const item of result.data) {
@@ -70,40 +61,7 @@ export default defineComponent({
         currentSongList.value.push(resultSong.data[0]);
       }
     }
-    // 获取评分
-    async function getRank(id) {
-      const result = (await HttpManager.getRankOfSongListId(id)) as ResponseBody;
-      nowRank.value = result.data / 2;
-    }
-    async function getUserRank(userId, songListId) {
-      const result = (await HttpManager.getUserRank(userId, songListId)) as ResponseBody;
-      nowScore.value = result.data / 2;
-      disabledRank.value = true;
-      assistText.value = "已评价";
-    }
-    // 提交评分
-    async function pushValue() {
-      if (disabledRank.value || !checkStatus()) return;
-
-      const songListId = nowSongListId.value;
-      var consumerId = nowUserId.value;
-      const score = nowScore.value * 2;
-      try {
-        const result = (await HttpManager.setRank({ songListId, consumerId, score })) as ResponseBody;
-        (proxy as any).$message({
-          message: result.message,
-          type: result.type,
-        });
-
-        if (result.success) {
-          getRank(nowSongListId.value);
-          disabledRank.value = true;
-          assistText.value = "已评价";
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    //判断登录
     
     //添加歌单逻辑
     const newSongList = reactive({
@@ -119,7 +77,7 @@ export default defineComponent({
       let introduction = newSongList.introduction;
       let style = newSongList.style;
       let user_id=userId.value;
-      const result = (await HttpManager.addSongListConsumer({title, user_id,style,introduction})) as ResponseBody;
+      const result = (await HttpManager.addSongListConsumer({title, userId:user_id,style,introduction})) as ResponseBody;
       (proxy as any).$message({
         message: result.message,
         type: result.type,
@@ -146,8 +104,6 @@ export default defineComponent({
   
     }
 
-    getUserRank(nowUserId.value, nowSongListId.value);
-    getRank(nowSongListId.value); // 获取评分
     getSongId(nowSongListId.value); // 获取歌单里面的歌曲ID
 
     return {
@@ -157,9 +113,9 @@ export default defineComponent({
       disabledRank,
       assistText,
       currentSongList,
+      collect,
       songListId: nowSongListId,
       attachImageUrl: HttpManager.attachImageUrl,
-      pushValue,
       collectSongList,
     };
   },

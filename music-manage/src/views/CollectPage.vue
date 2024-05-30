@@ -22,14 +22,14 @@
   </div>
 
   <!-- 删除提示框 -->
-  <yin-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></yin-del-dialog>
+  <tsy-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></tsy-del-dialog>
 </template>
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance, watch, ref, computed } from "vue";
 import { useStore } from "vuex";
 import { HttpManager } from "@/api";
-import YinDelDialog from "@/components/dialog/YinDelDialog.vue";
+import tsyDelDialog from "@/components/dialog/tsyDelDialog.vue";
 
 interface ResponseBody {
   code: string;
@@ -40,7 +40,7 @@ interface ResponseBody {
 
 export default defineComponent({
   components: {
-    YinDelDialog,
+    tsyDelDialog,
   },
   setup() {
     const { proxy } = getCurrentInstance();

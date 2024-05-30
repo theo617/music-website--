@@ -16,8 +16,9 @@
       <el-button class="edit-info" round icon="el-icon-edit" @click="goPage()">修改个人信息</el-button>
     </div>
     <div class="personal-nav">
+      <el-button @click="goToPage('personalCollect')">❤ 我喜欢的音乐</el-button>
       <el-button @click="goToPage('personalSongList')">歌单</el-button>
-      <el-button @click="goToPage('personalSong')">原创歌曲</el-button>
+      <el-button @click="goToPage('personal-Song')">原创歌曲</el-button>
       <el-button @click="goToPage('personalMessage')">消息</el-button>
     </div>
     <el-dialog v-model="dialogTableVisible" title="修改头像">
@@ -79,10 +80,17 @@ export default defineComponent({
       // Populate follow, fans, and activity counts as well
     }
     
-    
+     // 获取关注和粉丝数量
+     async function getFollowInfo(id) {
+      const followResult = (await HttpManager.myFollow(id)) as ResponseBody;
+      const fansResult = (await HttpManager.followMe(id)) as ResponseBody;
+      personalInfo.follow = followResult.data.length;
+      personalInfo.fans = fansResult.data.length;
+    }
 
     onMounted(() => {
       getUserInfo(userId.value);
+      getFollowInfo(userId.value);
     });
 
 

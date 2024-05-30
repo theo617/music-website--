@@ -66,7 +66,7 @@
   </div>
 
   <!-- 删除提示框 -->
-  <yin-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></yin-del-dialog>
+  <tsy-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></tsy-del-dialog>
 </template>
 
 <script lang="ts">
@@ -74,12 +74,12 @@ import { defineComponent, getCurrentInstance, watch, ref, reactive, computed } f
 import mixin from "@/mixins/mixin";
 import { HttpManager } from "@/api";
 import { RouterName } from "@/enums";
-import YinDelDialog from "@/components/dialog/YinDelDialog.vue";
+import tsyDelDialog from "@/components/dialog/tsyDelDialog.vue";
 import { getBirth } from "@/utils";
 
 export default defineComponent({
   components: {
-    YinDelDialog,
+    tsyDelDialog,
   },
   setup() {
     const { proxy } = getCurrentInstance();

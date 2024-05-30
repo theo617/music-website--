@@ -84,6 +84,7 @@ export default defineComponent({
 
     .card-img {
       width: 100%;
+      object-fit: cover;
       transition: all 0.4s ease;
     }
   }

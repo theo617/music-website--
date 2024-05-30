@@ -43,7 +43,7 @@ const { checkStatus } = mixin();
 
 const props = defineProps({
   playId: [String, Number], // 歌曲ID 或 歌单ID
-  type: Number, // 歌单 1 / 歌曲 0
+  type: Number, // 歌单 1 / 歌曲 0 /用户歌单2
 });
 
 const { playId, type } = toRefs(props);
@@ -87,6 +87,7 @@ async function submitComment() {
   // 0 代表歌曲， 1 代表歌单
   let songListId = null;
   let songId = null;
+  let songListConsumerId = null;
   let nowType = null;
   if (type.value === 1) {
     nowType = 1;
@@ -95,9 +96,13 @@ async function submitComment() {
     nowType = 0;
     songId = `${playId.value}`;
   }
+  else if (type.value === 2) {
+    nowType = 2;
+    songListConsumerId = `${playId.value}`;
+  }
 
   const content = textarea.value;
-  const result = (await HttpManager.setComment({ userId: userId.value, content, songId, songListId, nowType })) as ResponseBody;
+  const result = (await HttpManager.setComment({ userId: userId.value, content, songId, songListId, songListConsumerId,nowType })) as ResponseBody;
   (proxy as any).$message({
     message: result.message,
     type: result.type,

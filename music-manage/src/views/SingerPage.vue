@@ -128,20 +128,20 @@
   </el-dialog>
 
   <!-- 删除提示框 -->
-  <yin-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></yin-del-dialog>
+  <tsy-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></tsy-del-dialog>
 </template>
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance, watch, ref, reactive, computed } from "vue";
 import mixin from "@/mixins/mixin";
-import YinDelDialog from "@/components/dialog/YinDelDialog.vue";
+import tsyDelDialog from "@/components/dialog/tsyDelDialog.vue";
 import { HttpManager } from "@/api/index";
 import { RouterName } from "@/enums";
 import { getBirth } from "@/utils";
 
 export default defineComponent({
   components: {
-    YinDelDialog,
+    tsyDelDialog,
   },
   setup() {
     const { proxy } = getCurrentInstance();

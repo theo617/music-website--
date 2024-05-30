@@ -99,7 +99,7 @@
   </el-dialog>
 
   <!-- 删除提示框 -->
-  <yin-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></yin-del-dialog>
+  <tsy-del-dialog :delVisible="delVisible" @confirm="confirm" @cancelRow="delVisible = $event"></tsy-del-dialog>
 </template>
 
 <script lang="ts">
@@ -107,11 +107,11 @@ import {computed, defineComponent, getCurrentInstance, reactive, ref, watch} fro
 import mixin from "@/mixins/mixin";
 import {HttpManager} from "@/api/index";
 import {RouterName} from "@/enums";
-import YinDelDialog from "@/components/dialog/YinDelDialog.vue";
+import tsyDelDialog from "@/components/dialog/tsyDelDialog.vue";
 import axios from 'axios';
 export default defineComponent({
   components: {
-    YinDelDialog,
+    tsyDelDialog,
   },
   setup() {
     const {proxy} = getCurrentInstance();

@@ -56,7 +56,7 @@ export default defineComponent({
     const {proxy} = getCurrentInstance();
     const store = useStore();
     const songLists = ref([]);
-    const userId = computed(() => store.getters.userId);
+    const nowUserId = computed(() => store.getters.userId);
     const centerDialogVisible = ref(false); //控制弹出添加歌单对话框
     const pageSize = ref(15); // 页数
     const currentPage = ref(1); // 当前页
@@ -70,7 +70,7 @@ export default defineComponent({
     }
 
     try {
-      getsongListConsumerOfUserId(userId.value);
+      getsongListConsumerOfUserId(nowUserId.value);
     } catch (error) {
       console.error(error);
     }
@@ -91,15 +91,15 @@ export default defineComponent({
       let title = newSongList.title;
       let introduction = newSongList.introduction;
       let style = newSongList.style;
-      let user_id=userId.value;
-      const result = (await HttpManager.addSongListConsumer({title, user_id,style,introduction})) as ResponseBody;
+      let userId=nowUserId.value;
+      const result = (await HttpManager.addSongListConsumer({title, userId,style,introduction})) as ResponseBody;
       (proxy as any).$message({
         message: result.message,
         type: result.type,
       });
       
       if(result.success){
-        getsongListConsumerOfUserId(userId.value);
+        getsongListConsumerOfUserId(nowUserId.value);
         newSongList.title="";
         newSongList.introduction="";
         newSongList.style="";

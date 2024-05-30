@@ -45,9 +45,22 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/personal/personalSongList.vue"),
       },
       {
+        path: '/personalCollect',
+        name: 'personalCollect',
+        meta: {
+          requireAuth: true,
+        },
+        component: () => import('@/views/personal/personalCollect.vue'),
+      },
+      {
         path: "/song-sheet",
         name: "song-sheet",
         component: () => import("@/views/song-sheet/SongSheet.vue"),
+      },
+      {
+        path: "/user-song-list/:id",
+        name: "user-song-list",
+        component: () => import("@/views/user/UserSongList.vue"),
       },
       {
         path: "/song-sheet-detail/:id",
@@ -55,9 +68,24 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/song-sheet/SongSheetDetail.vue"),
       },
       {
+        path: "/user-home/:id",
+        name: "user-home",
+        component: () => import("@/views/user/UserHome.vue"),
+      },
+      {
+        path: "/user-song/:id",
+        name: "user-song",
+        component: () => import("@/views/user/UserSong.vue"),
+      },
+      {
         path: "/personal-song-sheet-detail/:id",
         name: "personal-song-sheet-detail",
         component: () => import("@/views/personal/personalSongSheetDetail.vue"),
+      },
+      {
+        path: "/personal-song",
+        name: "personal-song",
+        component: () => import("@/views/personal/personalSong.vue"),
       },
       {
         path: "/singer",

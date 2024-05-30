@@ -4,11 +4,11 @@
       <el-image class="album-img" fit="contain" :src="attachImageUrl(songDetails.pic)" />
       <h3 class="album-info">{{ songDetails.title }}</h3>
       <div class="creator-info">
-        <el-image class="creator-img" fit="contain" :src="attachImageUrl(creator.avator)" />
+        <el-image class="creator-img" fit="contain" :src="attachImageUrl(creator.avator)" @click="goToUserHome(creator.userId)" />
         <span>创建者：{{ creator.username }}</span>
       </div>
       <div class="button-group">
-        <el-button type="primary" @click="collectSongList">
+        <el-button v-if="collect" type="primary" @click="collectSongList">
           <Collection style="width:1em;height:1em; margin-right: 5px;" />
           收藏歌单
         </el-button>
@@ -24,11 +24,11 @@
               更新图片
             </el-button>
           </el-upload>
-          <el-button type="warning" @click="editDialogVisible = true">
+          <el-button type="warning" @click="editDialogVisible = true" round>
             <EditPen style="width:1em;height:1em; margin-right: 5px;fill:aliceblue" />
             编辑歌单
           </el-button>
-          <el-button type="danger" @click="delVisible=true">
+          <el-button type="danger" @click="delVisible=true" round>
             <Delete style="width:1em;height:1em; margin-right: 5px;" />
             删除歌单
           </el-button>
@@ -42,7 +42,7 @@
       </div>
       <!--歌曲-->
       <song-list class="album-body" :songList="currentSongList" :showDelete="isCreator" @deleteSong="deleteSong" :songListConsumerId="songDetails.id"></song-list>
-      <comment :playId="songListId" :type="1"></comment>
+      <comment :playId="songListId" :type="2"></comment>
     </el-main>
   </el-container>
   <el-dialog title="编辑歌单" v-model="editDialogVisible">
@@ -103,6 +103,7 @@ export default defineComponent({
     nowSongListId.value = songDetails.value.id; // 给歌单ID赋值
     const dialogImgVisible = ref(false); //修改图片控件
     const editDialogVisible = ref(false);  //编辑控件
+    const collect = ref(false); //判断是否显示收藏
     //歌单创建者信息
     const creator = reactive({
       username: '',
@@ -134,6 +135,9 @@ export default defineComponent({
     watch([nowUserId, userId], ([newNowUserId, newUserId]) => {
       if (checkStatus() && newNowUserId && newUserId) {
         isCreator.value = newNowUserId === newUserId;
+      }
+      if (checkStatus() ) {
+        collect.value=true;
       }
     });
 
@@ -169,7 +173,7 @@ export default defineComponent({
       let introduction = newSongList.introduction;
       let style = newSongList.style;
       let user_id=userId.value;
-      const result = (await HttpManager.addSongListConsumer({title, user_id,style,introduction})) as ResponseBody;
+      const result = (await HttpManager.addSongListConsumer({title, userId:user_id,style,introduction})) as ResponseBody;
       (proxy as any).$message({
         message: result.message,
         type: result.type,
@@ -226,7 +230,7 @@ export default defineComponent({
       let style = editSongList.style;
       let user_id = userId.value;
       let id = songDetails.value.id;
-      const result = (await HttpManager.updateSongListConsumerMsg({ title, user_id, style, introduction, id })) as ResponseBody;
+      const result = (await HttpManager.updateSongListConsumerMsg({ title, userId:user_id, style, introduction, id })) as ResponseBody;
       (proxy as any).$message({
         message: result.message,
         type: result.type,
@@ -268,6 +272,11 @@ export default defineComponent({
       songDetails.value.pic = response.data;
     }
     getSongId(songDetails.value.id); // 获取歌单里面的歌曲ID
+    //跳转到创建者主页
+    const goToUserHome = (userId) => {
+      routerManager('user-home', { path: `/user-home/${userId}` });
+    };
+
 
     return {
       songDetails,
@@ -286,12 +295,14 @@ export default defineComponent({
       uploadUrl,
       handleImgSuccess,
       beforeImgUpload,
+      goToUserHome,
       creator,
       Picture,
       Collection,
       EditPen,
       Delete,
       isCreator,
+      collect,
       nowUserId,
     };
   },
