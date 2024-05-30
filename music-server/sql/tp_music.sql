@@ -311,6 +311,36 @@ LOCK TABLES `play_history` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `complaints`
+--
+DROP TABLE IF EXISTS `complaints`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `complaints` (
+    `id` int unsigned NOT NULL AUTO_INCREMENT,
+    `user_id` int unsigned NOT NULL,
+    `target_type` enum('SONG', 'PLAYLIST') NOT NULL,
+    `target_id` int unsigned NOT NULL,
+    `reason` text NOT NULL,
+    `status` enum('PENDING', 'REVIEWED', 'DISMISSED') DEFAULT 'PENDING' NOT NULL,
+    `create_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `update_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `fk_complaints_user` (`user_id`),
+    CONSTRAINT `fk_complaints_user` FOREIGN KEY (`user_id`) REFERENCES `consumer` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `play_history`
+--
+
+LOCK TABLES `play_history` WRITE;
+/*!40000 ALTER TABLE `play_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `play_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `rank_list`
 --
 
