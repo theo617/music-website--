@@ -7,7 +7,7 @@ export const enum RouterName {
   Personal = "/personal",
   Setting = "/setting",
   PersonalData = "/personal-data",
-  SignIn = "/sign-in",
+  SignIn = "/sign",
   SignUp = "/sign-up",
   Search = "/search",
   Lyric = "/lyric",

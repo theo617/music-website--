@@ -47,7 +47,7 @@ try {
   });
 
   HttpManager.getSongList().then((res) => {
-    songList.value = (res as ResponseBody).data.sort().slice(0, 10);
+    songList.value = getRandomArrayElements((res as ResponseBody).data, 10);
   });
 
   HttpManager.getAllSinger().then((res) => {
