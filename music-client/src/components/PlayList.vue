@@ -3,8 +3,7 @@
     <div class="play-title" v-if="title">{{ title }}</div>
     <ul class="play-body">
       <li class="card-frame" v-for="(item, index) in playList" :key="index">
-        <div class="card" @click="goAblum(item)">
-          <el-image class="card-img" fit="contain" :src="attachImageUrl(item.pic)" />
+        <div class="card" :style="{ backgroundImage: `url(${attachImageUrl(item.pic)})` }" @click="goAblum(item)">
           <div class="mask" @click="goAblum(item)">
             <Tsy-icon class="mask-icon" :icon="BOFANG"></Tsy-icon>
           </div>
@@ -77,14 +76,17 @@ export default defineComponent({
 .card-frame {
   .card {
     position: relative;
-    height: 0;
-    padding-bottom: 100%;
-    overflow: hidden;
-    border-radius: 5px;
+  height: 0;
+  padding-bottom: 100%;
+  overflow: hidden;
+  border-radius: 15px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
     .card-img {
       width: 100%;
-      object-fit: cover;
+      object-fit: fill;
       transition: all 0.4s ease;
     }
   }

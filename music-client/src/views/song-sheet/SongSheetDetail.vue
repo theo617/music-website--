@@ -3,7 +3,7 @@
     <el-aside class="album-slide">
       <el-image class="album-img" fit="contain" :src="attachImageUrl(songDetails.pic)" />
       <h3 class="album-info">{{ songDetails.title }}</h3>
-      <el-button v-if="collect" type="primary" @click="collectSongList">收藏</el-button>
+      <el-button class="thebutton" v-if="collect" type="primary" @click="collectSongList">收藏</el-button>
     </el-aside>
     <el-main class="album-main">
       <div class="album-header">
@@ -148,6 +148,18 @@ export default defineComponent({
     font-weight: bold;
     color: #333;
   }
+}
+
+.thebutton{
+  margin-top:20px;
+  background-color: rgb(87, 159, 241);
+  border-radius: 10px;
+  border:none;
+  &:hover {
+        background-color: $color-blue;
+        border-color: $color-blue;
+        color: $color-white;
+      }
 }
 
 .album-main {

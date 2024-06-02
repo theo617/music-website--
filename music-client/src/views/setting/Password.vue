@@ -1,19 +1,22 @@
 <template>
-  <el-form ref="passwordForm" label-width="70px" :model="form" :rules="rules">
-    <el-form-item label="旧密码" prop="oldPassword">
-      <el-input type="password" v-model="form.oldPassword" />
-    </el-form-item>
-    <el-form-item label="新密码" prop="newPassword">
-      <el-input type="password" v-model="form.newPassword" />
-    </el-form-item>
-    <el-form-item label="密码确认" prop="confirmPassword">
-      <el-input type="password" v-model="form.confirmPassword" />
-    </el-form-item>
-    <el-form-item>
-      <el-button @click="clearData()">重置</el-button>
-      <el-button type="primary" @click="confirm()">确认修改</el-button>
-    </el-form-item>
-  </el-form>
+  <div class="password-container">
+    <h2 class="password-title">更改密码</h2>
+    <el-form ref="passwordForm" label-width="100px" :model="form" :rules="rules" class="password-form">
+      <el-form-item label="旧密码" prop="oldPassword">
+        <el-input type="password" v-model="form.oldPassword" />
+      </el-form-item>
+      <el-form-item label="新密码" prop="newPassword">
+        <el-input type="password" v-model="form.newPassword" />
+      </el-form-item>
+      <el-form-item label="密码确认" prop="confirmPassword">
+        <el-input type="password" v-model="form.confirmPassword" />
+      </el-form-item>
+      <el-form-item class="form-buttons">
+        <el-button @click="clearData">重置</el-button>
+        <el-button type="primary" @click="confirm">确认修改</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -89,4 +92,50 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.password-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.password-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.password-form {
+  .el-form-item__label {
+    font-weight: bold;
+    color: #666;
+  }
+
+  .el-input, .el-date-picker, .el-select {
+    border-radius: 5px;
+  }
+
+  .el-button {
+    margin-right: 10px;
+    border-radius: 5px;
+  }
+
+  .el-button--primary {
+    background-color: #007BFF;
+    border-color: #007BFF;
+    &:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+  }
+}
+
+.form-buttons {
+  text-align: center;
+}
+</style>
+

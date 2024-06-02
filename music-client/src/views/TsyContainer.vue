@@ -45,9 +45,11 @@ window.addEventListener("beforeunload", () => {
 }
 .el-header {
   padding: 0;
+  margin-bottom: 0%;
 }
 .el-main {
-  padding-left: 0;
-  padding-right: 0;
+  flex-grow: 1;
+  padding: 0;
+  margin: 0;
 }
 </style>

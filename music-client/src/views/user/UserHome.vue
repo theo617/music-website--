@@ -1,8 +1,8 @@
 <template>
   <div class="user-home">
     <div class="user-header">
-      <div class="user-img">
-        <el-image class="image" fit="contain" :src="attachImageUrl(userPic)" />
+      <div class="user-avatar">
+        <el-image class="avatar-image" fit="cover" :src="attachImageUrl(userPic)" />
       </div>
       <div class="user-info">
         <div class="username">{{ userInfo.username }}</div>
@@ -30,6 +30,7 @@
     <router-view></router-view>
   </div>
 </template>
+
 
 <script lang="ts">
 import { defineComponent, ref, computed, reactive, onMounted } from "vue";
@@ -135,77 +136,112 @@ export default defineComponent({
   },
 });
 </script>
-
 <style lang="scss" scoped>
 @import "@/assets/css/var.scss";
 
 .user-home {
-  padding-top: $header-height + 150px;
+  position: relative;
   text-align: center;
-
-  &::before {
-    content: "";
-    background-color: $color-blue-shallow;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: $header-height + 150px;
-  }
+  background-color: #fff;
+  padding-bottom: 50px;
 
   .user-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-bottom: 60px;
+    position: relative;
+    width: 100%;
+    height: 1050px;
+    margin-bottom: 0px;
+    background-image: url('@/assets/images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
 
-    .user-img {
-      height: 200px;
-      width: 200px;
+    .user-avatar {
+      position: absolute;
+      top: 220px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 150px;
+      width: 150px;
       border-radius: 50%;
       border: 5px solid $color-white;
-      margin-bottom: 50px;
+      overflow: hidden;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-      .image {
+      .avatar-image {
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
       }
     }
 
     .user-info {
+      position: absolute;
+      top: 400px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
       .username {
-        font-size: 30px;
-        font-weight: 600;
+        font-size: 26px;
+        font-weight: bold;
+        color: $color-black;
       }
 
       .introduction {
-        font-size: 20px;
+        font-size: 16px;
+        color: $color-grey;
         margin: 10px 0;
       }
 
       .user-stats {
         display: flex;
-        justify-content: space-around;
-        width: 300px;
+        justify-content: center;
+        gap: 20px;
         margin-top: 10px;
 
         span {
-          font-size: 16px;
+          font-size: 14px;
+          color: $color-grey;
         }
       }
-    }
 
-    .follow-button {
-      margin-top: 20px;
+      .follow-button {
+        margin-top: 20px;
+        background-color: $color-blue;
+        border-color: $color-blue;
+        color: $color-white;
+        &:hover {
+          background-color: $color-blue-dark;
+          border-color: $color-blue-dark;
+        }
+      }
     }
   }
 
   .user-nav {
-    margin-bottom: 20px;
-  }
+    position: absolute;
+    top: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
 
-  .user-content {
-    padding: 0 10%;
+    .el-button {
+      background-color: $color-light-grey;
+      border-color: $color-light-grey;
+      color: $color-black;
+      &:hover {
+        background-color: $color-blue;
+        border-color: $color-blue;
+        color: $color-white;
+      }
+    }
   }
 }
 </style>

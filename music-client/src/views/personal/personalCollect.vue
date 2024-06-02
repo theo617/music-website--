@@ -1,19 +1,22 @@
 <template>
-    <div class="personal">
-      <div class="personal-info">
-        <div class="personal-img" @click="dialogTableVisible = true">
-          <el-image fit="contain" :src="attachImageUrl(userPic)"/>
-        </div>
-        <div class="personal-msg">
-          <div class="username">{{ personalInfo.username }}喜欢的音乐</div>
-          <div class="introduction">{{ personalInfo.introduction }}</div>
-        </div>
+  <div class="personal">
+    <div class="personal-header">
+      <div class="personal-avatar" @click="dialogTableVisible = true">
+        <el-image class="avatar-image" fit="cover" :src="attachImageUrl(userPic)" />
       </div>
-      <div class="personal-body">
-        <song-list :songList="collectSongList" :show="true" @changeData="changeData"></song-list>
+      <div class="personal-info">
+        <div class="username">{{ personalInfo.username }}喜欢的音乐</div>
       </div>
     </div>
-  </template>
+    <div class="personal-body">
+      <song-list :songList="collectSongList" :show="true" @changeData="changeData"></song-list>
+    </div>
+    <el-dialog v-model="dialogTableVisible" title="修改头像">
+      <upload></upload>
+    </el-dialog>
+  </div>
+</template>
+
   
   <script lang="ts">
   import { defineComponent, nextTick, ref, computed, watch, reactive } from "vue";
@@ -101,66 +104,70 @@
   </script>
   
   <style lang="scss" scoped>
-  @import "@/assets/css/var.scss";
-  
-  .personal {
-    padding-top: $header-height + 150px;
-  
-    &::before {
-      content: "";
-      background-color: $color-blue-shallow;
-      position: absolute;
-      top: 0;
-      width: 100%;
-      height: $header-height + 150px;
-    }
-  }
-  
-  .personal-info {
+@import "@/assets/css/var.scss";
+
+.personal {
+  position: relative;
+  text-align: center;
+  background-color: #fff;
+  padding-bottom: 50px;
+
+  .personal-header {
     position: relative;
-    margin-bottom: 60px;
-    .personal-img {
-      height: 200px;
-      width: 200px;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 20px;
+    background-image: url('@/assets/images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+
+    .personal-avatar {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 150px;
+      width: 150px;
       border-radius: 50%;
       border: 5px solid $color-white;
-      position: absolute;
-      top: -180px;
-      left: 50px;
+      overflow: hidden;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+      .avatar-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
     }
-    .personal-msg {
-      margin-left: 300px;
+
+    .personal-info {
       position: absolute;
-      top: -120px;
-  
+      top: 220px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
       .username {
-        font-size: 50px;
-        font-weight: 600;
+        font-size: 26px;
+        font-weight: bold;
+        color: $color-black;
       }
-  
+
       .introduction {
-        font-size: 20px;
-        font-weight: 500;
+        font-size: 16px;
+        color: $color-grey;
+        margin: 10px 0;
       }
     }
-    .edit-info {
-      position: absolute;
-      right: 10vw;
-      margin-top: -120px;
-    }
   }
-  
-  @media screen and (min-width: $sm) {
-    .personal-body {
-      padding: 0px 100px;
-    }
+
+  .personal-body {
+    padding: 0 10%;
   }
-  
-  @media screen and (max-width: $sm) {
-    .edit-info {
-      display: none;
-    }
-  }
-  </style>
-  
+}
+</style>

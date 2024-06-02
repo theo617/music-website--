@@ -1,19 +1,19 @@
 <template>
-  <div class="setting">
-    <h1>设置</h1>
-    <el-tabs tab-position="left">
+  <div class="setting-container">
+    <el-tabs tab-position="left" class="setting-tabs">
       <el-tab-pane label="个人资料" class="content">
         <Personal-data></Personal-data>
       </el-tab-pane>
       <el-tab-pane label="更改密码" class="content">
         <Password></Password>
       </el-tab-pane>
-      <el-tab-pane label="账号和安全" class="content">
+      <el-tab-pane label="账号和安全" class="content1">
         <el-button type="danger" :icon="Delete" @click="cancelAccount">注销账号</el-button>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
+
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance, computed, reactive } from "vue";
@@ -54,32 +54,49 @@ export default defineComponent({
   },
 });
 </script>
-
 <style lang="scss" scoped>
-@import "@/assets/css/var.scss";
-@import "@/assets/css/global.scss";
+.setting-container {
+  background-color: #fff;
 
-h1 {
-  border-bottom: 1px solid $color-grey;
+  border-radius: 10px;
+
+  max-width: 800px;
+  margin: 50px auto;
 }
 
-.content {
-  padding-top: 20px;
+.setting-title {
   text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
 }
 
-@media screen and (min-width: $sm) {
-  .setting {
-    margin: 30px 10%;
-    margin-top: 0;
+.content{
+  margin-top:-60px;
+}
+.content1{
+  margin-left:240px;
+}
+.setting-tabs {
+  .el-tabs__header {
+    background-color: #fff;
+    border-radius: 10px 10px 0 0;
+  }
+  .el-tabs__item {
+    border: none;
+    font-size: 16px;
+  }
+  .el-tab-pane {
     padding: 20px;
-    min-height: 60vh;
   }
 }
 
-@media screen and (max-width: $sm) {
-  .setting {
-    padding: 20px;
+.el-button--danger {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  &:hover {
+    background-color: #d9363e;
+    border-color: #d9363e;
   }
 }
 </style>

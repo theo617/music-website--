@@ -1,37 +1,37 @@
 <template>
-  <el-form ref="updateForm" label-width="70px" :model="registerForm" :rules="SignUpRules">
-    <el-form-item prop="username" label="用户名">
-      <el-input v-model="registerForm.username" placeholder="用户名"></el-input>
-    </el-form-item>
-    <el-form-item label="性别">
-      <el-radio-group v-model="registerForm.sex">
-        <el-radio :label="0">女</el-radio>
-        <el-radio :label="1">男</el-radio>
-        <el-radio :label="2">保密</el-radio>
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item prop="birth" label="生日">
-      <el-date-picker type="date" placeholder="选择日期" v-model="registerForm.birth" style="width: 100%"></el-date-picker>
-    </el-form-item>
-    <el-form-item prop="introduction" label="签名">
-      <el-input type="textarea" placeholder="签名" v-model="registerForm.introduction"></el-input>
-    </el-form-item>
-    <el-form-item prop="location" label="地区">
-      <el-select v-model="registerForm.location" placeholder="地区" style="width: 100%">
-        <el-option v-for="item in AREA" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item prop="phoneNum" label="手机">
-      <el-input placeholder="手机" v-model="registerForm.phoneNum"></el-input>
-    </el-form-item>
-    <el-form-item prop="email" label="邮箱">
-      <el-input v-model="registerForm.email" placeholder="邮箱"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button @click="goBack(-1)">取消</el-button>
-      <el-button type="primary" @click="saveMsg()">保存</el-button>
-    </el-form-item>
-  </el-form>
+  <div class="form-container">
+    <h2 class="form-title">修改用户信息</h2>
+    <el-form ref="updateForm" label-width="70px" :model="registerForm" :rules="SignUpRules" class="form-content">
+      <el-form-item label="性别">
+        <el-radio-group v-model="registerForm.sex">
+          <el-radio :label="0">女</el-radio>
+          <el-radio :label="1">男</el-radio>
+          <el-radio :label="2">保密</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item prop="birth" label="生日">
+        <el-date-picker type="date" placeholder="选择日期" v-model="registerForm.birth" style="width: 100%"></el-date-picker>
+      </el-form-item>
+      <el-form-item prop="introduction" label="签名">
+        <el-input type="textarea" placeholder="签名" v-model="registerForm.introduction"></el-input>
+      </el-form-item>
+      <el-form-item prop="location" label="地区">
+        <el-select v-model="registerForm.location" placeholder="地区" style="width: 100%">
+          <el-option v-for="item in AREA" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="phoneNum" label="手机">
+        <el-input placeholder="手机" v-model="registerForm.phoneNum"></el-input>
+      </el-form-item>
+      <el-form-item prop="email" label="邮箱">
+        <el-input v-model="registerForm.email" placeholder="邮箱"></el-input>
+      </el-form-item>
+      <el-form-item class="btn">
+        <el-button @click="goBack(-1)">取消</el-button>
+        <el-button type="primary" @click="saveMsg()">保存</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -116,8 +116,50 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.btn ::v-deep .el-form-item__content {
-  display: flex;
-  justify-content: center;
+.form-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.el-form-item__label {
+  font-weight: bold;
+  color: #666;
+}
+
+.el-input, .el-date-picker, .el-select {
+  border-radius: 5px;
+}
+
+.el-button {
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.el-button--primary {
+  background-color: #007BFF;
+  border-color: #007BFF;
+  &:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+}
+
+.el-form-item {
+  margin-bottom: 20px;
+}
+
+.btn {
+  text-align: center;
 }
 </style>
