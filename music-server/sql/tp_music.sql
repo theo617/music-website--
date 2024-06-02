@@ -255,16 +255,14 @@ DROP TABLE IF EXISTS `notifications`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notifications` (
                                  `id` int unsigned NOT NULL AUTO_INCREMENT,
-                                 `user_id` int unsigned NOT NULL,
-                                 `admin_id` int unsigned NOT NULL,
+                                 `user_id` int unsigned,
+                                 `user_type` varchar(45) NOT NULL,
                                  `message` varchar(255) NOT NULL,
                                  `type` int unsigned NOT NULL,
                                  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                 `isRead` tinyint(1) NOT NULL DEFAULT '0',
+                                 `is_read` tinyint(1) NOT NULL DEFAULT '0',
                                  PRIMARY KEY (`id`),
                                  KEY `fk_notifications_user` (`user_id`),
-                                 KEY `fk_notifications_admin` (`admin_id`),
-                                 CONSTRAINT `fk_notifications_admin` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`),
                                  CONSTRAINT `fk_notifications_user` FOREIGN KEY (`user_id`) REFERENCES `consumer` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -275,7 +273,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (1,1,1,'欢迎加入我们的平台',1,'2023-01-01 10:00:00',0),(2,2,1,'请完成您的个人资料',2,'2023-01-02 11:00:00',0),(3,1,2,'qiqinb',3,'2023-01-03 12:00:00',1),(4,2,1,'您的密码已被重置',4,'2023-01-04 13:00:00',0),(5,2,2,'系统维护通知',1,'2023-01-05 14:00:00',1);
+INSERT INTO `notifications` VALUES (1,1,'consumer','欢迎加入我们的平台',1,'2023-01-01 10:00:00',0),(2,2,'consumer','请完成您的个人资料',2,'2023-01-02 11:00:00',0),(3,null,'manager','qiqinb',3,'2023-01-03 12:00:00',0),(4,2,'consumer','您的密码已被重置',4,'2023-01-04 13:00:00',0),(5,2,'consumer','系统维护通知',1,'2023-01-05 14:00:00',0);
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 

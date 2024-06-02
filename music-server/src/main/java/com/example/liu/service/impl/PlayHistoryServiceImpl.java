@@ -27,7 +27,7 @@ public class PlayHistoryServiceImpl extends ServiceImpl<PlayHistoryMapper, PlayH
 //        playHistory.setId(playHistoryRequest.getId());
         playHistory.setUserId(playHistoryRequest.getUserId());
         playHistory.setSongId(playHistoryRequest.getSongId());
-        playHistory.setPlayTimestamp(playHistoryRequest.getPlayTimestamp());
+        playHistory.setPlayTimeStamp(playHistoryRequest.getPlayTimeStamp());
         if (playHistoryMapper.insert(playHistory) > 0) {
             return R.success("添加播放历史成功");
         } else {

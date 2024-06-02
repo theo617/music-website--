@@ -4,9 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.liu.common.R;
 import com.example.liu.controller.MinioUploadController;
+import com.example.liu.mapper.ConsumerMapper;
+import com.example.liu.mapper.FollowMapper;
+import com.example.liu.mapper.SingerMapper;
 import com.example.liu.mapper.SongMapper;
+import com.example.liu.model.domain.Consumer;
+import com.example.liu.model.domain.Follow;
+import com.example.liu.model.domain.Singer;
 import com.example.liu.model.domain.Song;
+import com.example.liu.model.request.NotificationRequest;
 import com.example.liu.model.request.SongRequest;
+import com.example.liu.service.NotificationService;
 import com.example.liu.service.SongService;
 import io.minio.MinioClient;
 import io.minio.RemoveObjectArgs;
@@ -18,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -25,23 +34,27 @@ import java.util.List;
 
 @Service
 public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements SongService {
-
     @Autowired
     private SongMapper songMapper;
-
+    @Autowired
+    private SingerMapper singerMapper;
+    @Autowired
+    private FollowMapper followMapper;
+    @Autowired
+    private ConsumerMapper consumerMapper;
+    @Autowired
+    private NotificationService notificationService;
     @Value("${minio.bucket-name}")
     private String bucketName;
-
     @Autowired
     MinioClient minioClient;
-
     @Override
     public R allSong() {
         return R.success(null, songMapper.selectList(null));
     }
 
     @Override
-    public R addSong(SongRequest addSongRequest, MultipartFile lrcfile,MultipartFile mpfile){
+    public R addSong(SongRequest addSongRequest, MultipartFile lrcfile, MultipartFile mpfile){
         Song song = new Song();
         BeanUtils.copyProperties(addSongRequest, song);
         String pic = "/img/songPic/tubiao.jpg";
@@ -53,17 +66,51 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
         song.setPic(pic);
         song.setUrl(storeUrlPath);
 
+        // Ensure song.getLyric() is not null
+        if (song.getLyric() == null) {
+            song.setLyric("");
+        }
+
         if (lrcfile!=null&&(song.getLyric().equals("[00:00:00]暂无歌词"))){
             byte[] fileContent = new byte[0];
             try {
                 fileContent = lrcfile.getBytes();
-                String content = new String(fileContent, "GB2312");
+                String content = new String(fileContent, StandardCharsets.UTF_8);
                 song.setLyric(content);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         if (s.equals("File uploaded successfully!")&&songMapper.insert(song) > 0) {
+            // 歌曲创建者name和歌曲name
+            Integer singerId = 0;
+            singerId = song.getSingerId();
+            String singerName = "";
+            //QueryWrapper<Singer> singerQueryWrapper = new QueryWrapper<>();
+            //singerQueryWrapper.eq("id", singerId);
+            Singer singer = singerMapper.selectById(singerId);//selectOne(singerQueryWrapper)
+            singerName = singer.getName();
+            String songName = song.getName();
+
+            //歌曲创建者ID
+            QueryWrapper<Consumer> consumerQueryWrapper = new QueryWrapper<>();
+            consumerQueryWrapper.eq("username", singerName);
+            Integer creatorId = consumerMapper.selectOne(consumerQueryWrapper).getId();
+
+            // 查询所有关注该歌单创建者的关注者
+            QueryWrapper<Follow> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("followed_id", creatorId);
+            List<Follow> followers = followMapper.selectList(queryWrapper);
+
+            // 遍历所有关注者并发送通知
+            for (Follow follower : followers) {
+                NotificationRequest notificationRequest = new NotificationRequest();
+                notificationRequest.setUserId(follower.getFollowerId());
+                notificationRequest.setUserType("consumer");
+                notificationRequest.setMessage("您关注的用户 \"" + singerName + "\" 添加了歌曲 \"" + songName + "\", 快来看看吧！");
+                notificationRequest.setType(2);
+                notificationService.addNotification(notificationRequest);
+            }
             return R.success("上传成功", storeUrlPath);
         } else {
             return R.error("上传失败");
@@ -174,6 +221,36 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
             } catch (XmlParserException e) {
                 throw new RuntimeException(e);
             }
+
+            // 歌曲创建者name和歌曲name
+            Integer singerId = 0;
+            singerId = song.getSingerId();
+            String singerName = "";
+            //QueryWrapper<Singer> singerQueryWrapper = new QueryWrapper<>();
+            //singerQueryWrapper.eq("id", singerId);
+            Singer singer = singerMapper.selectById(singerId);//selectOne(singerQueryWrapper)
+            singerName = singer.getName();
+            String songName = song.getName();
+
+            //歌曲创建者ID
+            QueryWrapper<Consumer> consumerQueryWrapper = new QueryWrapper<>();
+            consumerQueryWrapper.eq("username", singerName);
+            Integer creatorId = consumerMapper.selectOne(consumerQueryWrapper).getId();
+
+            // 查询所有关注该歌单创建者的关注者
+            QueryWrapper<Follow> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("followed_id", creatorId);
+            List<Follow> followers = followMapper.selectList(queryWrapper);
+
+            // 遍历所有关注者并发送通知
+            for (Follow follower : followers) {
+                NotificationRequest notificationRequest = new NotificationRequest();
+                notificationRequest.setUserId(follower.getFollowerId());
+                notificationRequest.setUserType("consumer");
+                notificationRequest.setMessage("您关注的用户 \"" + singerName + "\" 删除了歌曲 \"" + songName + "\"。");
+                notificationRequest.setType(2);
+                notificationService.addNotification(notificationRequest);
+            }
             return R.success("删除成功");
         } else {
             return R.error("删除失败");
@@ -209,11 +286,11 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
     @Override
     public R updateSongLrc(MultipartFile lrcFile, int id) {
         Song song = songMapper.selectById(id);
-        if (lrcFile!=null&&!(song.getLyric().equals("[00:00:00]暂无歌词"))){
+        if (lrcFile!=null){
             byte[] fileContent = new byte[0];
             try {
                 fileContent = lrcFile.getBytes();
-                String content = new String(fileContent, "GB2312");
+                String content = new String(fileContent, StandardCharsets.UTF_8);
                 song.setLyric(content);
             } catch (IOException e) {
                 throw new RuntimeException(e);

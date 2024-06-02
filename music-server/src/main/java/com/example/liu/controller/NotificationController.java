@@ -21,9 +21,15 @@ public class NotificationController {
     }
 
     // 获取用户消息提醒
-    @GetMapping("/user")
-    public List<Notification> getUserNotifications(@RequestParam int userId) {
-        return notificationService.getUserNotifications(userId);
+    @GetMapping("/consumer")
+    public List<Notification> getConsumerNotifications(@RequestParam int userId) {
+        return notificationService.getConsumerNotifications(userId);
+    }
+
+    // 获取消息提醒表
+    @GetMapping("/detail")
+    public List<Notification> getNotifications() {
+        return notificationService.getNotifications();
     }
 
     // 标记消息为已读

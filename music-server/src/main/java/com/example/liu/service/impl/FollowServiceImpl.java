@@ -10,6 +10,7 @@ import com.example.liu.model.request.FollowRequest;
 import com.example.liu.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -42,10 +43,10 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
     }
 
     @Override
-    public R deleteFollow(FollowRequest followRequest) {
+    public R deleteFollow(@RequestParam Integer followerId, @RequestParam Integer followedId) {
         QueryWrapper<Follow> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("follower_id", followRequest.getFollowerId())
-                .eq("followed_id", followRequest.getFollowedId());
+        queryWrapper.eq("follower_id", followerId)
+                .eq("followed_id", followedId);
         if (followMapper.delete(queryWrapper) > 0) {
             return R.success("取消关注成功");
         } else {

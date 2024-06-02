@@ -14,15 +14,15 @@ public class FollowController {
     private FollowService followService;
 
     // 关注用户
-    @PostMapping("/{id}/follow")
+    @PostMapping("/follow")
     public R addFollow(@RequestBody FollowRequest followRequest) {
         return followService.addFollow(followRequest);
     }
 
     // 取消关注
-    @DeleteMapping("/{id}/follow")
-    public R deleteFollow(@RequestBody FollowRequest followRequest) {
-        return followService.deleteFollow(followRequest);
+    @GetMapping("/follow")
+    public R deleteFollow(@RequestParam Integer followerId, @RequestParam Integer followedId) {
+        return followService.deleteFollow(followerId, followedId);
     }
 
     //返回用户的被关注列表
