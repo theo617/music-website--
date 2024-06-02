@@ -25,7 +25,7 @@ public class PlayHistoryController {
 
     // 获取用户播放历史
     @GetMapping("playHistory/user/{userId}")
-    public R getPlayHistory(@PathVariable Integer userId) {
+    public R getPlayHistory(@PathVariable int userId) {
         return playHistoryService.getPlayHistory(userId);
     }
 

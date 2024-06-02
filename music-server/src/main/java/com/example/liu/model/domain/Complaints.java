@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -13,27 +12,36 @@ import java.sql.Timestamp;
 /**
  * @author 544
  * @Description:
- * @date 2024/5/29 9:08
+ * @date 2024/5/30 8:49
  */
-
-@TableName(value = "play_history")
+@TableName(value = "complaints")
 @Data
-public class PlayHistory implements Serializable {
+public class Complaints implements Serializable {
+
+    public enum TargetType {
+        SONG, PLAYLIST
+    }
+
+    public enum Status {
+        PENDING, REVIEWED, DISMISSED
+    }
 
     @TableId(type = IdType.AUTO)
     private int id;
 
     private int userId;
 
-    private int songId;
+    private TargetType targetType;
 
-    private int singerId;
+    private int targetId;
 
-    private int duration;
+    private String reason;
 
-    private int playCount;
+    private Status status;
 
-    private Timestamp playTimeStamp;
+    private Timestamp createAt;
+
+    private Timestamp updateAt;
 
     @Override
     public String toString() {
