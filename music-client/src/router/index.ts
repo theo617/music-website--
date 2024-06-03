@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           requireAuth: true,
         },
-        component: () => import("@/views/personal/personal.vue"),
+        component: () => import("@/views/personal/Personal.vue"),
       },
       {
         path: "/personalSongList",
@@ -102,6 +102,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "singer-detail",
         component: () => import("@/views/singer/SingerDetail.vue"),
       },
+
       {
         path: "/lyric/:id",
         name: "lyric",
@@ -128,6 +129,11 @@ const routes: Array<RouteRecordRaw> = [
         component: ()=> import("@/views/loginByemail.vue"),
       },
       {
+        path: "/weekly-report",
+        name: "Weekly-Report",
+        component: () => import("@/views/weekly-report/WeeklyReport.vue"),
+      },
+      {
         path: "/setting",
         name: "setting",
         meta: {
@@ -145,6 +151,7 @@ const routes: Array<RouteRecordRaw> = [
           }
         ]
       },
+      
     ],
   },
 ];
