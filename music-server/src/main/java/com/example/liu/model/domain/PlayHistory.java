@@ -27,9 +27,9 @@ public class PlayHistory implements Serializable {
 
     private int songId;
 
-    private int singerId;
+//    private int singerId;
 
-    private int duration;
+//    private int duration;
 
     private int playCount;
 

@@ -319,17 +319,15 @@ CREATE TABLE `play_history` (
                                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                                 `user_id` int unsigned NOT NULL,
                                 `song_id` int unsigned NOT NULL,
-                                `singer_id` int unsigned NOT NULL,
-                                `duration` int unsigned NOT NULL,
                                 `play_count` int unsigned NOT NULL,
                                 `play_time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                 PRIMARY KEY (`id`),
                                 KEY `fk_play_history_user` (`user_id`),
                                 KEY `fk_play_history_song` (`song_id`),
-                                KEY `fk_play_history_singer` (`singer_id`),
+#                                 KEY `fk_play_history_singer` (`singer_id`),
                                 CONSTRAINT `fk_play_history_song` FOREIGN KEY (`song_id`) REFERENCES `song` (`id`),
-                                CONSTRAINT `fk_play_history_user` FOREIGN KEY (`user_id`) REFERENCES `consumer` (`id`),
-                                CONSTRAINT `fk_play_history_singer` FOREIGN KEY (`singer_id`) REFERENCES `singer` (`id`)
+                                CONSTRAINT `fk_play_history_user` FOREIGN KEY (`user_id`) REFERENCES `consumer` (`id`)
+#                                 CONSTRAINT `fk_play_history_singer` FOREIGN KEY (`singer_id`) REFERENCES `singer` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

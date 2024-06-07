@@ -17,9 +17,9 @@ public class PlayHistoryRequest {
 
     private int songId;
 
-    private int singerId;
+//    private int singerId;
 
-    private int duration;
+//    private int duration;
 
     private int playCount;
 

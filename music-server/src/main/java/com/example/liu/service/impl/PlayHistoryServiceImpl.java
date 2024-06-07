@@ -14,10 +14,16 @@ import com.example.liu.model.domain.Song;
 import com.example.liu.model.request.PlayHistoryRequest;
 import com.example.liu.service.PlayHistoryService;
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue;
+import net.sf.jsqlparser.util.validation.metadata.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
+
+import static java.lang.System.*;
 
 /**
  * @author 544
@@ -33,8 +39,6 @@ public class PlayHistoryServiceImpl extends ServiceImpl<PlayHistoryMapper, PlayH
     private ConsumerMapper consumerMapper;
     @Autowired
     private SongMapper songMapper;
-    @Autowired
-    private SingerMapper singerMapper;
 
     @Override
     public R recodePlayHistory(PlayHistoryRequest playHistoryRequest) {
@@ -45,30 +49,40 @@ public class PlayHistoryServiceImpl extends ServiceImpl<PlayHistoryMapper, PlayH
         if (consumer == null) {
             return R.error("不存在该用户");
         }
-        playHistory.setUserId(userId);
 
         int songId = playHistoryRequest.getSongId();
         Song song = songMapper.selectById(songId);
         if (song == null) {
             return R.error("不存在该歌曲");
         }
-        playHistory.setSongId(songId);
 
-        int singerId = playHistoryRequest.getSingerId();
-        Singer singer = singerMapper.selectById(singerId);
-        if (singer == null) {
-            return R.error("不存在该歌手");
-        }
-        playHistory.setSingerId(singerId);
+        QueryWrapper<PlayHistory> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId).eq("song_id", songId);
 
-        playHistory.setDuration(playHistoryRequest.getDuration());
-        playHistory.setPlayCount(playHistoryRequest.getPlayCount());
-        playHistory.setPlayTimeStamp(playHistoryRequest.getPlayTimeStamp());
+        PlayHistory oldPlayHistory = playHistoryMapper.selectOne(queryWrapper);
+        if (oldPlayHistory != null) {   // 以前听过这首歌
+            oldPlayHistory.setPlayCount(oldPlayHistory.getPlayCount() + 1);
 
-        if (playHistoryMapper.insert(playHistory) > 0) {
-            return R.success("添加播放历史成功");
+            Instant now = Instant.now();
+            Timestamp timestamp = java.sql.Timestamp.from(now);
+            oldPlayHistory.setPlayTimeStamp(timestamp);
+
+            if (playHistoryMapper.updateById(oldPlayHistory) > 0) {
+                return R.success("更新播放历史成功");
+            } else {
+                return R.error("更新播放历史失败");
+            }
+
         } else {
-            return R.error("添加播放历史失败");
+            playHistory.setUserId(userId);
+            playHistory.setSongId(songId);
+            playHistory.setPlayCount(playHistoryRequest.getPlayCount());
+            playHistory.setPlayTimeStamp(playHistoryRequest.getPlayTimeStamp());
+            if (playHistoryMapper.insert(playHistory) > 0) {
+                return R.success("添加播放历史成功");
+            } else {
+                return R.error("添加播放历史失败");
+            }
         }
     }
 
