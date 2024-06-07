@@ -11,7 +11,7 @@
           <span>关注 {{ userInfo.follow }}</span>
           <span>粉丝 {{ userInfo.fans }}</span>
         </div>
-        <el-button class="follow-button" round @click="toggleFollow">
+        <el-button v-if="isLoggedIn" class="follow-button" round @click="toggleFollow">
           <template v-if="isFollowing">
             <Check style="width:1em;height:1em; margin-right: 5px;" />
             已关注
@@ -31,7 +31,6 @@
   </div>
 </template>
 
-
 <script lang="ts">
 import { defineComponent, ref, computed, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -49,10 +48,12 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const { routerManager } = mixin();
+    const { routerManager, checkStatus } = mixin();
     const currentUserId = computed(() => store.getters.userId);
     const userPic = ref("");
     const isFollowing = ref(false);
+
+    const isLoggedIn = computed(() => checkStatus());
 
     const userInfo = reactive({
       username: "",
@@ -73,13 +74,13 @@ export default defineComponent({
         userInfo.birth = data.birth;
         userInfo.location = data.location;
         userInfo.introduction = data.introduction;
-        // Populate follow, fans, and activity counts as well
         userPic.value = data.avator;
       }
     };
 
     const fetchFollowedUsers = async () => {
-      let id= route.params.id;
+      if (!isLoggedIn.value) return;
+      let id = route.params.id;
       const followResult = await HttpManager.myFollow(id) as ResponseBody;
       if (followResult.success) {
         userInfo.follow = followResult.data.length;
@@ -114,16 +115,13 @@ export default defineComponent({
       routerManager(page, { path: `/${page}/${route.params.id}` });
     };
 
-    /*const goToPage = (page) => {
-      router.push({ path: `/${page}/${route.params.id}` });
-    };*/
-
     onMounted(() => {
+      if(isLoggedIn.value){
       const userId = route.params.id;
       getUserInfo(userId);
-      fetchFollowedUsers();
+      
+        fetchFollowedUsers();}
     });
-
 
     return {
       userInfo,
@@ -132,10 +130,12 @@ export default defineComponent({
       isFollowing,
       toggleFollow,
       goToPage,
+      isLoggedIn,
     };
   },
 });
 </script>
+
 <style lang="scss" scoped>
 @import "@/assets/css/var.scss";
 

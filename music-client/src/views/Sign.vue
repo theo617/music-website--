@@ -96,10 +96,7 @@
         try {
           const { username, password } = signInForm;
           const result = (await HttpManager.signIn({ username, password })) as ResponseBody;
-          proxy.$message({
-            message: result.message,
-            type: result.type,
-          });
+
   
           if (result.success) {
             proxy.$store.commit("setUserId", result.data[0].id);
@@ -118,10 +115,7 @@
         try {
           const { username,password,sex,phoneNum,email,birth,introduction,location } = signUpForm;
           const result = (await HttpManager.SignUp({ username,password,sex,phoneNum,email,birth,introduction,location })) as ResponseBody;
-          proxy.$message({
-            message: result.message,
-            type: result.type,
-          });
+
   
           if (result.success) {
             toggleSignIn();

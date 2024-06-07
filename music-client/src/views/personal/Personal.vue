@@ -8,8 +8,8 @@
         <div class="username">{{ personalInfo.username }}</div>
         <div class="introduction">{{ personalInfo.introduction }}</div>
         <div class="personal-stats">
-          <span>关注 {{ personalInfo.follow }}</span>
-          <span>粉丝 {{ personalInfo.fans }}</span>
+          <span @click="goToFollowList" class="link">关注 {{ personalInfo.follow }}</span>
+          <span @click="goToFansList" class="link">粉丝 {{ personalInfo.fans }}</span>
           <span>动态 {{ personalInfo.activity }}</span>
         </div>
         <el-button class="edit-info" round @click="goPage">修改个人信息</el-button>
@@ -89,6 +89,14 @@ export default defineComponent({
       routerManager(page, { path: `/${page}` });
     };
 
+    function goToFollowList() {
+      routerManager('personalFollow', { path: '/personalFollow' });
+    }
+
+    function goToFansList() {
+      routerManager('personalFans', { path: '/personalFans' });
+    }
+
     function changeBackground(bg) {
       selectedBackground.value = bg;
       localStorage.setItem('selectedBackground', bg);
@@ -130,6 +138,8 @@ export default defineComponent({
       goPage,
       goToPage,
       changeBackground,
+      goToFollowList,
+      goToFansList,
     };
   },
 });
@@ -202,6 +212,15 @@ export default defineComponent({
         justify-content: center;
         gap: 20px;
         margin-top: 10px;
+
+        .link {
+          cursor: pointer;
+          color: #409EFF;
+        }
+      .link:hover {
+          color: #66b1ff;
+          text-decoration: underline;
+          }
 
         span {
           font-size: 14px;

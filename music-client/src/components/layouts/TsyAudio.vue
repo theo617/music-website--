@@ -13,6 +13,8 @@
 import { defineComponent, ref, getCurrentInstance, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { HttpManager } from "@/api";
+import axios from 'axios'
+import mixin from "@/mixins/mixin";
 
 export default defineComponent({
   setup() {
@@ -24,7 +26,7 @@ export default defineComponent({
     };
 
      const muted = ref(true); // 添加一个 reactive 的 muted 属性
-
+     const {checkStatus} = mixin();
     const audioDom = document.querySelector('audio');
     if (audioDom) {
       // 设置为静音并尝试自动播放
@@ -45,6 +47,8 @@ export default defineComponent({
     const volume = computed(() => store.getters.volume); // 音量
     const changeTime = computed(() => store.getters.changeTime); // 指定播放时刻
     const autoNext = computed(() => store.getters.autoNext); // 用于触发自动播放下一首
+    const userId = computed(()=> store.getters.userId);
+    const songId = computed(()=> store.getters.songId);
     // 监听播放还是暂停
     watch(isPlay, () => togglePlay());
     // 跳到指定时刻播放
@@ -54,6 +58,17 @@ export default defineComponent({
     // 开始 / 暂停
     function togglePlay() {
       isPlay.value ? divRef.value.play() : divRef.value.pause();
+      if(checkStatus && isPlay.value==true){
+      axios.post('http://localhost:8888/playHistory', {
+        userId:userId.value,
+        songId: songId.value
+        }) .then(response => {
+          console.log('播放记录成功', response);
+        })
+        .catch(error => {
+          console.error('播放记录失败', error);
+  });
+}
     }
     // 获取歌曲链接后准备播放
     function canplay() {
@@ -65,6 +80,7 @@ export default defineComponent({
         muted.value = false;
       }
       // divRef.value.play();
+      
       proxy.$store.commit("setIsPlay", true);
     }
     // 音乐播放时记录音乐的播放位置

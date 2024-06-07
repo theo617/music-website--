@@ -1,7 +1,11 @@
 <template>
   <div class="lyric-page" :class="backgroundClass">
     <div class="song-info">
-      <h2>{{ songTitle }}</h2>
+      <h2>{{ songTitle }} 
+        <el-button class="export-button" type="text" @click="exportLyrics">
+          导出歌词
+        </el-button>
+      </h2>
       <p>{{ singerName }}</p>
     </div>
     <div class="lyric-content">
@@ -33,6 +37,7 @@ import { useStore } from "vuex";
 import Comment from "@/components/Comment.vue";
 import { parseLyric } from "@/utils";
 import { HttpManager } from "@/api";
+import axios from "axios";
 
 const backgroundClasses = ['style1', 'style2', 'style3', 'style4'];
 
@@ -101,6 +106,26 @@ export default defineComponent({
 
     const recordRotation = computed(() => `rotate(${rotation.value}deg)`);
 
+    const exportLyrics = () => {
+      axios({
+        method: 'get',
+        url: `http://localhost:8888/exportLrc?id=${songId.value}`,
+        responseType: 'blob', // 设置响应类型为blob
+      })
+        .then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${songTitle.value}-lyrics.lrc`); // 设置下载的文件名
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        })
+        .catch((error) => {
+          console.error('导出歌词失败：', error);
+        });
+    };
+
     return {
       songPic,
       singerName,
@@ -113,10 +138,12 @@ export default defineComponent({
       isActive,
       backgroundClass,
       recordRotation,
+      exportLyrics,
     };
   },
 });
 </script>
+
 
 <style lang="scss" scoped>
 $background-styles: (
@@ -141,6 +168,8 @@ $background-styles: (
   .song-info {
     text-align: center;
     margin-bottom: 20px;
+    margin-left:500px;
+    margin-right: 50px;
     h2 {
       font-size: 24px;
       margin-bottom: 10px;
@@ -150,10 +179,32 @@ $background-styles: (
     }
   }
 
+  .export-button {
+      position:fixed;
+      font-size: 1rem;
+      color: #fff;
+      background: transparent;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      margin-left: 20px;
+      padding: 5px 10px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .export-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
   .lyric-content {
     display: flex;
     justify-content: center;
     align-items: center;
+    .lyrics::-webkit-scrollbar {
+      display: none;  /* Chrome、Safari 和 Opera 浏览器 */
+    }
 
     .left {
       position: relative;

@@ -50,6 +50,9 @@ export default function () {
   function playMusic({ id, url, pic, index, name, lyric, currentSongList }) {
     const songTitle = getSongTitle(name);
     const singerName = getSingerName(name);
+    const userId =  computed(() => store.getters.userId);
+  
+
     proxy.$store.dispatch("playMusic", {
       id,
       url,

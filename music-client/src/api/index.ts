@@ -21,6 +21,7 @@ const HttpManager = {
 
 
 
+  getPlayHistory: (userId) => get(`playHistory/user?userId=${userId}`),
   // =======================> 歌单 API 完成
   // 获取全部歌单
   getSongList: () => get("songList"),
@@ -63,6 +64,8 @@ const HttpManager = {
 
   isCollection: ({userId, type, songId}) => post(`collection/status`, {userId, type, songId}),
   // =======================>歌曲 API 
+  //根据id搜索歌曲信息
+  songOfId: (id) => get(`song/detail?id=${id}`),
   // 更新歌曲信息
   updateSongMsg: ({id, singerId, name, introduction, lyric}) => post(`song/update`, {
     id,

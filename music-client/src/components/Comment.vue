@@ -15,7 +15,7 @@
           </ul>
         </div>
         <div ref="up" class="comment-ctr" @click="setSupport(item.id, item.up, userId)">
-          <div><Tsy-icon :icon="iconList.Support"></Tsy-icon> {{ item.up }}</div>
+          <div><Tsy-icon :icon="iconList.Support" style="fill:aliceblue"></Tsy-icon> {{ item.up }}</div>
           <el-icon v-if="item.userId === userId" @click="deleteComment(item.id, index)"><delete /></el-icon>
         </div>
       </li>
@@ -209,11 +209,13 @@ const attachImageUrl = HttpManager.attachImageUrl;
 .popular {
   width: 100%;
   > li {
-    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    border-bottom: solid 1.5px rgba(0, 0, 0, 0.1);
     padding: 15px 0;
     display: flex;
     .popular-img {
       width: 50px;
+      height: 50px;
+      border-radius: 50%;
     }
 
     .popular-msg {
@@ -224,10 +226,10 @@ const attachImageUrl = HttpManager.attachImageUrl;
       }
       .time {
         font-size: 0.6rem;
-        color: rgba(0, 0, 0, 0.5);
+        color: rgba(255, 255, 255, 0.976);
       }
       .name {
-        color: rgba(0, 0, 0, 0.5);
+        color: rgba(255, 255, 255, 0.902);
       }
       .content {
         font-size: 1rem;

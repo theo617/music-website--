@@ -4,13 +4,13 @@
       <Tsy-icon :icon="iconList.ZHEDIE" @click="toggle = !toggle"></Tsy-icon>
     </div>
     <!--播放进度-->
-    <el-slider class="progress" v-model="nowTime" @change="changeTime" size="small"></el-slider>
+    <el-slider class="progress" v-model="startTime" @change="changeTime" size="small"></el-slider>
     <div class="control-box">
       <div class="info-box">
         <!--歌曲图片-->
-      <div @click="goPlayerPage">
-         <el-image class="song-bar-img" fit="contain" :src="attachImageUrl(songPic)"/>
-      </div>
+        <div @click="goPlayerPage">
+          <el-image class="song-bar-img" fit="contain" :src="attachImageUrl(songPic)"/>
+        </div>
         <!--播放开始结束时间-->
         <div v-if="songId">
           <div class="song-info">{{ this.songTitle }} - {{ this.singerName }}</div>
@@ -38,7 +38,7 @@
         </el-dropdown>
       </div>
       <div class="song-ctr song-edit">
-        <!--收藏-->
+        <!--收藏到喜欢歌曲-->
         <Tsy-icon
             class="Tsy-play-show"
             :class="{ active: isCollection }"
@@ -58,30 +58,38 @@
         ></Tsy-icon>
         <!--歌曲列表-->
         <Tsy-icon :icon="iconList.LIEBIAO" @click="changeAside"></Tsy-icon>
+        <!--播放记录-->
+        <Clock v-if="checkStatus" style="width:1.3em;height:1.3em; margin-right: 5px; fill:#fff " @click="togglePlayHistory" />
       </div>
     </div>
+    <PlayHistory :visible="playHistoryVisible" @update:visible="playHistoryVisible = $event" />
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, getCurrentInstance, onMounted, ref, watch} from "vue";
-import {mapGetters, useStore} from "vuex";
+import { computed, defineComponent, getCurrentInstance, onMounted, ref, watch } from "vue";
+import { mapGetters, useStore } from "vuex";
 import mixin from "@/mixins/mixin";
 import TsyIcon from "./TsyIcon.vue";
-import {HttpManager} from "@/api";
-import {formatSeconds} from "@/utils";
-import {Icon, RouterName} from "@/enums";
+import { HttpManager } from "@/api";
+import { formatSeconds } from "@/utils";
+import { Icon, RouterName } from "@/enums";
+import { Clock } from '@element-plus/icons-vue';
+import PlayHistory from "@/components/layouts/PlayHistory.vue";
 
 export default defineComponent({
   components: {
     TsyIcon,
+    Clock,
+    PlayHistory
   },
   setup() {
-    const {proxy} = getCurrentInstance();
+    const { proxy } = getCurrentInstance();
     const store = useStore();
-    const {routerManager, playMusic, checkStatus, downloadMusic} = mixin();
+    const { routerManager, playMusic, checkStatus, downloadMusic } = mixin();
 
     const isCollection = ref(false); // 是否收藏
+    const playHistoryVisible = ref(false); // 控制播放记录悬浮框的显示
 
     const userIdVO = computed(() => store.getters.userId);
     const songIdVO = computed(() => store.getters.songId);
@@ -100,7 +108,7 @@ export default defineComponent({
       const userId = userIdVO.value;
       const type = '0';
       const songId = songIdVO.value;
-      isCollection.value = ((await HttpManager.isCollection({userId, type, songId})) as ResponseBody).data;
+      isCollection.value = ((await HttpManager.isCollection({ userId, type, songId })) as ResponseBody).data;
     }
 
     async function changeCollection() {
@@ -111,8 +119,8 @@ export default defineComponent({
       const songId = songIdVO.value;
 
       const result = isCollection.value
-          ? ((await HttpManager.deleteCollection(userIdVO.value, songIdVO.value)) as ResponseBody)
-          : ((await HttpManager.setCollection({userId, type, songId})) as ResponseBody);
+        ? ((await HttpManager.deleteCollection(userIdVO.value, songIdVO.value)) as ResponseBody)
+        : ((await HttpManager.setCollection({ userId, type, songId })) as ResponseBody);
       (proxy as any).$message({
         message: result.message,
         type: result.type,
@@ -125,6 +133,11 @@ export default defineComponent({
       if (songIdVO.value) initCollection();
     });
 
+    const togglePlayHistory = () => {
+
+      playHistoryVisible.value = !playHistoryVisible.value;
+    };
+
     return {
       isCollection,
       playMusic,
@@ -132,7 +145,9 @@ export default defineComponent({
       checkStatus,
       attachImageUrl: HttpManager.attachImageUrl,
       changeCollection,
-      downloadMusic
+      downloadMusic,
+      togglePlayHistory,
+      playHistoryVisible,
     };
   },
   data() {
@@ -155,6 +170,7 @@ export default defineComponent({
         LIEBIAO: Icon.LIEBIAO,
         dislike: Icon.Dislike,
         like: Icon.Like,
+        clock: Clock
       },
     };
   },
@@ -177,8 +193,8 @@ export default defineComponent({
     ]),
   },
   created() {
-  this.$store.commit("setPlayBtnIcon", Icon.BOFANG); // 初始化播放状态图标为播放图标
-  //this.$store.commit("setIsPlay", false);// 其他的初始化逻辑
+    this.$store.commit("setPlayBtnIcon", Icon.BOFANG); // 初始化播放状态图标为播放图标
+    //this.$store.commit("setIsPlay", false);// 其他的初始化逻辑
   },
   watch: {
     // 切换播放状态的图标
@@ -275,6 +291,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+@import "@/assets/css/Tsy-play-bar.scss";
+</style>
+
 
 <style lang="scss" scoped>
 @import "@/assets/css/Tsy-play-bar.scss";

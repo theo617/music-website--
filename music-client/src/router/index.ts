@@ -18,20 +18,11 @@ const routes: Array<RouteRecordRaw> = [
         name: "home",
         component: () => import("@/views/Home.vue"),
       },
-      {
-        path: "/sign-in",
-        name: "sign-in",
-        component: () => import("@/views/SignIn.vue"),
-      },
+
       {
         path: "/sign",
         name: "sign",
         component: () => import("@/views/Sign.vue"),
-      },
-      {
-        path: "/sign-up",
-        name: "sign-up",
-        component: () => import("@/views/SignUp.vue"),
       },
       {
         path: "/personal",
@@ -40,6 +31,21 @@ const routes: Array<RouteRecordRaw> = [
           requireAuth: true,
         },
         component: () => import("@/views/personal/personal.vue"),
+      },
+      {
+        path: '/personalFollow',
+        name: 'PersonalFollow',
+        component: () => import('@/views/personal/personalFollow.vue') // 确保路径正确
+      },
+      {
+        path: '/history',
+        name: 'history',
+        component: () => import('@/components/layouts/PlayHistory.vue') // 确保路径正确import PlayHistory from "@/components/layouts/PlayHistory.vue";
+      },
+      {
+        path: '/personalFans',
+        name: 'PersonalFans',
+        component: () => import('@/views/personal/personalFans.vue') // 确保路径正确
       },
       {
         path: "/personalSongList",

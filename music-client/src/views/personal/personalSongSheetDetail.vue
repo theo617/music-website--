@@ -8,7 +8,7 @@
         <span>创建者：{{ creator.username }}</span>
       </div>
       <div class="button-group">
-        <el-button v-if="collect" type="primary" @click="collectSongList">
+        <el-button v-if="collect" type="primary"  @click="collectSongList">
           <Collection style="width:1em;height:1em; margin-right: 5px;" />
           收藏歌单
         </el-button>
@@ -28,7 +28,7 @@
             <EditPen style="width:1em;height:1em; margin-right: 5px;fill:aliceblue" />
             编辑歌单
           </el-button>
-          <el-button type="danger" @click="delVisible=true" round>
+          <el-button type="danger" style="margin-right: 10px;" @click="delVisible=true" round>
             <Delete style="width:1em;height:1em; margin-right: 5px;" />
             删除歌单
           </el-button>
@@ -59,8 +59,8 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="updateSongList">确 定</el-button>
+        <el-button @click="editDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="updateSongList">确定</el-button>
       </span>
     </template>
   </el-dialog>
@@ -317,8 +317,12 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background: #fff;
+  background: linear-gradient(135deg, #a3a5a7, #e9eff5);
   border-right: 1px solid #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+  margin-left:100px;
+  border-radius: 15px;
 
   .album-img {
     height: 250px;
@@ -326,13 +330,18 @@ export default defineComponent({
     border-radius: 10%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .album-img:hover {
+    transform: scale(1.05);
   }
 
   .album-info {
-    width: 70%;
+    width: 80%;
     padding-top: 2rem;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: bold;
     color: #333;
   }
@@ -349,6 +358,13 @@ export default defineComponent({
       height: 40px;
       border-radius: 50%;
       margin-right: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .creator-img:hover {
+      transform: scale(1.1);
     }
   }
 
@@ -362,21 +378,30 @@ export default defineComponent({
       margin-top: 10px;
       display: flex;
       align-items: center;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .el-button:hover {
+      background-color: #409EFF;
+      transform: translateY(-2px);
     }
   }
 }
 
 .album-main {
   padding: 20px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg,  #e9eff5,#a3a5a7);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  margin-top:100px;
+  max-width: 1200px;
 
   .album-header {
     margin-bottom: 20px;
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: bold;
       color: #333;
       margin: 0;
@@ -384,7 +409,7 @@ export default defineComponent({
 
     p {
       color: rgba(0, 0, 0, 0.6);
-      margin: 10px 0 20px 0px;
+      margin: 10px 0 20px;
       line-height: 1.6;
     }
   }
