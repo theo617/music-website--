@@ -10,7 +10,7 @@ import lombok.Data;
 public class SongListConsumerRequest {
     private Integer id;
 
-    private Integer useId;
+    private Integer userId;
 
     private String title;
 

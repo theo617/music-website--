@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.liu.common.R;
 import com.example.liu.controller.MinioUploadController;
+import com.example.liu.mapper.ConsumerMapper;
+import com.example.liu.mapper.FollowMapper;
 import com.example.liu.mapper.SingerMapper;
 import com.example.liu.model.domain.Singer;
 import com.example.liu.model.request.SingerRequest;
+import com.example.liu.service.NotificationService;
 import com.example.liu.service.SingerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer> impleme
 
     @Autowired
     private SingerMapper singerMapper;
+
+
 
     @Override
     public R updateSingerMsg(SingerRequest updateSingerRequest) {
@@ -66,6 +71,8 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer> impleme
         String pic = "/img/avatorImages/user.jpg";
         singer.setPic(pic);
         if (singerMapper.insert(singer) > 0) {
+
+
             return R.success("添加成功");
         } else {
             return R.error("添加失败");

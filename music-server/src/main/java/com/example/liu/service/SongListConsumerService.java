@@ -17,6 +17,10 @@ public interface SongListConsumerService extends IService<SongListConsumer> {
 
     R deleteSongListConsumer(Integer id);
 
+    R deleteSongListConsumerByManager(Integer id, Integer complainterId);
+
+    R unDeleteSongListConsumerByManager(Integer id, Integer complainterId, Integer applealerId);
+
     R allSongListConsumer();
 
     List<SongListConsumer> findAllSong();

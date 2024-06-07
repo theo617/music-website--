@@ -22,6 +22,16 @@ public class SongListConsumerController {
         return songListConsumerService.deleteSongListConsumer(id);
     }
 
+    @GetMapping("/songListConsumer/deleteByManager")
+    public R deleteSongListConsumerByManager(@RequestParam int id, @RequestParam int complainterId) {
+        return songListConsumerService.deleteSongListConsumerByManager(id, complainterId);
+    }
+
+    @GetMapping("/songListConsumer/undeleteByManager")
+    public R unDeleteSongListConsumerByManager(@RequestParam int id, @RequestParam int complainterId, @RequestParam int applealerId) {
+        return songListConsumerService.unDeleteSongListConsumerByManager(id, complainterId, applealerId);
+    }
+
     @GetMapping("/songListConsumer")
     public R allSongListConsumer() {
         return songListConsumerService.allSongListConsumer();

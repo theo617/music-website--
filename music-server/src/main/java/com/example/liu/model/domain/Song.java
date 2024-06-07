@@ -9,28 +9,30 @@ import java.util.Date;
 @TableName(value = "song")
 @Data
 public class Song {
-
     @TableId(type = IdType.AUTO)
     private Integer id;
-
     private Integer singerId;
-
     private String name;
-
     private String introduction;
-
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-
     private String pic;
-
     private String lyric;
-
     private String url;
-
+    public Song() {}
+    public Song(SongDeleted songDeleted){
+        this.id = songDeleted.getId();
+        this.singerId = songDeleted.getSingerId();
+        this.name = songDeleted.getName();
+        this.introduction = songDeleted.getIntroduction();;
+        this.createTime = songDeleted.getCreateTime();
+        this.updateTime = songDeleted.getUpdateTime();
+        this.pic = songDeleted.getPic();
+        this.lyric = songDeleted.getLyric();
+        this.url = songDeleted.getUrl();
+    }
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
