@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class SongRequest {
+public class  SongRequest {
 
     private Integer id;
 

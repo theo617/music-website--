@@ -22,6 +22,19 @@ public class SongListConsumer {
 
     private String introduction;
 
+    public SongListConsumer() {}
+
+    public SongListConsumer(SongListConsumerDeleted songListConsumerDeleted){
+        this.id = songListConsumerDeleted.getId();
+        this.userId = songListConsumerDeleted.getUserId();
+        this.title = songListConsumerDeleted.getTitle();
+        this.pic = songListConsumerDeleted.getPic();
+        this.style = songListConsumerDeleted.getStyle();
+        this.introduction = songListConsumerDeleted.getIntroduction();
+    }
+
+
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

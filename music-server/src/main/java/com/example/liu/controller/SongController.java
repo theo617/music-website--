@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class SongController {
@@ -39,9 +40,19 @@ public class SongController {
     }
 
     // 删除歌曲
-    @DeleteMapping("/song/delete")
+    @PostMapping("/song/delete")
     public R deleteSong(@RequestParam int id) {
         return songService.deleteSong(id);
+    }
+
+    @PostMapping("/song/deleteByManager")
+    public R deleteSongByManager(@RequestParam int id, @RequestParam int complainterId) {
+        return songService.deleteSongByManager(id, complainterId);
+    }
+
+    @GetMapping("/song/undeleteByManager")
+    public R undeleteSongByManager(@RequestParam int id, @RequestParam int complainterId, @RequestParam int applealerId) {
+        return songService.unDeleteSongByManager(id, complainterId, applealerId);
     }
 
     // 返回所有歌曲
@@ -92,6 +103,11 @@ public class SongController {
     @PostMapping("/song/lrc/update")
     public R updateSongLrc(@RequestParam("file") MultipartFile lrcFile, @RequestParam("id") int id) {
         return songService.updateSongLrc(lrcFile, id);
+    }
+
+    @GetMapping("/exportLrc")
+    public void exportSongLrc(@RequestParam("id") int id, HttpServletResponse response) {
+        songService.exportSongLrc(id, response);
     }
 
 }

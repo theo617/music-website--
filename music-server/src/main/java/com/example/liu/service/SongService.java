@@ -6,6 +6,8 @@ import com.example.liu.model.domain.Song;
 import com.example.liu.model.request.SongRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface SongService extends IService<Song> {
 
     R addSong (SongRequest addSongRequest,MultipartFile lrcfile,  MultipartFile mpfile);
@@ -18,6 +20,10 @@ public interface SongService extends IService<Song> {
 
     R deleteSong(Integer id);
 
+    R deleteSongByManager(Integer id, Integer complainterId);
+
+    R unDeleteSongByManager(Integer id, Integer complainterId, Integer applealerId);
+
     R allSong();
 
     R songOfSingerId(Integer singerId);
@@ -27,4 +33,6 @@ public interface SongService extends IService<Song> {
     R songOfSingerName(String name);
 
     R updateSongLrc(MultipartFile lrcFile, int id);
+
+    void exportSongLrc(int id, HttpServletResponse response);
 }

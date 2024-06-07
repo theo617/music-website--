@@ -11,7 +11,9 @@ import com.example.liu.model.domain.Complaints;
 import com.example.liu.model.domain.Consumer;
 import com.example.liu.model.request.AppealStatusUpdateRequest;
 import com.example.liu.model.request.AppealsRequest;
+import com.example.liu.model.request.NotificationRequest;
 import com.example.liu.service.AppealsService;
+import com.example.liu.service.NotificationService;
 import org.ehcache.sizeof.SizeOf;
 import org.hamcrest.core.AllOf;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class AppealsServiceImpl extends ServiceImpl<AppealsMapper, Appeals> impl
     @Autowired
     private ConsumerMapper consumerMapper;
 
+    @Autowired
+    private NotificationService notificationService;
     @Override
     public R submitAppeals(AppealsRequest appealsRequest) {
         Appeals appeals = new Appeals();
@@ -53,13 +57,36 @@ public class AppealsServiceImpl extends ServiceImpl<AppealsMapper, Appeals> impl
             return R.error("不存在该用户");
         }
         appeals.setUserId(userId);
-
         appeals.setReason(appealsRequest.getReason());
         appeals.setStatus(appealsRequest.getStatus());
         appeals.setCreateAt(appealsRequest.getCreateAt());
         appeals.setUpdateAt(appealsRequest.getUpdateAt());
 
         if (appealsMapper.insert(appeals) > 0) {
+            //获取申诉者id
+            Integer appealerId = 0;
+            String appealerName = "";
+            appealerId = appeals.getUserId();
+            QueryWrapper<Consumer> consumerQueryWrapper = new QueryWrapper<>();
+            consumerQueryWrapper.eq("id", appealerId);
+            appealerName = consumerMapper.selectOne(consumerQueryWrapper).getUsername();
+
+
+            //管理端
+            NotificationRequest notificationRequest2 = new NotificationRequest();
+            notificationRequest2.setUserId(null);
+            notificationRequest2.setUserType("manager");
+            notificationRequest2.setMessage("用户 \"" + appealerId + "-" + appealerName + "\" 对投诉信息" + appeals.getComplaintId() + "提出申诉。");
+            notificationRequest2.setType(3);
+            notificationService.addNotification(notificationRequest2);
+
+            //申诉者
+            NotificationRequest notificationRequest3 = new NotificationRequest();
+            notificationRequest3.setUserId(appealerId);
+            notificationRequest3.setUserType("consumer");
+            notificationRequest3.setMessage("您的申诉信息已提交。");
+            notificationRequest3.setType(3);
+            notificationService.addNotification(notificationRequest3);
             return R.success("提交申诉成功");
         } else {
             return R.error("提交申诉失败");

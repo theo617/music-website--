@@ -39,12 +39,6 @@ public class PlayHistoryServiceImpl extends ServiceImpl<PlayHistoryMapper, PlayH
     @Override
     public R recodePlayHistory(PlayHistoryRequest playHistoryRequest) {
         PlayHistory playHistory = new PlayHistory();
-<<<<<<< HEAD
-//        playHistory.setId(playHistoryRequest.getId());
-        playHistory.setUserId(playHistoryRequest.getUserId());
-        playHistory.setSongId(playHistoryRequest.getSongId());
-        playHistory.setPlayTimeStamp(playHistoryRequest.getPlayTimeStamp());
-=======
 
         int userId = playHistoryRequest.getUserId();
         Consumer consumer = consumerMapper.selectById(userId);
@@ -71,7 +65,6 @@ public class PlayHistoryServiceImpl extends ServiceImpl<PlayHistoryMapper, PlayH
         playHistory.setPlayCount(playHistoryRequest.getPlayCount());
         playHistory.setPlayTimeStamp(playHistoryRequest.getPlayTimeStamp());
 
->>>>>>> a422d40bf9a4d907d59ece5d166ba161dee6fd1b
         if (playHistoryMapper.insert(playHistory) > 0) {
             return R.success("添加播放历史成功");
         } else {

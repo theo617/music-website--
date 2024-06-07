@@ -4,9 +4,11 @@ package com.example.liu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.liu.common.R;
+import com.example.liu.mapper.SongListConsumerDeletedMapper;
 import com.example.liu.model.domain.Consumer;
 import com.example.liu.model.domain.Follow;
 import com.example.liu.controller.MinioUploadController;
+import com.example.liu.model.domain.SongListConsumerDeleted;
 import com.example.liu.model.request.NotificationRequest;
 import com.example.liu.mapper.FollowMapper;
 import com.example.liu.mapper.SongListConsumerMapper;
@@ -30,6 +32,9 @@ public class SongListConsumerImpl extends ServiceImpl<SongListConsumerMapper, So
 
     @Autowired
     private SongListConsumerMapper songListConsumerMapper;
+
+    @Autowired
+    private SongListConsumerDeletedMapper songListConsumerDeletedMapper;
 
     @Autowired
     private FollowMapper followMapper;
@@ -125,6 +130,77 @@ public class SongListConsumerImpl extends ServiceImpl<SongListConsumerMapper, So
             return R.success("删除成功");
         } else {
             return R.error("删除失败");
+        }
+    }
+
+    @Override
+    public R deleteSongListConsumerByManager(Integer id, Integer complainterId) {
+        //获取该id的列表信息
+        QueryWrapper<SongListConsumer> queryWrapperSongList = new QueryWrapper<>();
+        queryWrapperSongList.eq("id", id);
+        // 歌单title
+        String songListTitle = "";
+        SongListConsumer songListConsumer = songListConsumerMapper.selectOne(queryWrapperSongList);
+        if (songListConsumer != null){
+            songListTitle = songListConsumer.getTitle();
+        }
+        // 将信息保存到 SongListConsumerDeleted 表中
+        SongListConsumerDeleted songListConsumerDeleted = new SongListConsumerDeleted(songListConsumer);
+        songListConsumerDeletedMapper.insert(songListConsumerDeleted);
+        if (songListConsumerMapper.deleteById(id) > 0) {
+            // 发送通知
+            NotificationRequest notificationRequest = new NotificationRequest();
+            notificationRequest.setUserId(complainterId);
+            notificationRequest.setUserType("consumer");
+            notificationRequest.setMessage("您投诉的歌单 \"" + songListTitle + "\"经审核，已删除。");
+            notificationRequest.setType(4);
+
+            notificationService.addNotification(notificationRequest);
+            return R.success("删除成功");
+        } else {
+            return R.error("删除失败");
+        }
+    }
+
+    @Override
+    public R unDeleteSongListConsumerByManager(Integer id, Integer complainterId, Integer applealerId) {
+        // 将信息恢复到 SongListConsumer 表中
+        SongListConsumerDeleted songListConsumerDeleted = songListConsumerDeletedMapper.selectById(id);
+        if (songListConsumerDeleted == null) {
+            return R.error("删除的歌单不存在");
+        }
+        SongListConsumer songListConsumer = new SongListConsumer(songListConsumerDeleted);
+        songListConsumerMapper.insert(songListConsumer);
+
+        //获取该id的列表信息
+        QueryWrapper<SongListConsumer> queryWrapperSongList = new QueryWrapper<>();
+        queryWrapperSongList.eq("id", id);
+        // 歌单title
+        String songListTitle = "";
+        songListConsumer = songListConsumerMapper.selectOne(queryWrapperSongList);
+        if (songListConsumer != null){
+            songListTitle = songListConsumer.getTitle();
+        }
+
+        if (songListConsumerDeletedMapper.deleteById(id) > 0) {
+            // 发送通知
+            NotificationRequest notificationRequest = new NotificationRequest();
+            notificationRequest.setUserId(complainterId);
+            notificationRequest.setUserType("consumer");
+            notificationRequest.setMessage("您投诉的歌曲 \"" + songListTitle + "\"受到申诉，经审核，已撤销删除。");
+            notificationRequest.setType(5);
+            notificationService.addNotification(notificationRequest);
+
+            NotificationRequest notificationRequest1 = new NotificationRequest();
+            notificationRequest1.setUserId(applealerId);
+            notificationRequest1.setUserType("consumer");
+            notificationRequest1.setMessage("您申诉的歌曲 \"" + songListTitle + "\"经审核，已撤销删除。");
+            notificationRequest1.setType(5);
+            notificationService.addNotification(notificationRequest1);
+
+            return R.success("撤销删除成功");
+        } else {
+            return R.error("撤销删除失败");
         }
     }
 

@@ -1,18 +1,15 @@
 package com.example.liu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.liu.common.R;
-import com.example.liu.mapper.ComplaintsMapper;
-import com.example.liu.mapper.ConsumerMapper;
-import com.example.liu.mapper.SongListMapper;
-import com.example.liu.mapper.SongMapper;
-import com.example.liu.model.domain.Complaints;
-import com.example.liu.model.domain.Consumer;
-import com.example.liu.model.domain.Song;
-import com.example.liu.model.domain.SongList;
+import com.example.liu.mapper.*;
+import com.example.liu.model.domain.*;
 import com.example.liu.model.request.ComplaintStatusUpdateRequest;
 import com.example.liu.model.request.ComplaintsRequest;
+import com.example.liu.model.request.NotificationRequest;
 import com.example.liu.service.ComplaintsService;
+import com.example.liu.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +30,11 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
     @Autowired
     private SongMapper songMapper;
     @Autowired
-    private SongListMapper songListMapper;
+    private SongListConsumerMapper songListConsumerMapper;
+    @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private SingerMapper singerMapper;
 
     @Override
     public R submitComplaints(ComplaintsRequest complaintsRequest) {
@@ -53,17 +54,6 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
         complaints.setTargetType(targetType);
 
         int targetId = complaints.getTargetId();
-//        if (targetType.toString().equals("SONG")) {
-//            Song song = songMapper.selectById(targetId);
-//            if (song == null) {
-//                return R.error("不存在该歌曲");
-//            }
-//        } else {
-//            SongList songList = songListMapper.selectById(targetId);
-//            if (songList == null) {
-//                return R.error("不存在该歌单");
-//            }
-//        }
         complaints.setTargetId(targetId);
 
         complaints.setReason(complaintsRequest.getReason());
@@ -78,6 +68,83 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
         complaints.setUpdateAt(complaintsRequest.getUpdateAt());
 
         if (complaintsMapper.insert(complaints) > 0) {
+            //获取用户名投诉对象等等
+            String userName = "";
+            String complaintedObject = "";
+            Integer complaintedUserId = 0;
+            String complaintedUserName = "";
+            Boolean creatorExist = false;
+            Boolean isSong = true;
+            userName = consumer.getUsername();
+            if (targetType.toString().equals("SONG")) {
+                Song song = songMapper.selectById(targetId);
+                if (song == null) {
+                    return R.error("不存在该歌曲");
+                }
+                complaintedObject = song.getName();
+                Integer singerId = 0;
+                singerId = song.getSingerId();
+                String singerName = "";
+                Singer singer = singerMapper.selectById(singerId);
+                singerName = singer.getName();
+                QueryWrapper<Consumer> consumerQueryWrapper = new QueryWrapper<>();
+                consumerQueryWrapper.eq("username", singerName);
+                consumer = consumerMapper.selectOne(consumerQueryWrapper);
+                if (consumer != null) {
+                    creatorExist = true;
+                    complaintedUserId = consumer.getId();
+                    complaintedUserName = consumer.getUsername();
+                }
+            } else {
+                isSong = false;
+             SongListConsumer songListConsumer = songListConsumerMapper.selectById(targetId);
+                if (songListConsumer == null) {
+                    return R.error("不存在该歌单");
+                }
+                creatorExist = true;
+                complaintedObject = songListConsumer.getTitle();
+                complaintedUserId = songListConsumer.getUserId();
+            }
+            //投诉者
+            NotificationRequest notificationRequest1 = new NotificationRequest();
+            notificationRequest1.setUserId(userId);
+            notificationRequest1.setUserType("consumer");
+            if(isSong){
+                notificationRequest1.setMessage("您对歌曲 \"" + complaintedObject + "\"的投诉已提交");
+            } else {
+                notificationRequest1.setMessage("您对歌单 \"" + complaintedObject + "\"的投诉已提交");
+            }
+
+            notificationRequest1.setType(2);
+            notificationService.addNotification(notificationRequest1);
+
+            //管理端
+            NotificationRequest notificationRequest2 = new NotificationRequest();
+            notificationRequest2.setUserId(null);
+            notificationRequest2.setUserType("manager");
+            if(isSong){
+                notificationRequest2.setMessage("用户 \"" + userId + "-" + userName + "\" 投诉了歌曲 \"" + complaintedObject + "\"。");
+            } else {
+                notificationRequest2.setMessage("用户 \"" + userId + "-" + userName + "\" 投诉了歌单 \"" + complaintedObject + "\"。");
+            }
+
+            notificationRequest2.setType(2);
+            notificationService.addNotification(notificationRequest2);
+
+            //被投诉者（若有）
+            if(creatorExist){
+                NotificationRequest notificationRequest3 = new NotificationRequest();
+                notificationRequest3.setUserId(complaintedUserId);
+                notificationRequest3.setUserType("consumer");
+                if(isSong){
+                    notificationRequest3.setMessage("您的歌曲 \"" + complaintedObject + "\" 被投诉！");
+                } else {
+                    notificationRequest3.setMessage("您的歌单 \"" + complaintedObject + "\" 被投诉！");
+                }
+
+                notificationRequest3.setType(2);
+                notificationService.addNotification(notificationRequest3);
+            }
             return R.success("提交投诉成功");
         } else {
             return R.error("提交投诉失败");
@@ -87,7 +154,7 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
     @Override
     public R viewAllComplaints() {
         List<Complaints> allComplaints = complaintsMapper.selectList(null);
-        if (allComplaints == null || allComplaints.size() == 0) {
+        if (allComplaints == null || allComplaints.isEmpty()) {
             return R.error("当前没有投诉信息");
         } else {
             return R.success("查询成功", allComplaints);

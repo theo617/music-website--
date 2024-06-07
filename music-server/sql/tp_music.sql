@@ -456,6 +456,33 @@ INSERT INTO `rank_list` VALUES (1,2,1,7),(2,2,2,3),(3,1,1,4),(7,13,1,5),(19,21,1
 /*!40000 ALTER TABLE `rank_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+
+--
+-- Table structure for table `song_deleted`
+--
+
+DROP TABLE IF EXISTS `song_deleted`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `song_deleted` (
+                        `id` int unsigned NOT NULL,
+                        `singer_id` int unsigned NOT NULL,
+                        `name` varchar(45) NOT NULL,
+                        `introduction` varchar(255) DEFAULT NULL,
+                        `create_time` datetime NOT NULL COMMENT '发行时间',
+                        `update_time` datetime NOT NULL,
+                        `pic` varchar(255) DEFAULT NULL,
+                        `lyric` text,
+                        `url` varchar(255) NOT NULL,
+                        PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `song_deleted`
+--
+
 --
 -- Table structure for table `song`
 --
@@ -536,11 +563,35 @@ CREATE TABLE `song_list_consumer` (
 -- Dumping data for table `song_list_consumer`
 --
 
+
+
 LOCK TABLES `song_list_consumer` WRITE;
 /*!40000 ALTER TABLE `song_list_consumer` DISABLE KEYS */;
 INSERT INTO `song_list_consumer` VALUES (1,1,'My Song List','/img/songListPic/123.jpg','This is a test song list for user.','Pop');
 /*!40000 ALTER TABLE `song_list_consumer` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `song_list_consumer_deleted`
+--
+
+DROP TABLE IF EXISTS `song_list_consumer_deleted`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `song_list_consumer_deleted` (
+                                              `id` int unsigned NOT NULL,
+                                              `user_id` int unsigned NOT NULL,
+                                              `title` varchar(255) NOT NULL,
+                                              `pic` varchar(255) DEFAULT NULL,
+                                              `introduction` text,
+                                              `style` varchar(10) DEFAULT '无',
+                                              PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `song_list_consumer_deleted`
+--
 
 --
 -- Table structure for table `user_support`
