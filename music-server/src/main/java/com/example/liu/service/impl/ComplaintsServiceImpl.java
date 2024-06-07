@@ -53,7 +53,7 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
         }
         complaints.setTargetType(targetType);
 
-        int targetId = complaints.getTargetId();
+        int targetId = complaintsRequest.getTargetId();
         complaints.setTargetId(targetId);
 
         complaints.setReason(complaintsRequest.getReason());
@@ -78,6 +78,7 @@ public class ComplaintsServiceImpl extends ServiceImpl<ComplaintsMapper, Complai
             userName = consumer.getUsername();
             if (targetType.toString().equals("SONG")) {
                 Song song = songMapper.selectById(targetId);
+                System.out.println(targetId);
                 if (song == null) {
                     return R.error("不存在该歌曲");
                 }
